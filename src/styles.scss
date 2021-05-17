@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  background-color: #fafafa;
+}
+
+.card-narrow {
+  width: 100%;
+  max-width: 50vw;
+}
+
+.radio-group-column {
+  display: flex;
+  flex-direction: column;
+
+  .mat-radio-button {
+    margin: 5px 0;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
