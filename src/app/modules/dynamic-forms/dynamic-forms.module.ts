@@ -16,10 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
-  declarations: [
-    DynamicFormComponent,
-    DynamicFormControlComponent
-  ],
+  declarations: [DynamicFormComponent, DynamicFormControlComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,10 +31,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatChipsModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    MatRadioModule
+    MatRadioModule,
   ],
-  exports: [
-    DynamicFormComponent
-  ]
+  exports: [DynamicFormComponent],
 })
 export class DynamicFormsModule { }

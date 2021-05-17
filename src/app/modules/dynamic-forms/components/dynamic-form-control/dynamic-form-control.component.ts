@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { MatFormFieldAppearance } from '@angular/material/form-field';
-import { FormControlBase } from '../../models/form-control-base';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { Component, Input } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { FormGroup, FormControl } from "@angular/forms";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { MatFormFieldAppearance } from "@angular/material/form-field";
+import { FormControlBase } from "../../models/form-control-base";
 
 @Component({
   selector: 'app-dynamic-form-control',
