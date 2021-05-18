@@ -25,7 +25,7 @@ export class FormService {
         key: 'text',
         label: 'Text',
         order: 1,
-        validators: [Validators.required, Validators.email],
+        //validators: [Validators.required, Validators.email]
       }),
       new FormControlTextArea({
         key: 'textarea',
@@ -59,7 +59,8 @@ export class FormService {
         selectable : true,
         removable: true,
         addOnBlur: true,
-        order: 6
+        order: 6,
+        validators: [Validators.required]
       }),
       new FormControlRadio({
         key: 'radio',
@@ -71,12 +72,14 @@ export class FormService {
           { key: 'two', value: 'Two' },
           { key: 'three', value: 'Three' }
         ],
-        order: 7  
+        order: 7,
+        validators: [Validators.required]  
       }),
       new FormControlCheckbox({
         key: 'checkbox',
         label: 'Checkbox',
         floatLabel: 'always',
+        placeholder: 'Please check this box',
         indeterminate: false,
         order: 8,
         validators: [Validators.required]
@@ -85,6 +88,7 @@ export class FormService {
         key: 'slide',
         label: 'Slide toggle',
         floatLabel: 'always',
+        placeholder: 'Please slide this slide toggle',
         order: 9,
         validators: [Validators.required]
       })

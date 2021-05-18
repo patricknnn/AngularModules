@@ -1,7 +1,9 @@
 <div class="form-group" [formGroup]="form">
+
   <!-- Form styling -->
-  <mat-form-field [appearance]="control.appearance" [color]="control.color" [floatLabel]="control.floatLabel"
-    class="w-100" [ngSwitch]="control.controlType">
+  <mat-form-field [id]="'form-field-' + control.key" [appearance]="control.appearance" [color]="control.color"
+    [floatLabel]="control.floatLabel" class="w-100" [ngSwitch]="control.controlType">
+
     <!-- Label -->
     <mat-label [attr.for]="control.key">
       {{ control.label }}
@@ -26,7 +28,7 @@
     <input matInput *ngSwitchCase="'date'" [ngClass]="control.class" [formControlName]="control.key" [id]="control.key"
       [matDatepicker]="datePicker" />
     <mat-datepicker-toggle *ngSwitchCase="'date'" matSuffix [for]="datePicker"></mat-datepicker-toggle>
-    <mat-datepicker #datePicker></mat-datepicker>
+    <mat-datepicker touchUi #datePicker></mat-datepicker>
 
     <!-- Date range -->
     <mat-date-range-input *ngSwitchCase="'date-range'" [ngClass]="control.class" [formGroup]="dateRange"
@@ -35,10 +37,11 @@
       <input matEndDate placeholder="Eind" formControlName="end" (dateChange)="setDateRange()" />
     </mat-date-range-input>
     <mat-datepicker-toggle *ngSwitchCase="'date-range'" matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
-    <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+    <mat-date-range-picker touchUi #dateRangePicker></mat-date-range-picker>
 
     <!-- Chips -->
-    <mat-chip-list *ngSwitchCase="'chips'" [ngClass]="control.class" #chipList>
+    <mat-chip-list *ngSwitchCase="'chips'" [ngClass]="control.class" [formControlName]="control.key" [id]="control.key"
+      #chipList>
       <mat-chip *ngFor="let item of control.value" [selectable]="control.selectable" [removable]="control.removable"
         (removed)="removeFromValue(item)">
         {{ item }}
@@ -51,8 +54,8 @@
 
     <!-- Radio -->
     <input matInput *ngSwitchCase="'radio'" [hidden]="true" />
-    <mat-radio-group *ngSwitchCase="'radio'" [ngClass]="control.class" [formControlName]="control.key"
-      [id]="control.key">
+    <mat-radio-group *ngSwitchCase="'radio'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+      [formControlName]="control.key" [required]="isRequired" (change)="updateFormFieldState()">
       <mat-radio-button *ngFor="let opt of control.options" [value]="opt.key">
         {{ opt.value }}
       </mat-radio-button>
@@ -60,42 +63,27 @@
 
     <!-- Checkbox -->
     <input matInput *ngSwitchCase="'checkbox'" [hidden]="true" />
-    <mat-checkbox *ngSwitchCase="'checkbox'" [ngClass]="control.class" [formControlName]="control.key"
-      [id]="control.key" [labelPosition]="control.labelPosition" [indeterminate]="control.indeterminate" required>
-      {{ control.label }}
+    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+      [formControlName]="control.key" [labelPosition]="control.labelPosition" [indeterminate]="control.indeterminate"
+      [required]="isRequired" (change)="updateFormFieldState()">
+      {{ control.placeholder }}
     </mat-checkbox>
 
     <!-- Slide -->
     <input matInput *ngSwitchCase="'slide'" [hidden]="true" />
-    <mat-slide-toggle *ngSwitchCase="'slide'" [ngClass]="control.class" [formControlName]="control.key"
-      [id]="control.key" [checked]="control.value" [labelPosition]="control.labelPosition">
-      {{ control.label }}
+    <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+      [formControlName]="control.key" [checked]="control.value" [labelPosition]="control.labelPosition"
+      [required]="isRequired" (change)="updateFormFieldState()">
+      {{ control.placeholder }}
     </mat-slide-toggle>
 
     <!-- Errors -->
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.min">
-      {{ control.label }} is too <strong>low</strong>
+    <mat-error *ngIf="!isValid">
+      {{ errorMessage }}
     </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.max">
-      {{ control.label }} is too <strong>high</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.required">
-      {{ control.label }} is <strong>required</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.requiredTrue">
-      {{ control.label }} is not <strong>true</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.email">
-      {{ control.label }} is not <strong>email</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.minLength">
-      {{ control.label }} is too <strong>short</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.maxLength">
-      {{ control.label }} is too <strong>long</strong>
-    </mat-error>
-    <mat-error *ngIf="this.form.controls[this.control.key].errors?.pattern">
-      {{ control.label }} is wrong <strong>pattern</strong>
-    </mat-error>
+
+    <mat-hint *ngIf="isTouched && !isValid" class="mat-error">
+      {{ errorMessage }}
+    </mat-hint>
   </mat-form-field>
 </div>
