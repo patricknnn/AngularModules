@@ -6,7 +6,7 @@
     </div>
 
     <div class="form-row form-row-buttons">
-        <button mat-raised-button color="primary" type="submit" class="w-100" [disabled]="!form.valid">Save</button>
+        <button mat-raised-button color="primary" type="submit" class="w-100" [disabled]="!allowInvalidSubmit && !form.valid">Save</button>
     </div>
 
 </form>

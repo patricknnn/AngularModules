@@ -25,7 +25,7 @@ export class FormService {
         key: 'text',
         label: 'Text',
         order: 1,
-        //validators: [Validators.required, Validators.email]
+        validators: [Validators.required, Validators.email]
       }),
       new FormControlTextArea({
         key: 'textarea',

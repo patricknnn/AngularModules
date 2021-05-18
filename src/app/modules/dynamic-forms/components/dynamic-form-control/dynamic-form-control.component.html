@@ -77,12 +77,13 @@
       {{ control.placeholder }}
     </mat-slide-toggle>
 
-    <!-- Errors -->
-    <mat-error *ngIf="!isValid">
+    <!-- Errors for form field controls -->
+    <mat-error *ngIf="isFormFieldControl && !isValid">
       {{ errorMessage }}
     </mat-error>
 
-    <mat-hint *ngIf="isTouched && !isValid" class="mat-error">
+    <!-- Errors for non form field controls -->
+    <mat-hint *ngIf="!isFormFieldControl && !isValid && isTouched" class="mat-error">
       {{ errorMessage }}
     </mat-hint>
   </mat-form-field>

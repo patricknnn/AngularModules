@@ -11,6 +11,7 @@ import { FormControlService } from '../../services/form-control.service';
 })
 export class DynamicFormComponent implements OnInit {
   @Input() formControls!: FormControlBase<any>[];
+  @Input() allowInvalidSubmit: boolean = false;
   form!: FormGroup;
   payLoad = '';
 
