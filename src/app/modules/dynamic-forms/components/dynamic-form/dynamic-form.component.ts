@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormControlBase } from '../../models/form-control-base';
 import { FormControlService } from '../../services/form-control.service';
@@ -10,8 +10,11 @@ import { FormControlService } from '../../services/form-control.service';
   providers: [FormControlService]
 })
 export class DynamicFormComponent implements OnInit {
-  @Input() formControls!: FormControlBase<any>[];
+  @Input() appearance: "legacy" | "standard" | "fill" | "outline" = "fill";
+  @Input() color: "primary" | "accent" | "warn" = "primary";
   @Input() allowInvalidSubmit: boolean = false;
+  @Input() formControls!: FormControlBase<any>[];
+  @Output() formSubmit = new EventEmitter<string>();
   form!: FormGroup;
   payLoad = '';
 
@@ -23,6 +26,6 @@ export class DynamicFormComponent implements OnInit {
 
   onSubmit() {
     this.payLoad = JSON.stringify(this.form.getRawValue());
-    console.log(this.payLoad);
+    this.formSubmit.emit(this.payLoad);
   }
 }

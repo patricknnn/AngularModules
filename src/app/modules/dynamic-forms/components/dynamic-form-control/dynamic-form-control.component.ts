@@ -12,6 +12,8 @@ import { FormControlBase } from "../../models/form-control-base";
 export class DynamicFormControlComponent {
   @Input() control!: FormControlBase<any>;
   @Input() form!: FormGroup;
+  @Input() appearance!: "legacy" | "standard" | "fill" | "outline";
+  @Input() color!: "primary" | "accent" | "warn";
   dateRange = new FormGroup({
     start: new FormControl(),
     end: new FormControl()

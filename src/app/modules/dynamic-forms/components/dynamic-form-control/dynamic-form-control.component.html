@@ -1,7 +1,7 @@
 <div class="form-group" [formGroup]="form">
 
   <!-- Form styling -->
-  <mat-form-field [id]="'form-field-' + control.key" [appearance]="control.appearance" [color]="control.color"
+  <mat-form-field [id]="'form-field-' + control.key" [appearance]="appearance" [color]="color"
     [floatLabel]="control.floatLabel" class="w-100" [ngSwitch]="control.controlType">
 
     <!-- Label -->
@@ -54,7 +54,7 @@
 
     <!-- Radio -->
     <input matInput *ngSwitchCase="'radio'" [hidden]="true" />
-    <mat-radio-group *ngSwitchCase="'radio'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+    <mat-radio-group *ngSwitchCase="'radio'" [id]="control.key" [ngClass]="control.class" [color]="color"
       [formControlName]="control.key" [required]="isRequired" (change)="updateFormFieldState()">
       <mat-radio-button *ngFor="let opt of control.options" [value]="opt.key">
         {{ opt.value }}
@@ -63,7 +63,7 @@
 
     <!-- Checkbox -->
     <input matInput *ngSwitchCase="'checkbox'" [hidden]="true" />
-    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="control.key" [ngClass]="control.class" [color]="color"
       [formControlName]="control.key" [labelPosition]="control.labelPosition" [indeterminate]="control.indeterminate"
       [required]="isRequired" (change)="updateFormFieldState()">
       {{ control.placeholder }}
@@ -71,7 +71,7 @@
 
     <!-- Slide -->
     <input matInput *ngSwitchCase="'slide'" [hidden]="true" />
-    <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [ngClass]="control.class" [color]="control.color"
+    <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [ngClass]="control.class" [color]="color"
       [formControlName]="control.key" [checked]="control.value" [labelPosition]="control.labelPosition"
       [required]="isRequired" (change)="updateFormFieldState()">
       {{ control.placeholder }}

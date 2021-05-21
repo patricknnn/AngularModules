@@ -10,8 +10,6 @@ export class FormControlBase<T> {
   label: string;
   labelPosition: "before" | "after";
   floatLabel: "auto" | "always" | "never";
-  appearance: "legacy" | "standard" | "fill" | "outline";
-  color: "primary" | "accent" | "warn";
   class: string;
   indeterminate: boolean;
   selectable: boolean;
@@ -30,8 +28,6 @@ export class FormControlBase<T> {
     label?: string,
     labelPosition?: "before" | "after",
     floatLabel?: "auto" | "always" | "never",
-    appearance?: "legacy" | "standard" | "fill" | "outline",
-    color?: "primary" | "accent" | "warn",
     class?: string,
     indeterminate?: boolean
     selectable?: boolean,
@@ -46,8 +42,6 @@ export class FormControlBase<T> {
     this.labelPosition = options.labelPosition || "before";
     this.floatLabel = options.floatLabel || "auto";
     this.placeholder = options.placeholder || "";
-    this.appearance = options.appearance || "standard";
-    this.color = options.color || "primary";
     this.order = options.order === undefined ? 1 : options.order;
     this.controlType = options.controlType || "";
     this.type = options.type || "";

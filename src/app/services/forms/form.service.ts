@@ -24,8 +24,7 @@ export class FormService {
       new FormControlText({
         key: 'text',
         label: 'Text',
-        order: 1,
-        validators: [Validators.required, Validators.email]
+        order: 1
       }),
       new FormControlTextArea({
         key: 'textarea',
@@ -56,7 +55,7 @@ export class FormService {
         key: 'chips',
         label: 'Chip list',
         value: ['One', 'Two'],
-        selectable : true,
+        selectable: true,
         removable: true,
         addOnBlur: true,
         order: 6,
@@ -73,7 +72,7 @@ export class FormService {
           { key: 'three', value: 'Three' }
         ],
         order: 7,
-        validators: [Validators.required]  
+        validators: [Validators.required]
       }),
       new FormControlCheckbox({
         key: 'checkbox',
