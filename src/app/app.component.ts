@@ -1,11 +1,10 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { routeAnimation } from './animations/route-animations';
 import { Navlink } from './modules/core/models/navlink';
-import { SidenavService } from './modules/core/services/sidenav/sidenav.service';
 import { NavlinkService } from './services/navlink/navlink.service';
 
 @Component({
@@ -14,11 +13,15 @@ import { NavlinkService } from './services/navlink/navlink.service';
   styleUrls: ['./app.component.scss'],
   animations: [routeAnimation]
 })
-export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   /**
    * Page title
    */
   title = 'AngularModules';
+  /**
+   * Currently active theme
+   */
+  activeTheme: string = 'light';
   /**
    * Media query list
    */
@@ -44,7 +47,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    private sidenavService: SidenavService,
     navlinkService: NavlinkService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
@@ -61,17 +63,38 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Called after view initialized
-   */
-  ngAfterViewInit(): void {
-    this.sidenavService.setSidenav(this.sidenav);
-  }
-
-  /**
    * Called on component destroy
    */
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener<"change">("change", this._mobileQueryListener);
+  }
+
+  /**
+   * Changes the theme
+   * @param theme Theme to apply
+   */
+  public changeSidebar(change: string) {
+    switch (change) {
+      case 'open':
+        this.sidenav.open();
+        break;
+      case 'close':
+        this.sidenav.close();
+        break;
+      case 'toggle':
+        this.sidenav.toggle();
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Changes the theme
+   * @param theme Theme to apply
+   */
+  public changeTheme(theme: string) {
+    this.activeTheme = theme;
   }
 
   /**
