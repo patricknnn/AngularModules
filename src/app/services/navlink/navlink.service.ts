@@ -17,7 +17,7 @@ export class NavlinkService {
     const navlinks: Navlink[] = [
       new Navlink("Home", "edit", "/home"),
       new Navlink("Core", "edit", "/core"),
-      new Navlink("Material", "edit", "/material"),
+      new Navlink("Shared", "edit", "/shared"),
       new Navlink("Dynamic forms", "edit", "/forms"),
     ];
     return of(navlinks);

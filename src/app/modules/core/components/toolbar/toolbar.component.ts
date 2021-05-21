@@ -25,7 +25,7 @@ export class ToolbarComponent {
    * @param theme Theme to apply
    */
   emitSidebarChange(change: string): void {
-    this.themeChange.emit(change);
+    this.sidebarChange.emit(change);
   }
 
   /**

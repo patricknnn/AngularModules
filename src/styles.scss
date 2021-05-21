@@ -36,9 +36,6 @@ body {
   width: 270px;
 }
 
-.toolbar {
-}
-
 .scroll-content-wrapper {
   display: flex;
   flex-grow: 1;
@@ -54,7 +51,7 @@ body {
 
 .content-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   padding: 15px;
 }
 
@@ -64,11 +61,6 @@ body {
 
 .form-field {
   margin-right: 16px;
-}
-
-.card-narrow {
-  width: 100%;
-  max-width: 50vw;
 }
 
 .radio-group-column {
