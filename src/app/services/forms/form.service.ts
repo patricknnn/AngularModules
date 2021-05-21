@@ -19,6 +19,10 @@ export class FormService {
 
   constructor() { }
 
+  /**
+   * Returns form controls
+   * @returns Observable stream of form controls
+   */
   getFormControls(): Observable<FormControlBase<any>[]> {
     const formControls: FormControlBase<any>[] = [
       new FormControlText({

@@ -1,4 +1,25 @@
-<!-- Router Outlet -->
-<div [@routeAnimation]="getAnimationData(routerOutlet)">
-  <router-outlet #routerOutlet="outlet"></router-outlet>
+<!-- Main container -->
+<div class="main-container">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav [mode]="mobileQuery.matches ? 'push' : 'side'" [fixedInViewport]="true" fixedTopGap="0"
+      class="sidenav mat-elevation-z16" opened>
+      <app-sidenav [navLinks]="(navLinks$ | async)!"></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+
+      <!-- Toolbar -->
+      <app-toolbar></app-toolbar>
+      <!-- Scroll content wrapper -->
+      <div class="scroll-content-wrapper">
+        <!-- Scroll content -->
+        <div class="scroll-content">
+          <!-- Router Outlet -->
+          <div [@routeAnimation]="getActivatedRoute(routerOutlet)">
+            <router-outlet #routerOutlet="outlet"></router-outlet>
+          </div>
+        </div>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

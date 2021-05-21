@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SidenavService } from '../../services/sidenav/sidenav.service';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
-  constructor() { }
+  constructor(private sidenav: SidenavService) { }
 
-  ngOnInit(): void {
+  toggleSidenav() {
+    this.sidenav.toggle();
   }
 
 }

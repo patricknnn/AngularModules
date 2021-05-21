@@ -11,7 +11,7 @@
 
     <!-- Text -->
     <input matInput *ngSwitchCase="'textbox'" [ngClass]="control.class" [formControlName]="control.key"
-      [id]="control.key" [type]="control.type" />
+      [id]="control.key" [type]="control.inputType" />
 
     <!-- Text area -->
     <textarea matInput *ngSwitchCase="'textarea'" [ngClass]="control.class" [formControlName]="control.key"
@@ -72,7 +72,7 @@
     <!-- Slide -->
     <input matInput *ngSwitchCase="'slide'" [hidden]="true" />
     <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [ngClass]="control.class" [color]="color"
-      [formControlName]="control.key" [checked]="control.value" [labelPosition]="control.labelPosition"
+      [formControlName]="control.key" [labelPosition]="control.labelPosition" [checked]="control.value"
       [required]="isRequired" (change)="updateFormFieldState()">
       {{ control.placeholder }}
     </mat-slide-toggle>

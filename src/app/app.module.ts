@@ -9,12 +9,18 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { CoreModule } from './modules/core/core.module';
 import { DynamicFormsModule } from './modules/dynamic-forms/dynamic-forms.module';
 import { MaterialModule } from './modules/material/material.module';
+import { FormComponent } from './components/form/form.component';
+import { CoreComponent } from './components/core/core.component';
+import { MaterialComponent } from './components/material/material.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FormComponent,
+    CoreComponent,
+    MaterialComponent
   ],
   imports: [
     BrowserModule,
