@@ -4,7 +4,10 @@ import { DynamicFormControlComponent } from './components/dynamic-form-control/d
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [DynamicFormComponent, DynamicFormControlComponent],
+  declarations: [
+    DynamicFormComponent,
+    DynamicFormControlComponent
+  ],
   imports: [
     SharedModule
   ],

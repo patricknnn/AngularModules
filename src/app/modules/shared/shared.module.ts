@@ -10,10 +10,6 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
   ],
   exports: [
     CommonModule,
