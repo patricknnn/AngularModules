@@ -2,7 +2,7 @@
 
   <!-- Form styling -->
   <mat-form-field [id]="'form-field-' + control.key" [appearance]="appearance" [color]="color"
-    [floatLabel]="control.floatLabel" class="w-100" [ngSwitch]="control.controlType">
+    [floatLabel]="control.floatLabel" [ngSwitch]="control.controlType">
 
     <!-- Label -->
     <mat-label [attr.for]="control.key">

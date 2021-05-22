@@ -5,6 +5,7 @@ import { FormComponent } from './components/form/form.component';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { SharedComponent } from './components/shared/shared.component';
+import { TableComponent } from './components/table/table.component';
 
 const routes: Routes = [
   // Paths
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'core', component: CoreComponent },
   { path: 'shared', component: SharedComponent },
   { path: 'forms', component: FormComponent },
+  { path: 'tables', component: TableComponent },
   { path: '404', component: PageNotFoundComponent },
   // Redirects
   { path: '', redirectTo: 'home', pathMatch: 'full' },

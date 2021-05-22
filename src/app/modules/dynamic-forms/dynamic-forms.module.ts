@@ -11,6 +11,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     SharedModule
   ],
-  exports: [DynamicFormComponent],
+  exports: [
+    DynamicFormComponent
+  ],
 })
 export class DynamicFormsModule { }

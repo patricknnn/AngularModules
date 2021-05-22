@@ -11,6 +11,8 @@ import { CoreComponent } from './components/core/core.component';
 import { MaterialComponent } from './components/material/material.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { SharedComponent } from './components/shared/shared.component';
+import { TableComponent } from './components/table/table.component';
+import { DynamicTablesModule } from './modules/dynamic-tables/dynamic-tables.module';
 
 @NgModule({
   declarations: [
@@ -20,14 +22,14 @@ import { SharedComponent } from './components/shared/shared.component';
     FormComponent,
     CoreComponent,
     MaterialComponent,
-    SharedComponent
+    SharedComponent,
+    TableComponent
   ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
     CoreModule,
     SharedModule,
-    DynamicFormsModule
+    DynamicFormsModule,
+    DynamicTablesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
