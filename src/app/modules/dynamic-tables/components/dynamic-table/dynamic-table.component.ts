@@ -14,10 +14,12 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   columnsToDisplay: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   dataSource!: MatTableDataSource<any>;
   selection = new SelectionModel<any>(true, []);
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  /**
+   * Initialize dynamic table instance
+   */
   constructor() { }
 
   ngOnInit(): void {
