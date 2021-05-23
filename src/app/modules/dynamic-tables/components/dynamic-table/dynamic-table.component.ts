@@ -1,3 +1,4 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
@@ -8,12 +9,25 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-dynamic-table',
   templateUrl: './dynamic-table.component.html',
-  styleUrls: ['./dynamic-table.component.scss']
+  styleUrls: ['./dynamic-table.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class DynamicTableComponent implements OnInit, AfterViewInit {
-  columnsToDisplay: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   dataSource!: MatTableDataSource<any>;
+  columnsToDisplay: string[] = ['select'];
+  fieldsToDisplay: string[] = ['position', 'name', 'weight', 'symbol'];
+  activeSortField: string = "position";
+  activeSortDirection: "asc" | "desc" = "asc";
+  expandedRow: any;
   selection = new SelectionModel<any>(true, []);
+  resultsLength: number = 0;
+  isLoadingResults: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -24,6 +38,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<any>(ELEMENT_DATA);
+    this.columnsToDisplay = this.columnsToDisplay.concat(this.fieldsToDisplay);
   }
 
   ngAfterViewInit() {
