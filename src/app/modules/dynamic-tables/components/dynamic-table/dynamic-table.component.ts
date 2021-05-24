@@ -11,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss'],
   animations: [
-    trigger('detailExpand', [
+    trigger('rowExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
@@ -19,8 +19,9 @@ import { MatTableDataSource } from '@angular/material/table';
   ],
 })
 export class DynamicTableComponent implements OnInit, AfterViewInit {
+  data!: any[];
   dataSource!: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['select'];
+  columnsToDisplay: string[] = [];
   fieldsToDisplay: string[] = ['position', 'name', 'weight', 'symbol'];
   activeSortField: string = "position";
   activeSortDirection: "asc" | "desc" = "asc";
@@ -28,24 +29,54 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<any>(true, []);
   resultsLength: number = 0;
   isLoadingResults: boolean = false;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  color: "primary" | "accent" | "warn" = "accent";
+  filterable: boolean = true;
+  filterLabel: string = "Filter";
+  filterPlaceholder: string = "Ex. Carbon";
+  selectable: boolean = true;
+  reorderable: boolean = true;
+  sortable: boolean = false;
+  expandable: boolean = false;
+  pagination: boolean = false;
+  pageSizeOptions: number[] = [10, 25, 50];
+  pageSizeDefault: number = 10;
+  tableClass: string = "mat-elevation-z4";
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort;
 
   /**
    * Initialize dynamic table instance
    */
   constructor() { }
 
+  /**
+   * Called on instance initialization 
+   */
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<any>(ELEMENT_DATA);
-    this.columnsToDisplay = this.columnsToDisplay.concat(this.fieldsToDisplay);
+    this.data = ELEMENT_DATA;
+    this.dataSource = new MatTableDataSource<any>(this.data);
+    // add optional columns
+    if (this.selectable) {
+      this.columnsToDisplay.push("select");
+    }
+    // add field columns
+    this.fieldsToDisplay.forEach((field) => {
+      this.columnsToDisplay.push(field);
+    });
   }
 
+  /**
+   * Called after view initialization
+   */
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator ? this.paginator : null;
+    this.dataSource.sort = this.sort ? this.sort : null;
   }
 
+  /**
+   * Applies filter to table
+   * @param event Filter event
+   */
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -56,31 +87,72 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Reorders column to dropped position
-   * @returns 
+   * Expands a table row
+   * @param row Row to be expanded
    */
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.columnsToDisplay, event.previousIndex, event.currentIndex);
+  expandRow(row: any): void {
+    if (this.expandable) {
+      this.expandedRow = this.expandedRow === row ? null : row;
+    }
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
+  /**
+   * Reorders column to dropped position
+   * @param event Drop event
+   */
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.columnsToDisplay, event.previousIndex + 1, event.currentIndex);
+    let selectIndex = this.columnsToDisplay.indexOf("select");
+    if (selectIndex) {
+      moveItemInArray(this.columnsToDisplay, selectIndex, 0);
+    }
+  }
+
+  /**
+   * Whether the number of selected elements matches the total number of rows
+   * @returns Wheter all rows are selected
+   */
+  isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
+  /**
+   * Returns number of selected rows
+   * @returns Number of selected rowa
+   */
+  selectedRowCount(): number {
+    return this.selection.selected.length;
   }
 
-  /** The label for the checkbox on the passed row */
+  /**
+   * Selects all rows if they are not all selected; otherwise clear selection
+   */
+  masterToggle(): void {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.selection.select(...this.dataSource.data);
+    }
+  }
+
+  /**
+   * Returns sum of all column values
+   * @param column Column to get the sum of
+   * @returns Sum of all column values
+   */
+  getColumnTotal(column: string): number {
+    return this.data
+      .map((t: { [x: string]: any; }) => t[column])
+      .reduce((acc: number, value: number) => acc + value, 0);
+  }
+
+  /**
+   * The label for the checkbox on the passed row
+   * @param row Table row to get checkbox label for
+   * @returns Checkbox label
+   */
   checkboxLabel(row?: any): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
