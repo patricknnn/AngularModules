@@ -40,14 +40,21 @@
 
                 <!-- Select row count column -->
                 <ng-container matColumnDef="selectedCountColumn">
-                    <mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
-                        {{selectedRowCount()}} rows selected
+                    <mat-footer-cell *matFooterCellDef>
+                        <div class="dynamic-table-row-expandable-content"
+                            [@expandRow]="selectableRows ? 'expanded' : 'collapsed'">
+                            {{selectedRowCount()}} rows selected
+                        </div>
                     </mat-footer-cell>
                 </ng-container>
 
                 <!-- Field columns -->
                 <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columnConfig">
-                    <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable" cdkDrag
+                        [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
+                        <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-draghandle-column">
+                            drag_handle
+                        </mat-icon>
                         {{column.displayName}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let row">
@@ -87,7 +94,8 @@
                 <!-- Footer row definitions -->
                 <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true">
                 </mat-footer-row>
-                <mat-footer-row *matFooterRowDef="['selectedCountColumn']" [hidden]="!selectableRows">
+                <mat-footer-row *matFooterRowDef="['selectedCountColumn']"
+                    class="dynamic-table-row dynamic-table-row-expandable" [class.expanded]="selectableRows">
                 </mat-footer-row>
 
                 <!-- Row shown when there is no matching data. -->

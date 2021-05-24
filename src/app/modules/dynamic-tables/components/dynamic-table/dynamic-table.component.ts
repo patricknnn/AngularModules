@@ -41,7 +41,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   expandableRows: boolean = true;
   draggableRows: boolean = false;
   draggableColumns: boolean = false;
-  sortableColumns: boolean = true;
   pagination: boolean = false;
   paginationSizeOptions: number[] = [10, 25, 50];
   paginationSizeDefault: number = 10;
@@ -76,13 +75,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   toggleSelectableRows(): void {
     this.selectableRows = !this.selectableRows;
     this.initTableColumns();
-  }
-
-  /**
-   * Toggles sortable columns
-   */
-  toggleSortableColumns(): void {
-    this.sortableColumns = !this.sortableColumns;
   }
 
   /**

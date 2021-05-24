@@ -5,11 +5,11 @@
   justify-content: center;
 }
 
-.dynamic-table-row {
+.dynamic-table-row:not(.expanded) {
   border-bottom-width: 0;
 }
 
-mat-row.dynamic-table-row-expandable {
+.dynamic-table-row-expandable:not(.expanded) {
   min-height: 0;
 }
 
@@ -39,4 +39,12 @@ mat-row.dynamic-table-row-expandable {
   word-wrap: break-word;
   min-height: inherit;
   padding-left: 24px;
+}
+
+.dynamic-table-draghandle-column {
+  display: flex;
+  margin-right: 6px;
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
 }
