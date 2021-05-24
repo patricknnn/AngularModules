@@ -1,28 +1,32 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
 
 @Component({
   selector: 'app-dynamic-table',
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss'],
   animations: [
-    trigger('rowExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
+    trigger('expandRow', [
+      state('collapsed, void', style({ height: '0px' })),
       state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ],
 })
 export class DynamicTableComponent implements OnInit, AfterViewInit {
-  data!: any[];
+  @Input() columnConfig!: DynamicTableColumnConfig[];
+  @Input() data!: any[];
+
   dataSource!: MatTableDataSource<any>;
   columnsToDisplay: string[] = [];
-  fieldsToDisplay: string[] = ['position', 'name', 'weight', 'symbol'];
+
   activeSortField: string = "position";
   activeSortDirection: "asc" | "desc" = "asc";
   expandedRow: any;
@@ -33,13 +37,14 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   filterable: boolean = true;
   filterLabel: string = "Filter";
   filterPlaceholder: string = "Ex. Carbon";
-  selectable: boolean = true;
-  reorderable: boolean = true;
-  sortable: boolean = false;
-  expandable: boolean = false;
+  selectableRows: boolean = false;
+  expandableRows: boolean = true;
+  draggableRows: boolean = false;
+  draggableColumns: boolean = false;
+  sortableColumns: boolean = true;
   pagination: boolean = false;
-  pageSizeOptions: number[] = [10, 25, 50];
-  pageSizeDefault: number = 10;
+  paginationSizeOptions: number[] = [10, 25, 50];
+  paginationSizeDefault: number = 10;
   tableClass: string = "mat-elevation-z4";
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
@@ -53,16 +58,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Called on instance initialization 
    */
   ngOnInit(): void {
-    this.data = ELEMENT_DATA;
     this.dataSource = new MatTableDataSource<any>(this.data);
-    // add optional columns
-    if (this.selectable) {
-      this.columnsToDisplay.push("select");
-    }
-    // add field columns
-    this.fieldsToDisplay.forEach((field) => {
-      this.columnsToDisplay.push(field);
-    });
+    this.initTableColumns();
   }
 
   /**
@@ -71,6 +68,38 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator ? this.paginator : null;
     this.dataSource.sort = this.sort ? this.sort : null;
+  }
+
+  /**
+ * Toggles selectableRows rows
+ */
+  toggleSelectableRows(): void {
+    this.selectableRows = !this.selectableRows;
+    this.initTableColumns();
+  }
+
+  /**
+   * Toggles sortable columns
+   */
+  toggleSortableColumns(): void {
+    this.sortableColumns = !this.sortableColumns;
+  }
+
+  /**
+   * Initialize table columns
+   */
+  initTableColumns(): void {
+    let columns = [];
+    // add optional columns
+    if (this.selectableRows) {
+      columns.push("select");
+    }
+    // add field columns
+    this.columnConfig.forEach((config) => {
+      columns.push(config.name);
+    });
+    // set display columns
+    this.columnsToDisplay = columns;
   }
 
   /**
@@ -91,7 +120,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * @param row Row to be expanded
    */
   expandRow(row: any): void {
-    if (this.expandable) {
+    if (this.expandableRows) {
       this.expandedRow = this.expandedRow === row ? null : row;
     }
   }
@@ -102,10 +131,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    */
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.columnsToDisplay, event.previousIndex + 1, event.currentIndex);
-    let selectIndex = this.columnsToDisplay.indexOf("select");
-    if (selectIndex) {
-      moveItemInArray(this.columnsToDisplay, selectIndex, 0);
-    }
   }
 
   /**
@@ -161,26 +186,3 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
 }
-
-const ELEMENT_DATA: any[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  { position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na' },
-  { position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg' },
-  { position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al' },
-  { position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si' },
-  { position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P' },
-  { position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S' },
-  { position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
-  { position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
-  { position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
-  { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
-];

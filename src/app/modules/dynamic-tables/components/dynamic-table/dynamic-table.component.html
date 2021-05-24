@@ -16,72 +16,88 @@
         <!-- Table -->
         <div class="dynamic-table-table" [ngClass]="tableClass">
             <!-- Table -->
-            <table mat-table [dataSource]="dataSource" multiTemplateDataRows cdkDropList
-                cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" matSort
-                [matSortActive]="activeSortField" [matSortDirection]="activeSortDirection">
+            <mat-table [dataSource]="dataSource" multiTemplateDataRows cdkDropList cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="drop($event)" matSort [matSortActive]="activeSortField"
+                [matSortDirection]="activeSortDirection">
 
-                <!-- Column definiitons (Add sticky to ng-container for sticky column)-->
-                <!-- Checkbox column -->
+                <!-- Select row column -->
                 <ng-container matColumnDef="select" sticky>
-                    <th mat-header-cell *matHeaderCellDef>
+                    <mat-header-cell *matHeaderCellDef>
                         <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                         </mat-checkbox>
-                    </th>
-                    <td mat-cell *matCellDef="let row">
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
                         <mat-checkbox (click)="$event.stopPropagation()"
                             (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
                             [aria-label]="checkboxLabel(row)">
                         </mat-checkbox>
-                    </td>
-                    <td mat-footer-cell *matFooterCellDef></td>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>
+                    </mat-footer-cell>
                 </ng-container>
 
-                <!-- Expanded column -->
-                <ng-container matColumnDef="expandedDetailColumn">
-                    <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                        <div class="row-detail" [@rowExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
-                            <p>Some detail information</p>
-                        </div>
-                    </td>
+                <!-- Select row count column -->
+                <ng-container matColumnDef="selectedCountColumn">
+                    <mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
+                        {{selectedRowCount()}} rows selected
+                    </mat-footer-cell>
                 </ng-container>
 
                 <!-- Field columns -->
-                <ng-container matColumnDef="{{field}}" *ngFor="let field of fieldsToDisplay">
-                    <th mat-header-cell *matHeaderCellDef cdkDrag
-                        [attr.mat-sort-header]="sortable">
-                        {{field}}
-                    </th>
-                    <td mat-cell *matCellDef="let row">{{row[field]}}</td>
-                    <td mat-footer-cell *matFooterCellDef> </td>
+                <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columnConfig">
+                    <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>
+                        {{column.displayName}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row[column.name]}}
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>
+                    </mat-footer-cell>
                 </ng-container>
 
-                <!-- Selected row count column -->
-                <ng-container matColumnDef="selectedCountColumn">
-                    <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
-                        {{selectedRowCount()}} rows selected
-                    </td>
+                <!-- Expanded field column -->
+                <ng-container matColumnDef="expandableContentColumn">
+                    <mat-cell *matCellDef="let row">
+                        <div class="dynamic-table-row-expandable-content"
+                            [@expandRow]="row == expandedRow ? 'expanded' : 'collapsed'">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu odio purus. Quisque augue
+                                lacus, vehicula quis vestibulum blandit, vestibulum ut ante. Ut venenatis metus sed
+                                ipsum malesuada feugiat. Nam et quam mollis, porttitor sem eu, auctor lacus. Morbi nec
+                                sem vulputate, consectetur ipsum vitae, fringilla risus. Fusce condimentum laoreet
+                                consequat. Vestibulum feugiat, mauris pellentesque cursus tempor, augue quam commodo
+                                neque, sit amet tristique diam massa nec purus. Maecenas malesuada pretium dui, vitae
+                                cursus mi tristique ac. Integer convallis lorem metus, eget aliquet nulla pretium ut.
+                                Donec mattis metus dui, sit amet luctus risus interdum nec.</p>
+                        </div>
+                    </mat-cell>
                 </ng-container>
 
                 <!-- Header row definitions -->
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true">
+                </mat-header-row>
                 <!-- Content row definitions -->
-                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="collapsed-row"
-                    [class.expanded-row]="expandedRow === row" (click)="expandRow(row)">
-                </tr>
-                <tr mat-row *matRowDef="let row; columns: ['expandedDetailColumn']" class="expanded-row-detail"></tr>
+                <mat-row mat-ripple *matRowDef="let row; columns: columnsToDisplay;" class="dynamic-table-row"
+                    [class.dynamic-table-row-expanded]="expandedRow === row" (click)="expandRow(row)">
+                </mat-row>
+                <mat-row *matRowDef="let row; columns: ['expandableContentColumn']"
+                    class="dynamic-table-row-expandable">
+                </mat-row>
                 <!-- Footer row definitions -->
-                <tr mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true"></tr>
-                <tr mat-footer-row *matFooterRowDef="['selectedCountColumn']" [hidden]="!selectable"></tr>
+                <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['selectedCountColumn']" [hidden]="!selectableRows">
+                </mat-footer-row>
 
-                <!-- Row shown when there is no data. -->
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No data found</td>
-                </tr>
-            </table>
+                <!-- Row shown when there is no matching data. -->
+                <div class="dynamic-table-row-no-data" *matNoDataRow>
+                    <div class="mat-cell">No data to display</div>
+                </div>
 
-            <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSizeDefault"></mat-paginator>
+            </mat-table>
+
+            <mat-paginator [pageSizeOptions]="paginationSizeOptions" [pageSize]="paginationSizeDefault"></mat-paginator>
         </div>
     </div>
 

@@ -9,7 +9,7 @@ import { FormService } from 'src/app/services/forms/form.service';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit {
+export class FormComponent {
   formControls$: Observable<FormControlBase<any>[]>;
   appearanceOptions = ["legacy", "standard", "fill", "outline"];
   colorOptions = ["primary", "accent", "warn"];
@@ -28,10 +28,6 @@ export class FormComponent implements OnInit {
       appearance: this.appearanceControl,
       submit: this.submitControl,
     });
-  }
-
-  ngOnInit(): void {
-    console.log("Init home");
   }
 
   handleFormSubmit(event: any): void {
