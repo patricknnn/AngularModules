@@ -12,6 +12,9 @@ export class TableService {
 
   getTableConfig(): DynamicTableConfig {
     return new DynamicTableConfig({
+      filter: true,
+      pagination: true,
+      expandableRows: true,
       activeSortField: "position",
       tableClass: "mat-elevation-z8"
     });
@@ -19,42 +22,29 @@ export class TableService {
 
   getColumnConfig(): DynamicTableColumnConfig[] {
     const columns: DynamicTableColumnConfig[] = [
-      {
+      new DynamicTableColumnConfig({
         field: 'position',
         header: 'Position',
-        footer: undefined,
-        type: 'string',
-        sticky: undefined,
-        sortable: true,
-        draggable: true,
-      },
-      {
+        sortable: true
+      }),
+      new DynamicTableColumnConfig({
         field: 'name',
         header: 'Name',
-        footer: undefined,
-        type: 'string',
-        sticky: undefined,
-        sortable: true,
-        draggable: true,
-      },
-      {
+        sortable: true
+      }),
+      new DynamicTableColumnConfig({
         field: 'weight',
         header: 'Weight',
-        footer: undefined,
-        type: 'string',
-        sticky: undefined,
-        sortable: true,
-        draggable: true,
-      },
-      {
+        sortable: true
+      }),
+      new DynamicTableColumnConfig({
         field: 'symbol',
         header: 'Symbol',
-        footer: undefined,
-        type: 'string',
-        sticky: undefined,
-        sortable: false,
-        draggable: false,
-      },
+      }),
+      new DynamicTableColumnConfig({
+        field: 'text',
+        expandable: true,
+      }),
     ];
     return columns;
   }
@@ -63,7 +53,7 @@ export class TableService {
     const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu odio purus. Quisque augue lacus, vehicula quis vestibulum blandit, vestibulum ut ante. Ut venenatis metus sed ipsum malesuada feugiat. Nam et quam mollis, porttitor sem eu, auctor lacus. Morbi nec sem vulputate, consectetur ipsum vitae, fringilla risus. Fusce condimentum laoreet consequat. Vestibulum feugiat, mauris pellentesque cursus tempor, augue quam commodo neque, sit amet tristique diam massa nec purus. Maecenas malesuada pretium dui, vitae cursus mi tristique ac. Integer convallis lorem metus, eget aliquet nulla pretium ut. Donec mattis metus dui, sit amet luctus risus interdum nec";
     const ELEMENT_DATA: any[] = [
       { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', text: text },
-      { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', text: text },
+      { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', text: "" },
       { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', text: text },
       { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', text: text },
       { position: 5, name: 'Boron', weight: 10.811, symbol: 'B', text: text },

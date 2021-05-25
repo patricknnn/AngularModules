@@ -30,7 +30,10 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort?: MatSort;
 
   dataSource!: MatTableDataSource<any>;
+  columnRegular: DynamicTableColumnConfig[] = [];
+  columnExpendable: DynamicTableColumnConfig[] = [];
   columnsToDisplay: string[] = [];
+  columnsToDisplayExpandable: string[] = [];
   selection = new SelectionModel<any>(true, []);
   expandedRow: any;
   isLoadingResults: boolean = false;
@@ -72,17 +75,28 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Initialize table columns
    */
   initTableColumns(): void {
-    let columns = [];
-    // add conditional select column
-    if (this.tableConfig.selectableRows) {
-      columns.push("selectRowColumn");
-    }
-    // add field columns
+    // devide columns in categories
     this.columnConfig.forEach((col) => {
-      columns.push(col.field);
+      col.expandable ? this.columnExpendable.push(col) : this.columnRegular.push(col);
     });
-    // set display columns
-    this.columnsToDisplay = columns;
+    // init vars
+    let displayColumns: string[] = [];
+    let displayColumnsExpandable: string[] = [];
+    // set conditional select column
+    if (this.tableConfig.selectableRows) {
+      displayColumns.push("selectRowColumn");
+    }
+    // set field columns
+    this.columnRegular.forEach((col) => {
+      displayColumns.push(col.field);
+    });
+    // set expandable columns
+    this.columnExpendable.forEach((col) => {
+      displayColumnsExpandable.push(col.field);
+    });
+    // update display columns
+    this.columnsToDisplay = displayColumns;
+    this.columnsToDisplayExpandable = displayColumnsExpandable;
   }
 
   /**

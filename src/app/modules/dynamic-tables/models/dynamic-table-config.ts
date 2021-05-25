@@ -1,6 +1,6 @@
 /**
  * @description
- * Base dynamic table config class 
+ * Base DynamicTableConfig class 
  */
 export class DynamicTableConfig {
   /**
@@ -46,11 +46,11 @@ export class DynamicTableConfig {
   /**
    * Active sort field
    */
-  activeSortField: string;
+  activeSortField: string | undefined;
   /**
    * Active sort direction
    */
-  activeSortDirection: "asc" | "desc";
+  activeSortDirection: "asc" | "desc" | undefined;
   /**
    * Wheter rows are selectable
    */
@@ -70,47 +70,47 @@ export class DynamicTableConfig {
   /**
    * Custom table class
    */
-  tableClass: string;
+  tableClass: string | undefined;
 
   /**
-   * Initialize the FormControlBase instance
+   * Initialize the DynamicTableConfig instance
    * @param options Object containing form control options
    */
   constructor(options: {
-    loader?: boolean;
-    loaderColor?: "primary" | "accent" | "warn";
-    filter?: boolean;
-    filterLabel?: string;
-    filterPlaceholder?: string;
-    filterAppearance?: "legacy" | "standard" | "fill" | "outline";
-    filterColor?: "primary" | "accent" | "warn";
-    pagination?: boolean;
-    paginationSizeOptions?: number[];
-    paginationSizeDefault?: number;
-    activeSortField?: string;
-    activeSortDirection?: "asc" | "desc";
-    selectableRows?: boolean;
-    expandableRows?: boolean;
-    stickyHeaders?: boolean;
-    stickyFooters?: boolean;
-    tableClass?: string;
+    loader?: boolean,
+    loaderColor?: "primary" | "accent" | "warn",
+    filter?: boolean,
+    filterLabel?: string,
+    filterPlaceholder?: string,
+    filterAppearance?: "legacy" | "standard" | "fill" | "outline",
+    filterColor?: "primary" | "accent" | "warn",
+    pagination?: boolean,
+    paginationSizeOptions?: number[],
+    paginationSizeDefault?: number,
+    activeSortField?: string,
+    activeSortDirection?: "asc" | "desc",
+    selectableRows?: boolean,
+    expandableRows?: boolean,
+    stickyHeaders?: boolean,
+    stickyFooters?: boolean,
+    tableClass?: string
   }) {
-    this.loader = options.loader || true;
+    this.loader = options.loader || false;
     this.loaderColor = options.loaderColor || "primary";
-    this.filter = options.filter || true;
+    this.filter = options.filter || false;
     this.filterLabel = options.filterLabel || "Filter";
     this.filterPlaceholder = options.filterPlaceholder || "";
     this.filterAppearance = options.filterAppearance || "standard";
     this.filterColor = options.filterColor || "primary";
-    this.pagination = options.pagination || true;
+    this.pagination = options.pagination || false;
     this.paginationSizeOptions = options.paginationSizeOptions || [10, 25, 50];
     this.paginationSizeDefault = options.paginationSizeDefault || 10;
-    this.activeSortField = options.activeSortField || "";
-    this.activeSortDirection = options.activeSortDirection || "asc";
+    this.activeSortField = options.activeSortField;
+    this.activeSortDirection = options.activeSortDirection;
     this.selectableRows = options.selectableRows || false;
     this.expandableRows = options.expandableRows || false;
     this.stickyHeaders = options.stickyHeaders || false;
     this.stickyFooters = options.stickyFooters || false;
-    this.tableClass = options.tableClass || "";
+    this.tableClass = options.tableClass;
   }
 }

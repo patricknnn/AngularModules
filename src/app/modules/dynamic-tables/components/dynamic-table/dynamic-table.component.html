@@ -14,10 +14,10 @@
       </mat-form-field>
     </div>
     <!-- Table -->
-    <div class="dynamic-table-table" [ngClass]="tableConfig.tableClass">
+    <div class="dynamic-table-table" [ngClass]="tableConfig.tableClass || ''">
       <!-- Table -->
-      <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.activeSortField"
-        [matSortDirection]="tableConfig.activeSortDirection" cdkDropList [cdkDropListData]="columnsToDisplay"
+      <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.activeSortField || ''"
+        [matSortDirection]="tableConfig.activeSortDirection || ''" cdkDropList [cdkDropListData]="columnsToDisplay"
         cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows>
 
         <!-- Select row column -->
@@ -46,9 +46,9 @@
           </mat-footer-cell>
         </ng-container>
 
-        <!-- Field columns -->
+        <!-- Regular columns -->
         <ng-container matColumnDef="{{column.field}}" [sticky]="column.sticky === 'start'"
-          [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnConfig">
+          [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnRegular">
           <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable" cdkDragLockAxis="x" cdkDrag
             [cdkDragData]="column.field" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
             <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-draghandle-column">
@@ -64,29 +64,31 @@
           </mat-footer-cell>
         </ng-container>
 
-        <!-- Expanded field column -->
-        <ng-container matColumnDef="expandRowColumn">
+        <!-- Expandable columns -->
+        <ng-container matColumnDef="{{column.field}}" *ngFor="let column of columnExpendable">
           <mat-cell *matCellDef="let row">
             <div class="dynamic-table-row-expandable-content"
               [@expandRow]="row == expandedRow ? 'expanded' : 'collapsed'">
-              <p>{{row.text}}</p>
+              {{row[column.field]}}
             </div>
           </mat-cell>
         </ng-container>
 
-        <!-- Header row definitions -->
+        <!-- Header row definition -->
         <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: tableConfig.stickyHeaders">
         </mat-header-row>
-        <!-- Content row definitions -->
+        <!-- Content row definition -->
         <mat-row mat-ripple *matRowDef="let row; columns: columnsToDisplay;" class="dynamic-table-row"
           [class.dynamic-table-row-expanded]="expandedRow === row" (click)="expandRow(row)">
         </mat-row>
-        <mat-row *matRowDef="let row; columns: ['expandRowColumn']" class="dynamic-table-row-expandable">
+        <!-- Expandable row definition -->
+        <mat-row *matRowDef="let row; columns: columnsToDisplayExpandable" class="dynamic-table-row-expandable">
         </mat-row>
-        <!-- Footer row definitions -->
+        <!-- Footer row definition -->
         <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: tableConfig.stickyFooters"
           class="dynamic-table-row dynamic-table-row-expandable" [class.expanded]="!allColumnFootersEmpty()">
         </mat-footer-row>
+        <!-- Select footer row definition -->
         <mat-footer-row *matFooterRowDef="['selectFooterColumn']" class="dynamic-table-row dynamic-table-row-expandable"
           [class.expanded]="tableConfig.selectableRows">
         </mat-footer-row>
