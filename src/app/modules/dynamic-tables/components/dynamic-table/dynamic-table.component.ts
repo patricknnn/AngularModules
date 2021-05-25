@@ -1,7 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,21 +22,72 @@ import { DynamicTableConfig } from '../../models/dynamic-table-config';
   ],
 })
 export class DynamicTableComponent implements OnInit, AfterViewInit {
+  /**
+   * Table configuration
+   */
   @Input() tableConfig!: DynamicTableConfig;
+  /**
+   * Column configuration
+   */
   @Input() columnConfig!: DynamicTableColumnConfig[];
+  /**
+   * Data array
+   */
   @Input() data!: any[];
 
+  /**
+   * Row select event emitter
+   */
+  @Output() selectionChange = new EventEmitter<any[]>();
+  /**
+   * Row select event emitter
+   */
+  @Output() rowButtonClick = new EventEmitter<any[]>();
+
+  /**
+   * MatPaginator instance
+   */
   @ViewChild(MatPaginator) paginator?: MatPaginator;
+  /**
+   * MatSort instance
+   */
   @ViewChild(MatSort) sort?: MatSort;
 
+  /**
+   * MatTableDataSource
+   */
   dataSource!: MatTableDataSource<any>;
+  /**
+   * Regular columns
+   */
   columnRegular: DynamicTableColumnConfig[] = [];
+  /**
+   * Expandable columns
+   */
   columnExpendable: DynamicTableColumnConfig[] = [];
+  /**
+   * Regular columns to display
+   */
   columnsToDisplay: string[] = [];
+  /**
+   * Expandable columns to display
+   */
   columnsToDisplayExpandable: string[] = [];
+  /**
+   * Selected rows
+   */
   selection = new SelectionModel<any>(true, []);
+  /**
+   * Currently expanded row
+   */
   expandedRow: any;
+  /**
+   * Wether loading results or not
+   */
   isLoadingResults: boolean = false;
+  /**
+   * Number of results
+   */
   resultsLength: number = 0;
 
 
@@ -64,14 +115,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-  * Toggles selectable rows
-  */
-  toggleSelectableRows(): void {
-    this.tableConfig.selectableRows = !this.tableConfig.selectableRows;
-    this.initTableColumns();
-  }
-
-  /**
    * Initialize table columns
    */
   initTableColumns(): void {
@@ -83,13 +126,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     let displayColumns: string[] = [];
     let displayColumnsExpandable: string[] = [];
     // set conditional select column
-    if (this.tableConfig.selectableRows) {
+    if (this.tableConfig.selectRowColumn) {
       displayColumns.push("selectRowColumn");
     }
     // set field columns
     this.columnRegular.forEach((col) => {
       displayColumns.push(col.field);
     });
+    // set conditional button column
+    if (this.tableConfig.buttonRowColumn) {
+      displayColumns.push("buttonRowColumn");
+    }
     // set expandable columns
     this.columnExpendable.forEach((col) => {
       displayColumnsExpandable.push(col.field);
@@ -123,7 +170,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Wheter all column footers are empty
+   * Whether all column footers are empty
    * @returns true if all column footers are empty, false otherwise
    */
   allColumnFootersEmpty(): boolean {
@@ -146,8 +193,25 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Handles row toggle and emits selectionChange event
+   * @param row Changed row
+   */
+  rowToggle(row: any): void {
+    this.selection.toggle(row);
+    this.selectionChange.emit(this.selection.selected);
+  }
+
+  /**
+   * Handles row button click and emits rowButtonClick event
+   * @param row Changed row
+   */
+  rowButton(row: any): void {
+    this.rowButtonClick.emit(row);
+  }
+
+  /**
    * Whether the number of selected elements matches the total number of rows
-   * @returns Wheter all rows are selected
+   * @returns Whether all rows are selected
    */
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
@@ -165,6 +229,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   /**
    * Selects all rows if they are not all selected; otherwise clear selection
+   * Emits selectionChange event
    */
   masterToggle(): void {
     if (this.isAllSelected()) {
@@ -172,6 +237,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     } else {
       this.selection.select(...this.dataSource.data);
     }
+    this.selectionChange.emit(this.selection.selected);
   }
 
   /**

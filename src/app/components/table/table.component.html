@@ -8,7 +8,8 @@
     </mat-card-header>
     <mat-card-content>
       <!-- Dynamic form options -->
-      <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!">
+      <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
+        (selectionChange)="handleSelectionChange($event)" (rowButtonClick)="handleRowClick($event)">
       </app-dynamic-table>
     </mat-card-content>
   </mat-card>

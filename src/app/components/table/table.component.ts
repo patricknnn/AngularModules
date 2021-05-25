@@ -22,4 +22,12 @@ export class TableComponent {
     this.data$ = this.tableService.getData();
   }
 
+  handleSelectionChange(event: any): void {
+    console.log(event);
+  }
+
+  handleRowClick(event: any): void {
+    console.log(event);
+  }
+
 }
