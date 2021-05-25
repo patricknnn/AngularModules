@@ -1,23 +1,23 @@
 <!-- Container -->
 <div class="dynamic-table-container">
   <!-- Loader row -->
-  <div class="dynamic-table-loading-row" *ngIf="loader && isLoadingResults">
-    <mat-spinner [color]="loaderColor"></mat-spinner>
+  <div class="dynamic-table-loading-row" *ngIf="tableConfig.loader && isLoadingResults">
+    <mat-spinner [color]="tableConfig.loaderColor"></mat-spinner>
   </div>
   <!-- Table row -->
   <div class="dynamic-table-table-row" *ngIf="!isLoadingResults">
     <!-- Filter -->
-    <div class="dynamic-table-filter" *ngIf="filter">
-      <mat-form-field [appearance]="filterAppearance" [color]="filterColor">
-        <mat-label>{{filterLabel}}</mat-label>
-        <input matInput (keyup)="applyFilter($event)" [placeholder]="filterPlaceholder" #filterInput>
+    <div class="dynamic-table-filter" *ngIf="tableConfig.filter">
+      <mat-form-field [appearance]="tableConfig.filterAppearance" [color]="tableConfig.filterColor">
+        <mat-label>{{tableConfig.filterLabel}}</mat-label>
+        <input matInput (keyup)="applyFilter($event)" [placeholder]="tableConfig.filterPlaceholder" #filterInput>
       </mat-form-field>
     </div>
     <!-- Table -->
-    <div class="dynamic-table-table" [ngClass]="tableClass">
+    <div class="dynamic-table-table" [ngClass]="tableConfig.tableClass">
       <!-- Table -->
-      <mat-table [dataSource]="dataSource" matSort [matSortActive]="activeSortField"
-        [matSortDirection]="activeSortDirection" cdkDropList [cdkDropListData]="columnsToDisplay"
+      <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.activeSortField"
+        [matSortDirection]="tableConfig.activeSortDirection" cdkDropList [cdkDropListData]="columnsToDisplay"
         cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows>
 
         <!-- Select row column -->
@@ -39,7 +39,8 @@
         <!-- Select row footer column -->
         <ng-container matColumnDef="selectFooterColumn">
           <mat-footer-cell *matFooterCellDef>
-            <div class="dynamic-table-row-expandable-content" [@expandRow]="selectableRows ? 'expanded' : 'collapsed'">
+            <div class="dynamic-table-row-expandable-content"
+              [@expandRow]="tableConfig.selectableRows ? 'expanded' : 'collapsed'">
               {{selectedRowCount()}} rows selected
             </div>
           </mat-footer-cell>
@@ -74,7 +75,7 @@
         </ng-container>
 
         <!-- Header row definitions -->
-        <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true">
+        <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: tableConfig.stickyHeaders">
         </mat-header-row>
         <!-- Content row definitions -->
         <mat-row mat-ripple *matRowDef="let row; columns: columnsToDisplay;" class="dynamic-table-row"
@@ -83,10 +84,11 @@
         <mat-row *matRowDef="let row; columns: ['expandRowColumn']" class="dynamic-table-row-expandable">
         </mat-row>
         <!-- Footer row definitions -->
-        <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true">
+        <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: tableConfig.stickyFooters"
+          class="dynamic-table-row dynamic-table-row-expandable" [class.expanded]="!allColumnFootersEmpty()">
         </mat-footer-row>
         <mat-footer-row *matFooterRowDef="['selectFooterColumn']" class="dynamic-table-row dynamic-table-row-expandable"
-          [class.expanded]="selectableRows">
+          [class.expanded]="tableConfig.selectableRows">
         </mat-footer-row>
 
         <!-- Row shown when there is no matching data. -->
@@ -96,7 +98,9 @@
 
       </mat-table>
 
-      <mat-paginator *ngIf="pagination" [pageSizeOptions]="paginationSizeOptions" [pageSize]="paginationSizeDefault"></mat-paginator>
+      <mat-paginator *ngIf="tableConfig.pagination" [pageSizeOptions]="tableConfig.paginationSizeOptions"
+        [pageSize]="tableConfig.paginationSizeDefault">
+      </mat-paginator>
     </div>
   </div>
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DynamicTableColumnConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-column-config';
+import { DynamicTableConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-config';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,19 @@ export class TableService {
 
   constructor() { }
 
-  getColumnConfig(): Observable<DynamicTableColumnConfig[]> {
+  getTableConfig(): DynamicTableConfig {
+    return new DynamicTableConfig({
+      activeSortField: "position",
+      tableClass: "mat-elevation-z8"
+    });
+  }
+
+  getColumnConfig(): DynamicTableColumnConfig[] {
     const columns: DynamicTableColumnConfig[] = [
       {
         field: 'position',
         header: 'Position',
-        footer: 'Position',
+        footer: undefined,
         type: 'string',
         sticky: undefined,
         sortable: true,
@@ -48,7 +56,7 @@ export class TableService {
         draggable: false,
       },
     ];
-    return of(columns);
+    return columns;
   }
 
   getData(): Observable<any[]> {

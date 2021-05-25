@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
+import { DynamicTableConfig } from '../../models/dynamic-table-config';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -21,8 +22,12 @@ import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-conf
   ],
 })
 export class DynamicTableComponent implements OnInit, AfterViewInit {
+  @Input() tableConfig!: DynamicTableConfig;
   @Input() columnConfig!: DynamicTableColumnConfig[];
   @Input() data!: any[];
+
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort;
 
   dataSource!: MatTableDataSource<any>;
   columnsToDisplay: string[] = [];
@@ -31,30 +36,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean = false;
   resultsLength: number = 0;
 
-
-  activeSortField: string = "position";
-  activeSortDirection: "asc" | "desc" = "asc";
-
-  loader: boolean = true;
-  loaderColor: "primary" | "accent" | "warn" = "primary";
-
-  filter: boolean = true;
-  filterLabel: string = "Filter";
-  filterPlaceholder: string = "Ex. Carbon";
-  filterAppearance: "legacy" | "standard" | "fill" | "outline" = "standard";
-  filterColor: "primary" | "accent" | "warn" = "accent";
-
-  selectableRows: boolean = false;
-  expandableRows: boolean = true;
-
-  pagination: boolean = true;
-  paginationSizeOptions: number[] = [10, 25, 50];
-  paginationSizeDefault: number = 10;
-
-  tableClass: string = "mat-elevation-z8";
-
-  @ViewChild(MatPaginator) paginator?: MatPaginator;
-  @ViewChild(MatSort) sort?: MatSort;
 
   /**
    * Initialize dynamic table instance
@@ -73,17 +54,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Called after view initialization
    */
   ngAfterViewInit() {
-    if (this.pagination) {
+    if (this.tableConfig.pagination) {
       this.dataSource.paginator = this.paginator ? this.paginator : null;
     }
     this.dataSource.sort = this.sort ? this.sort : null;
   }
 
   /**
- * Toggles selectableRows rows
- */
+  * Toggles selectable rows
+  */
   toggleSelectableRows(): void {
-    this.selectableRows = !this.selectableRows;
+    this.tableConfig.selectableRows = !this.tableConfig.selectableRows;
     this.initTableColumns();
   }
 
@@ -93,7 +74,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   initTableColumns(): void {
     let columns = [];
     // add conditional select column
-    if (this.selectableRows) {
+    if (this.tableConfig.selectableRows) {
       columns.push("selectRowColumn");
     }
     // add field columns
@@ -122,9 +103,23 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * @param row Row to be expanded
    */
   expandRow(row: any): void {
-    if (this.expandableRows) {
+    if (this.tableConfig.expandableRows) {
       this.expandedRow = this.expandedRow === row ? null : row;
     }
+  }
+
+  /**
+   * Wheter all column footers are empty
+   * @returns true if all column footers are empty, false otherwise
+   */
+  allColumnFootersEmpty(): boolean {
+    let empty = true;
+    this.columnConfig.forEach((config) => {
+      if (config.footer) {
+        empty = false;
+      }
+    });
+    return empty;
   }
 
   /**
