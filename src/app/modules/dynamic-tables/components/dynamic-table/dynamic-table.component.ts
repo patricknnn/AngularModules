@@ -26,25 +26,33 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   dataSource!: MatTableDataSource<any>;
   columnsToDisplay: string[] = [];
+  selection = new SelectionModel<any>(true, []);
+  expandedRow: any;
+  isLoadingResults: boolean = false;
+  resultsLength: number = 0;
+
 
   activeSortField: string = "position";
   activeSortDirection: "asc" | "desc" = "asc";
-  expandedRow: any;
-  selection = new SelectionModel<any>(true, []);
-  resultsLength: number = 0;
-  isLoadingResults: boolean = false;
-  color: "primary" | "accent" | "warn" = "accent";
-  filterable: boolean = true;
+
+  loader: boolean = true;
+  loaderColor: "primary" | "accent" | "warn" = "primary";
+
+  filter: boolean = true;
   filterLabel: string = "Filter";
   filterPlaceholder: string = "Ex. Carbon";
+  filterAppearance: "legacy" | "standard" | "fill" | "outline" = "standard";
+  filterColor: "primary" | "accent" | "warn" = "accent";
+
   selectableRows: boolean = false;
   expandableRows: boolean = true;
-  draggableRows: boolean = false;
-  draggableColumns: boolean = false;
-  pagination: boolean = false;
+
+  pagination: boolean = true;
   paginationSizeOptions: number[] = [10, 25, 50];
   paginationSizeDefault: number = 10;
-  tableClass: string = "mat-elevation-z4";
+
+  tableClass: string = "mat-elevation-z8";
+
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
 
@@ -65,7 +73,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Called after view initialization
    */
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator ? this.paginator : null;
+    if (this.pagination) {
+      this.dataSource.paginator = this.paginator ? this.paginator : null;
+    }
     this.dataSource.sort = this.sort ? this.sort : null;
   }
 
@@ -82,13 +92,13 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    */
   initTableColumns(): void {
     let columns = [];
-    // add optional columns
+    // add conditional select column
     if (this.selectableRows) {
-      columns.push("select");
+      columns.push("selectRowColumn");
     }
     // add field columns
-    this.columnConfig.forEach((config) => {
-      columns.push(config.name);
+    this.columnConfig.forEach((col) => {
+      columns.push(col.field);
     });
     // set display columns
     this.columnsToDisplay = columns;
@@ -118,11 +128,12 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Reorders column to dropped position
+   * Reorders array item to dropped position
    * @param event Drop event
    */
   drop(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(this.columnsToDisplay, event.previousIndex + 1, event.currentIndex);
+    moveItemInArray(this.columnsToDisplay, event.previousIndex, event.currentIndex);
+    console.log(this.columnsToDisplay);
   }
 
   /**
@@ -159,7 +170,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * @param column Column to get the sum of
    * @returns Sum of all column values
    */
-  getColumnTotal(column: string): number {
+  columnTotal(column: string): number {
     return this.data
       .map((t: { [x: string]: any; }) => t[column])
       .reduce((acc: number, value: number) => acc + value, 0);
