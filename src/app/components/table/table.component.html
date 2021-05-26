@@ -16,6 +16,12 @@
           <mat-slide-toggle ngModel name="pagination" [(ngModel)]="tableConfig.pagination" (change)="renderTable()">
             Pagination
           </mat-slide-toggle>
+          <mat-slide-toggle ngModel name="sorting" [(ngModel)]="tableConfig.sorting">
+            Sortable columns
+          </mat-slide-toggle>
+          <mat-slide-toggle ngModel name="dragging" [(ngModel)]="tableConfig.dragging">
+            Draggable columns
+          </mat-slide-toggle>
           <mat-slide-toggle ngModel name="selectableRows" [(ngModel)]="tableConfig.selectableRows"
             (change)="renderTable()">
             Selectable Rows

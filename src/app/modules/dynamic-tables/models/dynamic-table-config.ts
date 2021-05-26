@@ -44,13 +44,21 @@ export class DynamicTableConfig {
    */
   paginationSizeDefault: number;
   /**
+   * Enable/Disable sorting for entire table
+   */
+  sorting: boolean;
+  /**
    * Active sort field
    */
-  activeSortField: string | undefined;
+  sortingActiveField: string | undefined;
   /**
    * Active sort direction
    */
-  activeSortDirection: "asc" | "desc" | undefined;
+  sortingActiveDirection: "asc" | "desc" | undefined;
+  /**
+   * Enable/Disable dragging for entire table
+   */
+  dragging: boolean;
   /**
    * Whether rows are selectable
    */
@@ -91,8 +99,10 @@ export class DynamicTableConfig {
     pagination?: boolean,
     paginationSizeOptions?: number[],
     paginationSizeDefault?: number,
-    activeSortField?: string,
-    activeSortDirection?: "asc" | "desc",
+    sorting?: boolean,
+    sortingActiveField?: string,
+    sortingActiveDirection?: "asc" | "desc",
+    dragging?: boolean,
     selectableRows?: boolean,
     selectableRowsSticky?: boolean,
     expandableRows?: boolean,
@@ -110,8 +120,10 @@ export class DynamicTableConfig {
     this.pagination = options.pagination || false;
     this.paginationSizeOptions = options.paginationSizeOptions || [10, 25, 50];
     this.paginationSizeDefault = options.paginationSizeDefault || 10;
-    this.activeSortField = options.activeSortField;
-    this.activeSortDirection = options.activeSortDirection;
+    this.sorting = options.sorting || false;
+    this.sortingActiveField = options.sortingActiveField;
+    this.sortingActiveDirection = options.sortingActiveDirection;
+    this.dragging = options.dragging || false;
     this.selectableRows = options.selectableRows || false;
     this.selectableRowsSticky = options.selectableRowsSticky || false;
     this.expandableRows = options.expandableRows || false;

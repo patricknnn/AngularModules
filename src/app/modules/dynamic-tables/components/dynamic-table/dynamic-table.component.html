@@ -16,8 +16,8 @@
     <!-- Table -->
     <div class="dynamic-table-table" [ngClass]="tableConfig.tableClass || ''">
       <!-- Table -->
-      <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.activeSortField || ''"
-        [matSortDirection]="tableConfig.activeSortDirection || ''" cdkDropList [cdkDropListData]="columnsToDisplay"
+      <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.sortingActiveField || ''"
+        [matSortDirection]="tableConfig.sortingActiveDirection || ''" cdkDropList [cdkDropListData]="columnsToDisplay"
         cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows>
 
         <!-- Select column -->
@@ -50,9 +50,9 @@
         <ng-container matColumnDef="{{column.key}}" [sticky]="column.sticky === 'start'"
           [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnRegular">
           <!-- Header -->
-          <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable" cdkDragLockAxis="x" cdkDrag
+          <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!tableConfig.sorting || !column.sortable" cdkDragLockAxis="x" cdkDrag
             [cdkDragData]="column.key" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
-            <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-column-draghandle">
+            <mat-icon cdkDragHandle *ngIf="tableConfig.dragging && column.draggable" class="dynamic-table-column-draghandle">
               drag_handle
             </mat-icon>
             {{column.header}}

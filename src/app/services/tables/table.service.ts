@@ -15,10 +15,11 @@ export class TableService {
   getTableConfig(): DynamicTableConfig {
     return new DynamicTableConfig({
       filter: true,
+      sorting: true,
+      dragging: true,
       pagination: true,
       selectableRows: true,
       expandableRows: true,
-      activeSortField: "position",
       tableClass: "mat-elevation-z8",
     });
   }
@@ -28,24 +29,29 @@ export class TableService {
       new DynamicTableColumnConfig({
         key: 'position',
         header: 'Position',
-        sortable: true
+        sortable: true,
+        draggable: true
       }),
       new DynamicTableColumnConfig({
         key: 'name',
         header: 'Name',
-        sortable: true
+        sortable: true,
+        draggable: true
       }),
       new DynamicTableColumnConfig({
         key: 'weight',
         header: 'Weight',
         sortable: true,
+        draggable: true,
         buttons: [
           new DynamicTableButton("visibility", "visibility", "primary"),
         ],
       }),
       new DynamicTableColumnConfig({
         key: 'symbol',
-        header: 'Symbol'
+        header: 'Symbol',
+        sortable: true,
+        draggable: true,
       }),
       new DynamicTableColumnConfig({
         key: 'text',

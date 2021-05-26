@@ -196,7 +196,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    */
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.columnsToDisplay, event.previousIndex, event.currentIndex);
-    console.log(this.columnsToDisplay);
   }
 
   /**
