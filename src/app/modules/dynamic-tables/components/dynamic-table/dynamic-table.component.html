@@ -47,19 +47,21 @@
         </ng-container>
 
         <!-- Regular columns -->
-        <ng-container matColumnDef="{{column.name}}" [sticky]="column.sticky === 'start'"
+        <ng-container matColumnDef="{{column.key}}" [sticky]="column.sticky === 'start'"
           [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnRegular">
           <!-- Header -->
           <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable" cdkDragLockAxis="x" cdkDrag
-            [cdkDragData]="column.name" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
+            [cdkDragData]="column.key" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
             <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-column-draghandle">
               drag_handle
             </mat-icon>
             {{column.header}}
           </mat-header-cell>
           <!-- Cells -->
-          <mat-cell *matCellDef="let row">
-            {{row[column.name]}}
+          <mat-cell *matCellDef="let row;">
+            <div *ngIf="row[column.key]" class="dynamic-table-column-text-container">
+              {{row[column.key]}}
+            </div>
             <div *ngIf="column.buttons?.length" class="dynamic-table-column-button-container">
               <button mat-icon-button *ngFor="let button of column.buttons"
                 (click)="$event.stopPropagation(); $event ? emitButtonClickEvent(button, row, column) : null">
@@ -74,12 +76,12 @@
         </ng-container>
 
         <!-- Expandable columns -->
-        <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columnExpendable">
+        <ng-container matColumnDef="{{column.key}}" *ngFor="let column of columnExpendable">
           <mat-cell *matCellDef="let row">
             <div class="dynamic-table-row-expandable-content"
               [@expandRow]="row == expandedRow ? 'expanded' : 'collapsed'">
               <span class="mat-header-cell" *ngIf="column.header">{{column.header}}</span>
-              <span class="mat-body" *ngIf="row[column.name]">{{row[column.name]}}</span>
+              <span class="mat-body" *ngIf="row[column.key]">{{row[column.key]}}</span>
             </div>
           </mat-cell>
         </ng-container>

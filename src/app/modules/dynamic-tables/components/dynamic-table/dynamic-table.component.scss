@@ -42,9 +42,14 @@
   padding-left: 24px;
 }
 
+.dynamic-table-column-text-container {
+  display: flex;
+  flex-grow: 1;
+}
+
 .dynamic-table-column-button-container {
   display: flex;
-  justify-self: flex-end;
+  padding-right: 24px;
 }
 
 .dynamic-table-column-draghandle {
@@ -55,33 +60,9 @@
   font-size: 20px;
 }
 
-.dynamic-tables-button-header,
-.dynamic-tables-button-cell,
-.dynamic-tables-button-footer {
-  max-width: min-content;
-}
-
 .dynamic-tables-select-header,
 .dynamic-tables-select-cell,
 .dynamic-tables-select-footer {
   max-width: min-content;
   padding-right: 24px !important;
-}
-
-.dynamic-table-container mat-cell, 
-.dynamic-table-container mat-header-cell, 
-.dynamic-table-container mat-footer-cell {
-  padding: 0 8px;
-}
-
-.dynamic-table-container mat-cell:first-of-type, 
-.dynamic-table-container mat-header-cell:first-of-type, 
-.dynamic-table-container mat-footer-cell:first-of-type {
-  padding-left: 24px;
-}
-
-.dynamic-table-container mat-cell:last-of-type, 
-.dynamic-table-container mat-header-cell:last-of-type, 
-.dynamic-table-container mat-footer-cell:last-of-type {
-  padding-right: 24px;
 }

@@ -2,9 +2,9 @@ import { DynamicTableButton } from "./dynamic-table-button";
 
 export class DynamicTableColumnConfig {
   /**
-   * Field name
+   * Object key
    */
-  name: string;
+  key: string;
   /**
    * Header text
    */
@@ -43,7 +43,7 @@ export class DynamicTableColumnConfig {
    * @param options Object containing options
    */
   constructor(options: {
-    name: string,
+    key: string,
     header?: string,
     footer?: string,
     buttons?: DynamicTableButton[],
@@ -53,8 +53,8 @@ export class DynamicTableColumnConfig {
     draggable?: boolean,
     expandable?: boolean
   }) {
-    this.name = options.name;
-    this.header = options.header || options.name;
+    this.key = options.key;
+    this.header = options.header;
     this.footer = options.footer;
     this.buttons = options.buttons;
     this.type = options.type;

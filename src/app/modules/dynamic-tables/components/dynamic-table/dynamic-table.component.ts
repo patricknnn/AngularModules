@@ -133,11 +133,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     }
     // set regular columns
     this.columnRegular.forEach((col) => {
-      displayColumns.push(col.name);
+      displayColumns.push(col.key);
     });
     // set expandable columns
     this.columnExpendable.forEach((col) => {
-      displayColumnsExpandable.push(col.name);
+      displayColumnsExpandable.push(col.key);
     });
     // update display columns
     this.columnsToDisplay = displayColumns;
