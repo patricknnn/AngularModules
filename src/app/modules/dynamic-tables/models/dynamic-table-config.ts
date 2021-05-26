@@ -1,3 +1,5 @@
+import { DynamicTableButton } from "./dynamic-table-button";
+
 /**
  * @description
  * Base DynamicTableConfig class 
@@ -56,13 +58,25 @@ export class DynamicTableConfig {
    */
   selectRowColumn: boolean;
   /**
-   * Whether rows are expandable
+   * Whether selects are sticky
    */
-  expandableRows: boolean;
+  selectRowColumnSticky: boolean;
   /**
    * Whether rows have buttons
    */
   buttonRowColumn: boolean;
+  /**
+   * Buttons to display
+   */
+  buttonRowColumnButtons: DynamicTableButton[];
+  /**
+   * Whether button is sticky
+   */
+  buttonRowColumnSticky: boolean;
+  /**
+   * Whether rows are expandable
+   */
+  expandableRows: boolean;
   /**
    * Whether headers are sticky
    */
@@ -71,14 +85,6 @@ export class DynamicTableConfig {
    * Whether footers are sticky
    */
   stickyFooters: boolean;
-  /**
-   * Whether selects are sticky
-   */
-  selectRowColumnSticky: boolean;
-  /**
-   * Whether button is sticky
-   */
-  buttonRowColumnSticky: boolean;
   /**
    * Custom table class
    */
@@ -105,6 +111,7 @@ export class DynamicTableConfig {
     selectRowColumnSticky?: boolean,
     buttonRowColumn?: boolean,
     buttonRowColumnSticky?: boolean,
+    buttonRowColumnButtons?: DynamicTableButton[],
     expandableRows?: boolean,
     stickyHeaders?: boolean,
     stickyFooters?: boolean,
@@ -123,12 +130,13 @@ export class DynamicTableConfig {
     this.activeSortField = options.activeSortField;
     this.activeSortDirection = options.activeSortDirection;
     this.selectRowColumn = options.selectRowColumn || false;
-    this.expandableRows = options.expandableRows || false;
+    this.selectRowColumnSticky = options.selectRowColumnSticky || false;
     this.buttonRowColumn = options.buttonRowColumn || false;
+    this.buttonRowColumnSticky = options.buttonRowColumnSticky || false;
+    this.buttonRowColumnButtons = options.buttonRowColumnButtons || [];
+    this.expandableRows = options.expandableRows || false;
     this.stickyHeaders = options.stickyHeaders || false;
     this.stickyFooters = options.stickyFooters || false;
-    this.selectRowColumnSticky = options.selectRowColumnSticky || false;
-    this.buttonRowColumnSticky = options.buttonRowColumnSticky || false;
     this.tableClass = options.tableClass;
   }
 }

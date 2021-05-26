@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-  <!-- Dynamic forms -->
+  <!-- Dynamic table -->
   <mat-card>
     <mat-card-header>
       <mat-icon mat-card-avatar>edit</mat-icon>
@@ -7,9 +7,11 @@
       <mat-card-subtitle>Module</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <!-- Dynamic form options -->
+      <!-- Dynamic table options -->
+      
+      <!-- Dynamic table -->
       <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
-        (selectionChange)="handleSelectionChange($event)" (rowButtonClick)="handleRowClick($event)">
+        (selectionChange)="handleSelectionChange($event)" (buttonClick)="handleRowClick($event)">
       </app-dynamic-table>
     </mat-card-content>
   </mat-card>

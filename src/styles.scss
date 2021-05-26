@@ -54,7 +54,8 @@ mat-form-field {
 
 .scroll-content {
   width: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .content-wrapper {

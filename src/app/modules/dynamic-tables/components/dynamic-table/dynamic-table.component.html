@@ -48,11 +48,14 @@
 
         <!-- Button column -->
         <ng-container matColumnDef="buttonRowColumn" [sticky]="tableConfig.buttonRowColumnSticky">
-          <mat-header-cell *matHeaderCellDef class="dynamic-tables-button-header">
+          <mat-header-cell *matHeaderCellDef class="dynamic-tables-button-header"
+            [style.maxWidth]="tableConfig.buttonRowColumnButtons.length * 40 + 'px'">
           </mat-header-cell>
           <mat-cell *matCellDef="let row" class="dynamic-tables-button-cell">
-            <button mat-icon-button (click)="$event ? rowButton(row) : null">
-              <mat-icon>edit</mat-icon>
+            <button mat-icon-button
+              (click)="$event.stopPropagation(); $event ? emitButtonClickEvent(button.name, row) : null"
+              *ngFor="let button of tableConfig.buttonRowColumnButtons">
+              <mat-icon [color]="button.color">{{button.icon}}</mat-icon>
             </button>
           </mat-cell>
           <mat-footer-cell *matFooterCellDef class="dynamic-tables-button-footer">
@@ -82,7 +85,8 @@
           <mat-cell *matCellDef="let row">
             <div class="dynamic-table-row-expandable-content"
               [@expandRow]="row == expandedRow ? 'expanded' : 'collapsed'">
-              {{row[column.field]}}
+              <span class="mat-header-cell" *ngIf="column.header">{{column.header}}</span>
+              <span class="mat-body" *ngIf="row[column.field]">{{row[column.field]}}</span>
             </div>
           </mat-cell>
         </ng-container>

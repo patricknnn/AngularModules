@@ -5,6 +5,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChil
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DynamicTableButtonClickEvent } from '../../models/dynamic-table-button-click-event';
 import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
 import { DynamicTableConfig } from '../../models/dynamic-table-config';
 
@@ -36,13 +37,13 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Input() data!: any[];
 
   /**
-   * Row select event emitter
+   * Selection change event emitter
    */
   @Output() selectionChange = new EventEmitter<any[]>();
   /**
-   * Row select event emitter
+   * Button click event emitter
    */
-  @Output() rowButtonClick = new EventEmitter<any[]>();
+  @Output() buttonClick = new EventEmitter<DynamicTableButtonClickEvent>();
 
   /**
    * MatPaginator instance
@@ -134,7 +135,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
       displayColumns.push(col.field);
     });
     // set conditional button column
-    if (this.tableConfig.buttonRowColumn) {
+    if (this.tableConfig.buttonRowColumn && this.tableConfig.buttonRowColumnButtons.length) {
       displayColumns.push("buttonRowColumn");
     }
     // set expandable columns
@@ -202,11 +203,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Handles row button click and emits rowButtonClick event
+   * Handles button click and emits buttonClick event
    * @param row Changed row
    */
-  rowButton(row: any): void {
-    this.rowButtonClick.emit(row);
+  emitButtonClickEvent(name: string, row: any): void {
+    this.buttonClick.emit(new DynamicTableButtonClickEvent(name, row));
   }
 
   /**

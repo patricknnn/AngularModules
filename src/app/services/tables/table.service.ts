@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { DynamicTableButton } from 'src/app/modules/dynamic-tables/models/dynamic-table-button';
 import { DynamicTableColumnConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-column-config';
 import { DynamicTableConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-config';
 
@@ -17,6 +18,10 @@ export class TableService {
       selectRowColumn: true,
       expandableRows: true,
       buttonRowColumn: true,
+      buttonRowColumnButtons: [
+        new DynamicTableButton("edit", "edit"),
+        new DynamicTableButton("delete", "delete", "warn"),
+      ],
       activeSortField: "position",
       tableClass: "mat-elevation-z8"
     });
@@ -45,6 +50,7 @@ export class TableService {
       }),
       new DynamicTableColumnConfig({
         field: 'text',
+        header: 'Text',
         expandable: true,
       }),
     ];
