@@ -15,44 +15,50 @@ export class TableService {
     return new DynamicTableConfig({
       filter: true,
       pagination: true,
-      selectRowColumn: true,
+      selectableRows: true,
       expandableRows: true,
-      buttonRowColumn: true,
-      buttonRowColumnButtons: [
-        new DynamicTableButton("edit", "edit"),
-        new DynamicTableButton("delete", "delete", "warn"),
-      ],
       activeSortField: "position",
-      tableClass: "mat-elevation-z8"
+      tableClass: "mat-elevation-z8",
     });
   }
 
   getColumnConfig(): DynamicTableColumnConfig[] {
     const columns: DynamicTableColumnConfig[] = [
       new DynamicTableColumnConfig({
-        field: 'position',
+        name: 'position',
         header: 'Position',
         sortable: true
       }),
       new DynamicTableColumnConfig({
-        field: 'name',
+        name: 'name',
         header: 'Name',
         sortable: true
       }),
       new DynamicTableColumnConfig({
-        field: 'weight',
+        name: 'weight',
         header: 'Weight',
         sortable: true
       }),
       new DynamicTableColumnConfig({
-        field: 'symbol',
+        name: 'symbol',
         header: 'Symbol',
+        buttons: [
+          new DynamicTableButton("edit", "edit"),
+        ],
       }),
       new DynamicTableColumnConfig({
-        field: 'text',
+        name: 'text',
         header: 'Text',
         expandable: true,
       }),
+      new DynamicTableColumnConfig({
+        name: 'buttons',
+        header: 'Buttons',
+        buttons: [
+          new DynamicTableButton("edit", "edit"),
+          new DynamicTableButton("delete", "delete", "warn"),
+        ],
+      })
     ];
     return columns;
   }
@@ -84,5 +90,4 @@ export class TableService {
     return of(ELEMENT_DATA)
   }
 }
-
 

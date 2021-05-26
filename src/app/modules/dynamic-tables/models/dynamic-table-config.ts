@@ -1,5 +1,3 @@
-import { DynamicTableButton } from "./dynamic-table-button";
-
 /**
  * @description
  * Base DynamicTableConfig class 
@@ -56,23 +54,11 @@ export class DynamicTableConfig {
   /**
    * Whether rows are selectable
    */
-  selectRowColumn: boolean;
+  selectableRows: boolean;
   /**
    * Whether selects are sticky
    */
-  selectRowColumnSticky: boolean;
-  /**
-   * Whether rows have buttons
-   */
-  buttonRowColumn: boolean;
-  /**
-   * Buttons to display
-   */
-  buttonRowColumnButtons: DynamicTableButton[];
-  /**
-   * Whether button is sticky
-   */
-  buttonRowColumnSticky: boolean;
+  selectableRowsSticky: boolean;
   /**
    * Whether rows are expandable
    */
@@ -107,11 +93,8 @@ export class DynamicTableConfig {
     paginationSizeDefault?: number,
     activeSortField?: string,
     activeSortDirection?: "asc" | "desc",
-    selectRowColumn?: boolean,
-    selectRowColumnSticky?: boolean,
-    buttonRowColumn?: boolean,
-    buttonRowColumnSticky?: boolean,
-    buttonRowColumnButtons?: DynamicTableButton[],
+    selectableRows?: boolean,
+    selectableRowsSticky?: boolean,
     expandableRows?: boolean,
     stickyHeaders?: boolean,
     stickyFooters?: boolean,
@@ -129,11 +112,8 @@ export class DynamicTableConfig {
     this.paginationSizeDefault = options.paginationSizeDefault || 10;
     this.activeSortField = options.activeSortField;
     this.activeSortDirection = options.activeSortDirection;
-    this.selectRowColumn = options.selectRowColumn || false;
-    this.selectRowColumnSticky = options.selectRowColumnSticky || false;
-    this.buttonRowColumn = options.buttonRowColumn || false;
-    this.buttonRowColumnSticky = options.buttonRowColumnSticky || false;
-    this.buttonRowColumnButtons = options.buttonRowColumnButtons || [];
+    this.selectableRows = options.selectableRows || false;
+    this.selectableRowsSticky = options.selectableRowsSticky || false;
     this.expandableRows = options.expandableRows || false;
     this.stickyHeaders = options.stickyHeaders || false;
     this.stickyFooters = options.stickyFooters || false;

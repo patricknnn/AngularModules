@@ -1,16 +1,22 @@
+import { DynamicTableButton } from "./dynamic-table-button";
+
 export class DynamicTableColumnConfig {
   /**
    * Field name
    */
-  field: string;
+  name: string;
   /**
    * Header text
    */
-  header: string;
+  header: string | undefined;
   /**
    * Footer text
    */
   footer: string | undefined;
+  /**
+   * Buttons
+   */
+  buttons: DynamicTableButton[] | undefined;
   /**
    * Data type
    */
@@ -37,18 +43,20 @@ export class DynamicTableColumnConfig {
    * @param options Object containing options
    */
   constructor(options: {
-    field: string,
+    name: string,
     header?: string,
     footer?: string,
+    buttons?: DynamicTableButton[],
     type?: string,
     sticky?: "start" | "end",
     sortable?: boolean,
     draggable?: boolean,
     expandable?: boolean
   }) {
-    this.field = options.field;
-    this.header = options.header || options.field;
+    this.name = options.name;
+    this.header = options.header || options.name;
     this.footer = options.footer;
+    this.buttons = options.buttons;
     this.type = options.type;
     this.sticky = options.sticky;
     this.sortable = options.sortable || false;

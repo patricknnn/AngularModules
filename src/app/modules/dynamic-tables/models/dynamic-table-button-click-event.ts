@@ -1,9 +1,33 @@
-export class DynamicTableButtonClickEvent {
-  button: string;
-  row: string;
+import { DynamicTableButton } from "./dynamic-table-button";
+import { DynamicTableColumnConfig } from "./dynamic-table-column-config";
 
-  constructor(button: string, row: any) {
+export class DynamicTableButtonClickEvent {
+  /**
+   * Button that was clicked
+   */
+  button: DynamicTableButton;
+  /**
+   * Row containing the clicked button
+   */
+  row: any;
+  /**
+   * Column containing the clicked button
+   */
+  column: DynamicTableColumnConfig;
+
+  /**
+   * Initialize DynamicTableButtonClickEvent instance
+   * @param button Button that was clicked
+   * @param row Row containing button that was clicked
+   * @param column Column containing button that was clicked
+   */
+  constructor(
+    button: DynamicTableButton,
+    row: any,
+    column: DynamicTableColumnConfig
+  ) {
     this.button = button;
     this.row = row;
+    this.column = column;
   }
 }

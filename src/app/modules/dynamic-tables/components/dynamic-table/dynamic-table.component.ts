@@ -5,6 +5,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChil
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DynamicTableButton } from '../../models/dynamic-table-button';
 import { DynamicTableButtonClickEvent } from '../../models/dynamic-table-button-click-event';
 import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
 import { DynamicTableConfig } from '../../models/dynamic-table-config';
@@ -127,20 +128,16 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     let displayColumns: string[] = [];
     let displayColumnsExpandable: string[] = [];
     // set conditional select column
-    if (this.tableConfig.selectRowColumn) {
+    if (this.tableConfig.selectableRows) {
       displayColumns.push("selectRowColumn");
     }
-    // set field columns
+    // set regular columns
     this.columnRegular.forEach((col) => {
-      displayColumns.push(col.field);
+      displayColumns.push(col.name);
     });
-    // set conditional button column
-    if (this.tableConfig.buttonRowColumn && this.tableConfig.buttonRowColumnButtons.length) {
-      displayColumns.push("buttonRowColumn");
-    }
     // set expandable columns
     this.columnExpendable.forEach((col) => {
-      displayColumnsExpandable.push(col.field);
+      displayColumnsExpandable.push(col.name);
     });
     // update display columns
     this.columnsToDisplay = displayColumns;
@@ -206,8 +203,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Handles button click and emits buttonClick event
    * @param row Changed row
    */
-  emitButtonClickEvent(name: string, row: any): void {
-    this.buttonClick.emit(new DynamicTableButtonClickEvent(name, row));
+  emitButtonClickEvent(button: DynamicTableButton, row: any, column: DynamicTableColumnConfig): void {
+    this.buttonClick.emit(new DynamicTableButtonClickEvent(button, row, column));
   }
 
   /**

@@ -42,7 +42,12 @@
   padding-left: 24px;
 }
 
-.dynamic-table-draghandle-column {
+.dynamic-table-column-button-container {
+  display: flex;
+  justify-self: flex-end;
+}
+
+.dynamic-table-column-draghandle {
   display: flex;
   margin-right: 6px;
   height: 20px;

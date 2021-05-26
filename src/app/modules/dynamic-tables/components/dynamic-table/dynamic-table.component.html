@@ -21,7 +21,7 @@
         cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows>
 
         <!-- Select column -->
-        <ng-container matColumnDef="selectRowColumn" [sticky]="tableConfig.selectRowColumnSticky">
+        <ng-container matColumnDef="selectRowColumn" [sticky]="tableConfig.selectableRowsSticky">
           <mat-header-cell *matHeaderCellDef class="dynamic-tables-select-header">
             <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
@@ -40,53 +40,46 @@
         <ng-container matColumnDef="selectFooterColumn">
           <mat-footer-cell *matFooterCellDef>
             <div class="dynamic-table-row-expandable-content"
-              [@expandRow]="tableConfig.selectRowColumn ? 'expanded' : 'collapsed'">
+              [@expandRow]="tableConfig.selectableRows ? 'expanded' : 'collapsed'">
               {{selectedRowCount()}} rows selected
             </div>
           </mat-footer-cell>
         </ng-container>
 
-        <!-- Button column -->
-        <ng-container matColumnDef="buttonRowColumn" [sticky]="tableConfig.buttonRowColumnSticky">
-          <mat-header-cell *matHeaderCellDef class="dynamic-tables-button-header"
-            [style.maxWidth]="tableConfig.buttonRowColumnButtons.length * 40 + 'px'">
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row" class="dynamic-tables-button-cell">
-            <button mat-icon-button
-              (click)="$event.stopPropagation(); $event ? emitButtonClickEvent(button.name, row) : null"
-              *ngFor="let button of tableConfig.buttonRowColumnButtons">
-              <mat-icon [color]="button.color">{{button.icon}}</mat-icon>
-            </button>
-          </mat-cell>
-          <mat-footer-cell *matFooterCellDef class="dynamic-tables-button-footer">
-          </mat-footer-cell>
-        </ng-container>
-
         <!-- Regular columns -->
-        <ng-container matColumnDef="{{column.field}}" [sticky]="column.sticky === 'start'"
+        <ng-container matColumnDef="{{column.name}}" [sticky]="column.sticky === 'start'"
           [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnRegular">
+          <!-- Header -->
           <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sortable" cdkDragLockAxis="x" cdkDrag
-            [cdkDragData]="column.field" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
-            <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-draghandle-column">
+            [cdkDragData]="column.name" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
+            <mat-icon cdkDragHandle *ngIf="column.draggable" class="dynamic-table-column-draghandle">
               drag_handle
             </mat-icon>
             {{column.header}}
           </mat-header-cell>
+          <!-- Cells -->
           <mat-cell *matCellDef="let row">
-            {{row[column.field]}}
+            {{row[column.name]}}
+            <div *ngIf="column.buttons?.length" class="dynamic-table-column-button-container">
+              <button mat-icon-button *ngFor="let button of column.buttons"
+                (click)="$event.stopPropagation(); $event ? emitButtonClickEvent(button, row, column) : null">
+                <mat-icon [color]="button.color">{{button.icon}}</mat-icon>
+              </button>
+            </div>
           </mat-cell>
+          <!-- Footer -->
           <mat-footer-cell *matFooterCellDef>
             {{column.footer}}
           </mat-footer-cell>
         </ng-container>
 
         <!-- Expandable columns -->
-        <ng-container matColumnDef="{{column.field}}" *ngFor="let column of columnExpendable">
+        <ng-container matColumnDef="{{column.name}}" *ngFor="let column of columnExpendable">
           <mat-cell *matCellDef="let row">
             <div class="dynamic-table-row-expandable-content"
               [@expandRow]="row == expandedRow ? 'expanded' : 'collapsed'">
               <span class="mat-header-cell" *ngIf="column.header">{{column.header}}</span>
-              <span class="mat-body" *ngIf="row[column.field]">{{row[column.field]}}</span>
+              <span class="mat-body" *ngIf="row[column.name]">{{row[column.name]}}</span>
             </div>
           </mat-cell>
         </ng-container>
@@ -107,7 +100,7 @@
         </mat-footer-row>
         <!-- Select footer row definition -->
         <mat-footer-row *matFooterRowDef="['selectFooterColumn']" class="dynamic-table-row dynamic-table-row-expandable"
-          [class.expanded]="tableConfig.selectRowColumn">
+          [class.expanded]="tableConfig.selectableRows">
         </mat-footer-row>
 
         <!-- Row shown when there is no matching data. -->
