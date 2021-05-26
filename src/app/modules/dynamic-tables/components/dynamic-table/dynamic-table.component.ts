@@ -4,7 +4,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { DynamicTableButton } from '../../models/dynamic-table-button';
 import { DynamicTableButtonClickEvent } from '../../models/dynamic-table-button-click-event';
 import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
@@ -46,6 +46,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    */
   @Output() buttonClick = new EventEmitter<DynamicTableButtonClickEvent>();
 
+
+  /**
+   * MatTable instance
+   */
+  @ViewChild(MatTable) table?: MatTable<any>;
   /**
    * MatPaginator instance
    */
@@ -120,6 +125,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Initialize table columns
    */
   initTableColumns(): void {
+    // reset columns
+    this.columnRegular = [];
+    this.columnExpendable = [];
     // devide columns in categories
     this.columnConfig.forEach((col) => {
       col.expandable ? this.columnExpendable.push(col) : this.columnRegular.push(col);
@@ -143,6 +151,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     this.columnsToDisplay = displayColumns;
     this.columnsToDisplayExpandable = displayColumnsExpandable;
   }
+
 
   /**
    * Applies filter to table

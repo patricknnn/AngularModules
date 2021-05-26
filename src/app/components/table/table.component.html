@@ -8,11 +8,37 @@
     </mat-card-header>
     <mat-card-content>
       <!-- Dynamic table options -->
+      <form #form="ngForm">
+        <div class="form-column">
+          <mat-slide-toggle ngModel name="filter" [(ngModel)]="tableConfig.filter">
+            Filter
+          </mat-slide-toggle>
+          <mat-slide-toggle ngModel name="pagination" [(ngModel)]="tableConfig.pagination" (change)="renderTable()">
+            Pagination
+          </mat-slide-toggle>
+          <mat-slide-toggle ngModel name="selectableRows" [(ngModel)]="tableConfig.selectableRows"
+            (change)="renderTable()">
+            Selectable Rows
+          </mat-slide-toggle>
+          <mat-slide-toggle ngModel name="expandableRows" [(ngModel)]="tableConfig.expandableRows">
+            Expandable Rows
+          </mat-slide-toggle>
+        </div>
+      </form>
 
-      <!-- Dynamic table -->
-      <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
-        (selectionChange)="handleSelectionChangeEvent($event)" (buttonClick)="handleButtonClickEvent($event)">
-      </app-dynamic-table>
+      <!-- Dynamic table outlet -->
+      <div style="margin-top: 24px;">
+        <ng-container #outlet>
+        </ng-container>
+      </div>
+
+      <!-- Dynamic table template -->
+      <ng-template #content>
+        <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
+          (selectionChange)="handleSelectionChangeEvent($event)" (buttonClick)="handleButtonClickEvent($event)">
+        </app-dynamic-table>
+      </ng-template>
+
     </mat-card-content>
   </mat-card>
 </div>

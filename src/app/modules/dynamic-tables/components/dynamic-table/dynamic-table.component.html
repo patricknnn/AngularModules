@@ -112,8 +112,8 @@
 
       </mat-table>
 
-      <mat-paginator *ngIf="tableConfig.pagination" [pageSizeOptions]="tableConfig.paginationSizeOptions"
-        [pageSize]="tableConfig.paginationSizeDefault">
+      <mat-paginator [pageSizeOptions]="tableConfig.paginationSizeOptions"
+        [pageSize]="tableConfig.paginationSizeDefault" [ngStyle]="{display: tableConfig.pagination ? 'block' : 'none'}">
       </mat-paginator>
     </div>
   </div>
