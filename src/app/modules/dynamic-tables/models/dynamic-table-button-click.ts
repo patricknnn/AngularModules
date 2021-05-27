@@ -1,7 +1,7 @@
 import { DynamicTableButton } from "./dynamic-table-button";
 import { DynamicTableColumnConfig } from "./dynamic-table-column-config";
 
-export class DynamicTableButtonClickEvent {
+export class DynamicTableButtonClick {
   /**
    * Button that was clicked
    */
@@ -16,7 +16,7 @@ export class DynamicTableButtonClickEvent {
   column: DynamicTableColumnConfig;
 
   /**
-   * Initialize DynamicTableButtonClickEvent instance
+   * Initialize DynamicTableButtonClick instance
    * @param button Button that was clicked
    * @param row Row containing button that was clicked
    * @param column Column containing button that was clicked

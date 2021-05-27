@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DynamicTableColumnConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-column-config';
 import { DynamicTableConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-config';
@@ -13,6 +13,8 @@ export class TableComponent implements AfterViewInit {
   tableConfig: DynamicTableConfig;
   columnConfig: DynamicTableColumnConfig[];
   data$: Observable<any[]>;
+  appearanceOptions = ["legacy", "standard", "fill", "outline"];
+  colorOptions = ["primary", "accent", "warn"];
 
   @ViewChild("outlet", { read: ViewContainerRef }) outletRef?: ViewContainerRef;
   @ViewChild("content", { read: TemplateRef }) contentRef?: TemplateRef<any>;

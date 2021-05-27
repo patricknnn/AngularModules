@@ -17,9 +17,9 @@ export class TableService {
       filter: true,
       sorting: true,
       dragging: true,
-      pagination: true,
-      selectableRows: true,
-      expandableRows: true,
+      paging: true,
+      selecting: true,
+      expanding: true,
       tableClass: "mat-elevation-z8",
     });
   }

@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { DynamicTableButton } from '../../models/dynamic-table-button';
-import { DynamicTableButtonClickEvent } from '../../models/dynamic-table-button-click-event';
+import { DynamicTableButtonClick } from '../../models/dynamic-table-button-click';
 import { DynamicTableColumnConfig } from '../../models/dynamic-table-column-config';
 import { DynamicTableConfig } from '../../models/dynamic-table-config';
 
@@ -44,7 +44,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   /**
    * Button click event emitter
    */
-  @Output() buttonClick = new EventEmitter<DynamicTableButtonClickEvent>();
+  @Output() buttonClick = new EventEmitter<DynamicTableButtonClick>();
 
 
   /**
@@ -115,7 +115,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * Called after view initialization
    */
   ngAfterViewInit() {
-    if (this.tableConfig.pagination) {
+    if (this.tableConfig.paging) {
       this.dataSource.paginator = this.paginator ? this.paginator : null;
     }
     this.dataSource.sort = this.sort ? this.sort : null;
@@ -136,7 +136,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     let displayColumns: string[] = [];
     let displayColumnsExpandable: string[] = [];
     // set conditional select column
-    if (this.tableConfig.selectableRows) {
+    if (this.tableConfig.selecting) {
       displayColumns.push("selectRowColumn");
     }
     // set regular columns
@@ -171,7 +171,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * @param row Row to be expanded
    */
   expandRow(row: any): void {
-    if (this.tableConfig.expandableRows) {
+    if (this.tableConfig.expanding) {
       this.expandedRow = this.expandedRow === row ? null : row;
     }
   }
@@ -212,7 +212,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
    * @param row Changed row
    */
   emitButtonClickEvent(button: DynamicTableButton, row: any, column: DynamicTableColumnConfig): void {
-    this.buttonClick.emit(new DynamicTableButtonClickEvent(button, row, column));
+    this.buttonClick.emit(new DynamicTableButtonClick(button, row, column));
   }
 
   /**

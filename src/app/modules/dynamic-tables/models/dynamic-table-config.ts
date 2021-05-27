@@ -32,17 +32,17 @@ export class DynamicTableConfig {
    */
   filterColor: "primary" | "accent" | "warn";
   /**
-   * Whether to use pagination
+   * Whether to use paging
    */
-  pagination: boolean;
+  paging: boolean;
   /**
    * Page size options
    */
-  paginationSizeOptions: number[];
+  pagingSizeOptions: number[];
   /**
    * Default page size
    */
-  paginationSizeDefault: number;
+  pagingSizeDefault: number;
   /**
    * Enable/Disable sorting for entire table
    */
@@ -50,27 +50,23 @@ export class DynamicTableConfig {
   /**
    * Active sort field
    */
-  sortingActiveField: string | undefined;
+  sortingActiveField: string;
   /**
    * Active sort direction
    */
-  sortingActiveDirection: "asc" | "desc" | undefined;
+  sortingActiveDirection: "asc" | "desc";
   /**
    * Enable/Disable dragging for entire table
    */
   dragging: boolean;
   /**
-   * Whether rows are selectable
+   * Selecting column
    */
-  selectableRows: boolean;
+  selecting: boolean;
   /**
-   * Whether selects are sticky
+   * Expanding row
    */
-  selectableRowsSticky: boolean;
-  /**
-   * Whether rows are expandable
-   */
-  expandableRows: boolean;
+  expanding: boolean;
   /**
    * Whether headers are sticky
    */
@@ -82,7 +78,15 @@ export class DynamicTableConfig {
   /**
    * Custom table class
    */
-  tableClass: string | undefined;
+  tableClass: string;
+  /**
+   * Horizontal scrolling width
+   */
+  scrollX: string; // TODO
+  /**
+   * Vertical scrolling width
+   */
+  scrollY: string; // TODO
 
   /**
    * Initialize the DynamicTableConfig instance
@@ -96,19 +100,20 @@ export class DynamicTableConfig {
     filterPlaceholder?: string,
     filterAppearance?: "legacy" | "standard" | "fill" | "outline",
     filterColor?: "primary" | "accent" | "warn",
-    pagination?: boolean,
-    paginationSizeOptions?: number[],
-    paginationSizeDefault?: number,
+    paging?: boolean,
+    pagingSizeOptions?: number[],
+    pagingSizeDefault?: number,
     sorting?: boolean,
     sortingActiveField?: string,
     sortingActiveDirection?: "asc" | "desc",
     dragging?: boolean,
-    selectableRows?: boolean,
-    selectableRowsSticky?: boolean,
-    expandableRows?: boolean,
+    selecting?: boolean,
+    expanding?: boolean,
     stickyHeaders?: boolean,
     stickyFooters?: boolean,
-    tableClass?: string
+    tableClass?: string,
+    scrollX?: string,
+    scrollY?: string,
   }) {
     this.loader = options.loader || false;
     this.loaderColor = options.loaderColor || "primary";
@@ -117,18 +122,19 @@ export class DynamicTableConfig {
     this.filterPlaceholder = options.filterPlaceholder || "";
     this.filterAppearance = options.filterAppearance || "standard";
     this.filterColor = options.filterColor || "primary";
-    this.pagination = options.pagination || false;
-    this.paginationSizeOptions = options.paginationSizeOptions || [10, 25, 50];
-    this.paginationSizeDefault = options.paginationSizeDefault || 10;
+    this.paging = options.paging || false;
+    this.pagingSizeOptions = options.pagingSizeOptions || [10, 25, 50];
+    this.pagingSizeDefault = options.pagingSizeDefault || 10;
     this.sorting = options.sorting || false;
-    this.sortingActiveField = options.sortingActiveField;
-    this.sortingActiveDirection = options.sortingActiveDirection;
+    this.sortingActiveField = options.sortingActiveField || "";
+    this.sortingActiveDirection = options.sortingActiveDirection || "asc";
     this.dragging = options.dragging || false;
-    this.selectableRows = options.selectableRows || false;
-    this.selectableRowsSticky = options.selectableRowsSticky || false;
-    this.expandableRows = options.expandableRows || false;
+    this.selecting = options.selecting || false;
+    this.expanding = options.expanding || false;
     this.stickyHeaders = options.stickyHeaders || false;
     this.stickyFooters = options.stickyFooters || false;
-    this.tableClass = options.tableClass;
+    this.tableClass = options.tableClass || "";
+    this.scrollX = options.scrollX || "";
+    this.scrollY = options.scrollY || "";
   }
 }

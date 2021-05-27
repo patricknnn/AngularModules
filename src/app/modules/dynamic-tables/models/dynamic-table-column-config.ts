@@ -8,23 +8,27 @@ export class DynamicTableColumnConfig {
   /**
    * Header text
    */
-  header: string | undefined;
+  header: string;
   /**
    * Footer text
    */
-  footer: string | undefined;
+  footer: string;
   /**
    * Buttons
    */
-  buttons: DynamicTableButton[] | undefined;
+  buttons: DynamicTableButton[];
   /**
    * Data type
    */
-  type: string | undefined;
+  type: string;
   /**
    * Sticky column
    */
-  sticky: "start" | "end" | undefined;
+  sticky: boolean;
+  /**
+   * Sticky column end
+   */
+  stickyEnd: boolean;
   /**
    * Sortable column
    */
@@ -54,11 +58,12 @@ export class DynamicTableColumnConfig {
     expandable?: boolean
   }) {
     this.key = options.key;
-    this.header = options.header;
-    this.footer = options.footer;
-    this.buttons = options.buttons;
-    this.type = options.type;
-    this.sticky = options.sticky;
+    this.header = options.header || "";
+    this.footer = options.footer || "";
+    this.buttons = options.buttons || [];
+    this.type = options.type || "";
+    this.sticky = options.sticky == "start";
+    this.stickyEnd = options.sticky == "end";
     this.sortable = options.sortable || false;
     this.draggable = options.draggable || false;
     this.expandable = options.expandable || false;

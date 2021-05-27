@@ -9,27 +9,42 @@
     <mat-card-content>
       <!-- Dynamic table options -->
       <form #form="ngForm">
-        <div class="form-column">
-          <mat-slide-toggle ngModel name="filter" [(ngModel)]="tableConfig.filter">
-            Filter
-          </mat-slide-toggle>
-          <mat-slide-toggle ngModel name="pagination" [(ngModel)]="tableConfig.pagination" (change)="renderTable()">
-            Pagination
-          </mat-slide-toggle>
-          <mat-slide-toggle ngModel name="sorting" [(ngModel)]="tableConfig.sorting">
-            Sortable columns
-          </mat-slide-toggle>
-          <mat-slide-toggle ngModel name="dragging" [(ngModel)]="tableConfig.dragging">
-            Draggable columns
-          </mat-slide-toggle>
-          <mat-slide-toggle ngModel name="selectableRows" [(ngModel)]="tableConfig.selectableRows"
-            (change)="renderTable()">
-            Selectable Rows
-          </mat-slide-toggle>
-          <mat-slide-toggle ngModel name="expandableRows" [(ngModel)]="tableConfig.expandableRows">
-            Expandable Rows
-          </mat-slide-toggle>
-        </div>
+        <mat-form-field [appearance]="tableConfig.filterAppearance" [color]="tableConfig.filterColor"
+          class="form-field">
+          <mat-label>Filter appearance</mat-label>
+          <mat-select name="filterAppearance" [(ngModel)]="tableConfig.filterAppearance">
+            <mat-option *ngFor="let option of appearanceOptions" [value]="option">{{option}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field [appearance]="tableConfig.filterAppearance" [color]="tableConfig.filterColor"
+          class="form-field">
+          <mat-label>ScrollY</mat-label>
+          <input matInput name="scrollY" [(ngModel)]="tableConfig.scrollY">
+        </mat-form-field>
+        <mat-form-field [appearance]="tableConfig.filterAppearance" [color]="tableConfig.filterColor"
+          class="form-field">
+          <mat-label>ScrollX</mat-label>
+          <input matInput name="scrollX" [(ngModel)]="tableConfig.scrollX">
+        </mat-form-field>
+
+        <mat-slide-toggle name="filter" [(ngModel)]="tableConfig.filter">
+          Filter
+        </mat-slide-toggle>
+        <mat-slide-toggle name="paging" [(ngModel)]="tableConfig.paging" (change)="renderTable()">
+          Pagination
+        </mat-slide-toggle>
+        <mat-slide-toggle name="sorting" [(ngModel)]="tableConfig.sorting">
+          Sortable columns
+        </mat-slide-toggle>
+        <mat-slide-toggle name="dragging" [(ngModel)]="tableConfig.dragging">
+          Draggable columns
+        </mat-slide-toggle>
+        <mat-slide-toggle name="selecting" [(ngModel)]="tableConfig.selecting" (change)="renderTable()">
+          Selectable Rows
+        </mat-slide-toggle>
+        <mat-slide-toggle name="expanding" [(ngModel)]="tableConfig.expanding">
+          Expandable Rows
+        </mat-slide-toggle>
       </form>
 
       <!-- Dynamic table outlet -->

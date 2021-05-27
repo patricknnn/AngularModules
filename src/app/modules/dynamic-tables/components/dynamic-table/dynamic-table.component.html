@@ -18,10 +18,11 @@
       <!-- Table -->
       <mat-table [dataSource]="dataSource" matSort [matSortActive]="tableConfig.sortingActiveField || ''"
         [matSortDirection]="tableConfig.sortingActiveDirection || ''" cdkDropList [cdkDropListData]="columnsToDisplay"
-        cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows>
+        cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" multiTemplateDataRows
+        [style.minWidth]="tableConfig.scrollX" [style.maxHeight]="tableConfig.scrollY">
 
         <!-- Select column -->
-        <ng-container matColumnDef="selectRowColumn" [sticky]="tableConfig.selectableRowsSticky">
+        <ng-container matColumnDef="selectRowColumn" sticky>
           <mat-header-cell *matHeaderCellDef class="dynamic-tables-select-header">
             <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
@@ -37,22 +38,24 @@
         </ng-container>
 
         <!-- Select footer column -->
-        <ng-container matColumnDef="selectFooterColumn">
+        <ng-container matColumnDef="selectFooterColumn" sticky>
           <mat-footer-cell *matFooterCellDef>
             <div class="dynamic-table-row-expandable-content"
-              [@expandRow]="tableConfig.selectableRows ? 'expanded' : 'collapsed'">
+              [@expandRow]="tableConfig.selecting ? 'expanded' : 'collapsed'">
               {{selectedRowCount()}} rows selected
             </div>
           </mat-footer-cell>
         </ng-container>
 
         <!-- Regular columns -->
-        <ng-container matColumnDef="{{column.key}}" [sticky]="column.sticky === 'start'"
-          [stickyEnd]="column.sticky === 'end'" *ngFor="let column of columnRegular">
+        <ng-container matColumnDef="{{column.key}}" [sticky]="column.sticky" [stickyEnd]="column.stickyEnd"
+          *ngFor="let column of columnRegular" mat-ripple>
           <!-- Header -->
-          <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!tableConfig.sorting || !column.sortable" cdkDragLockAxis="x" cdkDrag
-            [cdkDragData]="column.key" [cdkDragDisabled]="!column.draggable" class="dynamic-tables-sort-header">
-            <mat-icon cdkDragHandle *ngIf="tableConfig.dragging && column.draggable" class="dynamic-table-column-draghandle">
+          <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!tableConfig.sorting || !column.sortable"
+            cdkDragLockAxis="x" cdkDrag [cdkDragData]="column.key" [cdkDragDisabled]="!column.draggable"
+            class="dynamic-tables-sort-header">
+            <mat-icon cdkDragHandle *ngIf="tableConfig.dragging && column.draggable"
+              class="dynamic-table-column-draghandle">
               drag_handle
             </mat-icon>
             {{column.header}}
@@ -90,7 +93,7 @@
         <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: tableConfig.stickyHeaders">
         </mat-header-row>
         <!-- Content row definition -->
-        <mat-row mat-ripple *matRowDef="let row; columns: columnsToDisplay;" class="dynamic-table-row"
+        <mat-row *matRowDef="let row; columns: columnsToDisplay;" class="dynamic-table-row"
           [class.dynamic-table-row-expanded]="expandedRow === row" (click)="expandRow(row)">
         </mat-row>
         <!-- Expandable row definition -->
@@ -102,7 +105,7 @@
         </mat-footer-row>
         <!-- Select footer row definition -->
         <mat-footer-row *matFooterRowDef="['selectFooterColumn']" class="dynamic-table-row dynamic-table-row-expandable"
-          [class.expanded]="tableConfig.selectableRows">
+          [class.expanded]="tableConfig.selecting">
         </mat-footer-row>
 
         <!-- Row shown when there is no matching data. -->
@@ -111,11 +114,13 @@
         </div>
 
       </mat-table>
-
-      <mat-paginator [pageSizeOptions]="tableConfig.paginationSizeOptions"
-        [pageSize]="tableConfig.paginationSizeDefault" [ngStyle]="{display: tableConfig.pagination ? 'block' : 'none'}">
-      </mat-paginator>
     </div>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="tableConfig.pagingSizeOptions" [pageSize]="tableConfig.pagingSizeDefault"
+      [ngStyle]="{display: tableConfig.paging ? 'block' : 'none'}">
+    </mat-paginator>
+
   </div>
 
 </div>
