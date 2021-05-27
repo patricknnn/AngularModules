@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FormControlBase } from 'src/app/modules/dynamic-forms/models/form-control-base';
@@ -31,7 +31,6 @@ export class FormComponent {
   }
 
   handleFormSubmit(event: any): void {
-    console.log("Child emitted submit event, payload:");
     console.log(event);
   }
 }
