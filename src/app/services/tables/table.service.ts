@@ -20,6 +20,10 @@ export class TableService {
       paging: true,
       selecting: true,
       expanding: true,
+      scrollX: "750px",
+      scrollY: "500px",
+      stickyHeaders: true,
+      stickyFooters: true,
       tableClass: "mat-elevation-z8",
     });
   }
