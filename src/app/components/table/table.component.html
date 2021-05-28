@@ -138,20 +138,22 @@
           </mat-tab>
         </mat-tab-group>
       </form>
-
-      <!-- Dynamic table outlet -->
-      <div class="row">
-        <ng-container #outlet>
-        </ng-container>
-      </div>
-
-      <!-- Dynamic table template -->
-      <ng-template #content>
-        <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
-          (selectionChange)="handleSelectionChangeEvent($event)" (buttonClick)="handleButtonClickEvent($event)">
-        </app-dynamic-table>
-      </ng-template>
-
     </mat-card-content>
   </mat-card>
+  
+  <!-- Dynamic table outlet -->
+  <mat-card style="margin-top: 16px;">
+    <mat-card-content>
+      <ng-container #outlet>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Dynamic table template -->
+  <ng-template #content>
+    <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
+      (selectionChange)="handleSelectionChangeEvent($event)" (buttonClick)="handleButtonClickEvent($event)">
+    </app-dynamic-table>
+  </ng-template>
+
 </div>

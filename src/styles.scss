@@ -106,11 +106,7 @@ mat-form-field {
   width: 100%;
 }
 
-.form-row-buttons {
-  margin: 15px 0;
-}
-
-.radio-group-column {
+.radio-group-vertical .mat-radio-group {
   display: flex;
   flex-direction: column;
 

@@ -1,4 +1,4 @@
-<div class="form-group" [formGroup]="form">
+<div [formGroup]="form">
 
   <!-- Form styling -->
   <mat-form-field [id]="'form-field-' + control.key" [appearance]="appearance" [color]="color"
@@ -10,28 +10,28 @@
     </mat-label>
 
     <!-- Text -->
-    <input matInput *ngSwitchCase="'textbox'" [ngClass]="control.class" [formControlName]="control.key"
+    <input matInput *ngSwitchCase="'textbox'" [formControlName]="control.key"
       [id]="control.key" [type]="control.inputType" />
 
     <!-- Text area -->
-    <textarea matInput *ngSwitchCase="'textarea'" [ngClass]="control.class" [formControlName]="control.key"
+    <textarea matInput *ngSwitchCase="'textarea'" [formControlName]="control.key"
       [id]="control.key"></textarea>
 
     <!-- Select -->
-    <mat-select *ngSwitchCase="'dropdown'" [ngClass]="control.class" [formControlName]="control.key" [id]="control.key">
+    <mat-select *ngSwitchCase="'dropdown'" [formControlName]="control.key" [id]="control.key">
       <mat-option *ngFor="let opt of control.options" [value]="opt.key">
         {{ opt.value }}
       </mat-option>
     </mat-select>
 
     <!-- Date -->
-    <input matInput *ngSwitchCase="'date'" [ngClass]="control.class" [formControlName]="control.key" [id]="control.key"
+    <input matInput *ngSwitchCase="'date'" [formControlName]="control.key" [id]="control.key"
       [matDatepicker]="datePicker" />
     <mat-datepicker-toggle *ngSwitchCase="'date'" matSuffix [for]="datePicker"></mat-datepicker-toggle>
     <mat-datepicker touchUi #datePicker></mat-datepicker>
 
     <!-- Date range -->
-    <mat-date-range-input *ngSwitchCase="'date-range'" [ngClass]="control.class" [formGroup]="dateRange"
+    <mat-date-range-input *ngSwitchCase="'date-range'" [formGroup]="dateRange"
       [rangePicker]="dateRangePicker">
       <input matStartDate placeholder="Start" formControlName="start" (dateChange)="setDateRange()" />
       <input matEndDate placeholder="Eind" formControlName="end" (dateChange)="setDateRange()" />
@@ -40,7 +40,7 @@
     <mat-date-range-picker touchUi #dateRangePicker></mat-date-range-picker>
 
     <!-- Chips -->
-    <mat-chip-list *ngSwitchCase="'chips'" [ngClass]="control.class" [formControlName]="control.key" [id]="control.key"
+    <mat-chip-list *ngSwitchCase="'chips'" [formControlName]="control.key" [id]="control.key"
       #chipList>
       <mat-chip *ngFor="let item of control.value" [selectable]="control.selectable" [removable]="control.removable"
         (removed)="removeFromValue(item)">
@@ -54,7 +54,7 @@
 
     <!-- Radio -->
     <input matInput *ngSwitchCase="'radio'" [hidden]="true" />
-    <mat-radio-group *ngSwitchCase="'radio'" [id]="control.key" [ngClass]="control.class" [color]="color"
+    <mat-radio-group *ngSwitchCase="'radio'" [id]="control.key" [color]="color"
       [formControlName]="control.key" [required]="isRequired" (change)="updateFormFieldState()">
       <mat-radio-button *ngFor="let opt of control.options" [value]="opt.key">
         {{ opt.value }}
@@ -63,7 +63,7 @@
 
     <!-- Checkbox -->
     <input matInput *ngSwitchCase="'checkbox'" [hidden]="true" />
-    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="control.key" [ngClass]="control.class" [color]="color"
+    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="control.key" [color]="color"
       [formControlName]="control.key" [labelPosition]="control.labelPosition" [indeterminate]="control.indeterminate"
       [required]="isRequired" (change)="updateFormFieldState()">
       {{ control.placeholder }}
@@ -71,7 +71,7 @@
 
     <!-- Slide -->
     <input matInput *ngSwitchCase="'slide'" [hidden]="true" />
-    <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [ngClass]="control.class" [color]="color"
+    <mat-slide-toggle *ngSwitchCase="'slide'" [id]="control.key" [color]="color"
       [formControlName]="control.key" [labelPosition]="control.labelPosition" [checked]="control.value"
       [required]="isRequired" (change)="updateFormFieldState()">
       {{ control.placeholder }}

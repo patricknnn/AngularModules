@@ -28,54 +28,60 @@ export class FormService {
       new FormControlText({
         key: 'text',
         label: 'Text',
+        class: 'column',
         order: 1
-      }),
-      new FormControlTextArea({
-        key: 'textarea',
-        label: 'Textarea',
-        order: 2
       }),
       new FormControlDropdown({
         key: 'dropdown',
         label: 'Dropdown',
+        class: 'column',
         options: [
           { key: 'one', value: 'One' },
           { key: 'two', value: 'Two' },
           { key: 'three', value: 'Three' }
         ],
-        order: 3
+        order: 2
       }),
       new FormControlDate({
         key: 'date',
         label: 'Date',
-        order: 4
+        class: 'column',
+        order: 3
       }),
       new FormControlDateRange({
         key: 'daterange',
         label: 'Date range',
-        order: 5
+        class: 'column',
+        order: 4
+      }),
+      new FormControlTextArea({
+        key: 'textarea',
+        label: 'Textarea',
+        class: 'column',
+        order: 7
       }),
       new FormControlChips({
         key: 'chips',
         label: 'Chip list',
         value: ['One', 'Two'],
+        class: 'column',
         selectable: true,
         removable: true,
         addOnBlur: true,
-        order: 6,
-        validators: [Validators.required]
+        validators: [Validators.required],
+        order: 6
       }),
       new FormControlRadio({
         key: 'radio',
         label: 'Radio',
         floatLabel: 'always',
-        class: 'radio-group-column',
+        class: 'column radio-group-vertical',
         options: [
           { key: 'one', value: 'One' },
           { key: 'two', value: 'Two' },
           { key: 'three', value: 'Three' }
         ],
-        order: 7,
+        order: 5,
         validators: [Validators.required]
       }),
       new FormControlCheckbox({
@@ -83,17 +89,19 @@ export class FormService {
         label: 'Checkbox',
         floatLabel: 'always',
         placeholder: 'Please check this box',
+        class: 'column',
         indeterminate: false,
-        order: 8,
-        validators: [Validators.required]
+        validators: [Validators.required],
+        order: 8
       }),
       new FormControlSlide({
         key: 'slide',
         label: 'Slide toggle',
         floatLabel: 'always',
         placeholder: 'Please slide this slide toggle',
-        order: 9,
-        validators: [Validators.required]
+        class: 'column',
+        validators: [Validators.required],
+        order: 9
       })
     ];
     return of(formControls.sort((a, b) => a.order - b.order));
