@@ -13,14 +13,6 @@ body {
   overflow: hidden;
 }
 
-table {
-  width: 100%;
-}
-
-mat-form-field {
-  width: 100%;
-}
-
 .spacer {
   flex: 1 1 auto;
 }
@@ -64,17 +56,58 @@ mat-form-field {
   padding: 15px;
 }
 
-.form-column {
+// Flex layout
+.row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.column {
+  flex: 100%;
+  max-width: 100%;
+  padding: 0 4px;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .column {
+    flex: 100%;
+    max-width: calc(100% - 8px);
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .column {
+    flex: 50%;
+    max-width: calc(50% - 8px);
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .column {
+    flex: 33.333333%;
+    max-width: calc(33.333333% - 8px);
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .column {
+    flex: 25%;
+    max-width: calc(25% - 8px);
+  }
+}
+
+// Forms
+mat-form-field {
+  width: 100%;
 }
 
 .form-row-buttons {
   margin: 15px 0;
-}
-
-.form-field {
-  margin-right: 16px;
 }
 
 .radio-group-column {
@@ -86,6 +119,7 @@ mat-form-field {
   }
 }
 
+// Helpers
 .w-100 {
   width: 100%;
 }

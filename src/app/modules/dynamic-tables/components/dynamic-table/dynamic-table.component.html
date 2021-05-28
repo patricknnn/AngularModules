@@ -97,14 +97,13 @@
           </mat-row>
           <!-- Footer row definition -->
           <mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: tableConfig.stickyFooters"
-            class="dynamic-table-row" [class.dynamic-table-row-empty]="!allColumnFootersEmpty()">
+            class="dynamic-table-row" [class.dynamic-table-row-empty]="allColumnFootersEmpty()">
           </mat-footer-row>
 
           <!-- Row shown when there is no matching data. -->
           <div class="dynamic-table-row-no-data" *matNoDataRow>
             <div class="mat-cell">No data to display</div>
           </div>
-
         </mat-table>
       </div>
 

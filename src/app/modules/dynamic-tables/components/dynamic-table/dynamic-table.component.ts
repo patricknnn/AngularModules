@@ -187,6 +187,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
         empty = false;
       }
     });
+    if (this.tableConfig.selecting) {
+      empty = false;
+    }
     return empty;
   }
 
