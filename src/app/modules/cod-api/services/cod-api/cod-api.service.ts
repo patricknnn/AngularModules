@@ -3,15 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-export interface RequestOptions {
-  headers?: HttpHeaders | { [header: string]: string | string[]; };
-  observe?: 'body' | 'events' | 'response';
-  params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; };
-  reportProgress?: boolean;
-  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
-  withCredentials?: boolean;
-}
-
 export interface HttpOptions {
   headers?: any;
   observe?: any;
@@ -30,19 +21,27 @@ export class CodApiService {
   isLoggedIn: boolean = false;
   rtknToken: string = "";
   atknToken: string = "";
-  baseCookie: string = "new_SiteId=cod; ACT_SSO_LOCALE=en_US;country=US;XSRF-TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;API_CSRF_TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;";
+  baseCookie: string = "new_SiteId=cod; ACT_SSO_LOCALE=nl_NL;country=NL;XSRF-TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;API_CSRF_TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;";
   ssoCookie: string = "";
   deviceId: string = "ka4scodapi";
   userAgent: string = "a4b471be-4ad2-47e2-ba0e-e1f2aa04bff9";
 
   requestRetries: number = 3;
   requestHeaders: any = {
-    "content-type": "application/json",
-    "Cookie": this.baseCookie,
-    "userAgent": this.userAgent,
-    "x-requested-with": this.userAgent,
-    "Accept": "application/json, text/javascript, */*; q=0.01",
-    "Connection": "keep-alive"
+    "Authorization": "" as const,
+    "Accept": "" as const,
+    "Connection": "" as const,
+    "Cookie": "" as const,
+    "content-type": "" as const,
+    "userAgent": "" as const,
+    "x-cod-device-id": "" as const,
+    "x-requested-with": "" as const,
+  };
+
+  requestBody: any = {
+    "deviceId": "" as const,
+    "email": "" as const,
+    "password": "" as const,
   };
 
   platforms: Object = {
@@ -59,7 +58,14 @@ export class CodApiService {
    * Initialize CodApiService
    * @param http HttpClient module
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.requestHeaders["content-type"] = "application/json";
+    this.requestHeaders["Cookie"] = this.baseCookie;
+    this.requestHeaders["userAgent"] = this.userAgent;
+    this.requestHeaders["x-requested-with"] = this.userAgent;
+    this.requestHeaders["Accept"] = "application/json";
+    this.requestHeaders["Connection"] = "keep-alive";
+  }
 
   /**
    * Log in
@@ -70,25 +76,21 @@ export class CodApiService {
   login(username: string, password: string): Promise<string> {
     // Fetch token
     return new Promise((resolve, reject) => {
-      // Register device
-      let body = {
-        "deviceId": this.deviceId
-      };
-      this.postRequest<any>(`${this.loginURL}registerDevice`, body)
+      // Register device (working)
+      this.requestBody["deviceId"] = this.deviceId;
+      this.postRequest<any>(`${this.loginURL}registerDevice`, this.requestBody, this.requestHeaders)
         .toPromise()
         .then((result) => {
-          console.log(`registerDevice result: ${result}`);
-          this.requestHeaders.headers?.append("Authorization", `bearer ${result.data.authHeader}`);
-          this.requestHeaders.headers?.append("X-COD-DEVICE-ID", `${this.deviceId}`);
           // login
-          let body = {
-            "email": username,
-            "password": password
-          };
-          this.postRequest<any>(`${this.loginURL}login`, body)
+          this.requestHeaders["Authorization"] = `bearer ${result.data.authHeader}`;
+          this.requestHeaders["x-cod-device-id"] = `${this.deviceId}`;
+          this.requestBody["email"] = username;
+          this.requestBody["password"] = password;
+          this.postRequest<any>(`${this.loginURL}login`, this.requestBody, this.requestHeaders)
             .toPromise()
             .then((result) => {
-              if (!result.success) throw Error("401 - Unauthorized. Incorrect username or password.");
+              // process login result
+              if (!result.success) throw Error(`${result.status} - ${result.message}`);
               this.rtknToken = result.rtkn;
               this.atknToken = result.atkn;
               this.ssoCookie = result.s_ACT_SSO_COOKIE;

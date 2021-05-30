@@ -8,8 +8,9 @@ import { CodApiService } from '../../services/cod-api/cod-api.service';
   styleUrls: ['./cod-api-login.component.scss']
 })
 export class CodApiLoginComponent implements OnInit {
-  username = new FormControl('', [ Validators.required ]);
-  password = new FormControl('', [ Validators.required ]);
+  // ka4scod@gmail.com KAASCOD#8395529 Kakbaard1
+  username = new FormControl('ka4scod@gmail.com', [ Validators.required ]);
+  password = new FormControl('Kakbaard1', [ Validators.required ]);
 
   constructor(private api: CodApiService) { }
 
