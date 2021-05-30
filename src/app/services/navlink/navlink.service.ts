@@ -20,6 +20,7 @@ export class NavlinkService {
       new Navlink("Shared", "edit", "/shared"),
       new Navlink("Dynamic forms", "edit", "/forms"),
       new Navlink("Dynamic tables", "edit", "/tables"),
+      new Navlink("Cod API", "edit", "/codapi")
     ];
     return of(navlinks);
   }
