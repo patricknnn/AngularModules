@@ -1,24 +1,20 @@
 <!-- Information -->
-<div class="row">
-    <mat-card>
-        <mat-card-content>
-            <mat-list role="list">
-                <mat-list-item role="listitem">
-                    csrfToken: {{csrfToken()}}
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    ssoToken: {{ssoToken()}}
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    atknToken: {{atknToken()}}
-                </mat-list-item>
-              </mat-list>
-        </mat-card-content>
-    </mat-card>
-</div>
+<mat-card>
+    <mat-card-content>
+        <mat-list role="list">
+            <mat-list-item role="listitem">
+                rtknToken: {{rtknToken()}}
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                atknToken: {{atknToken()}}
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                ssoCookie: {{ssoCookie()}}
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+</mat-card>
 
 <!-- Content -->
-<div class="row">
-    <app-cod-api-login *ngIf="!isLoggedIn()"></app-cod-api-login>
-    <app-cod-api-content *ngIf="isLoggedIn()"></app-cod-api-content>
-</div>
+<app-cod-api-login *ngIf="!isLoggedIn()"></app-cod-api-login>
+<app-cod-api-content *ngIf="isLoggedIn()"></app-cod-api-content>

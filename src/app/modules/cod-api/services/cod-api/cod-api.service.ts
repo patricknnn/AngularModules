@@ -23,24 +23,36 @@ export interface HttpOptions {
 
 @Injectable()
 export class CodApiService {
-  isLoggedIn: boolean = false;
-  csrfToken?: string;
-  ssoToken?: string;
-  atknToken?: string;
+  apiURL: string = "https://my.callofduty.com/api/papi-client/";
+  loginURL: string = "https://profile.callofduty.com/cod/mapp/";
+  profileURL: string = "https://profile.callofduty.com/";
 
-  baseCookie: string = "Cookie: XSRF-TOKEN=Set by test scripts; new_SiteId=activision;";
+  isLoggedIn: boolean = false;
+  rtknToken: string = "";
+  atknToken: string = "";
+  baseCookie: string = "new_SiteId=cod; ACT_SSO_LOCALE=en_US;country=US;XSRF-TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;API_CSRF_TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;";
   ssoCookie: string = "";
+  deviceId: string = "ka4scodapi";
   userAgent: string = "a4b471be-4ad2-47e2-ba0e-e1f2aa04bff9";
+
   requestRetries: number = 3;
-  requestOptions: RequestOptions = {
-    headers: {
-      "content-type": "application/json",
-      "Cookie": this.baseCookie,
-      "userAgent": this.userAgent,
-      "x-requested-with": this.userAgent,
-      "Accept": "application/json, text/javascript, */*; q=0.01",
-      "Connection": "keep-alive"
-    }
+  requestHeaders: any = {
+    "content-type": "application/json",
+    "Cookie": this.baseCookie,
+    "userAgent": this.userAgent,
+    "x-requested-with": this.userAgent,
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Connection": "keep-alive"
+  };
+
+  platforms: Object = {
+    battle: "battle",
+    steam: "steam",
+    psn: "psn",
+    xbl: "xbl",
+    acti: "acti",
+    uno: "uno",
+    all: "all"
   };
 
   /**
@@ -58,32 +70,37 @@ export class CodApiService {
   login(username: string, password: string): Promise<string> {
     // Fetch token
     return new Promise((resolve, reject) => {
-      this.getRequest<string>("https://s.activision.com/activision/login")
+      // Register device
+      let body = {
+        "deviceId": this.deviceId
+      };
+      this.postRequest<any>(`${this.loginURL}registerDevice`, body)
         .toPromise()
         .then((result) => {
-          this.csrfToken = result;
-          let options: RequestOptions = {
-            headers: {
-              "content-type": "application/json",
-              "Cookie": "XSRF-TOKEN" + this.csrfToken + "; new_SiteId=activision;",
-              "Accept": "application/json",
-              "Connection": "keep-alive"
-            }
-          };
+          console.log(`registerDevice result: ${result}`);
+          this.requestHeaders.headers?.append("Authorization", `bearer ${result.data.authHeader}`);
+          this.requestHeaders.headers?.append("X-COD-DEVICE-ID", `${this.deviceId}`);
+          // login
           let body = {
-            "username": username,
-            "password": password,
-            "remember_me": "true",
-            "_csrf": this.csrfToken
-          }
-          this.postRequest<any>("https://s.activision.com/do_login?new_SiteId=activision", body, options)
+            "email": username,
+            "password": password
+          };
+          this.postRequest<any>(`${this.loginURL}login`, body)
             .toPromise()
             .then((result) => {
-              console.log(result);
-              resolve("200 - OK. Log in successful.");
-            }).catch((error) => {
+              if (!result.success) throw Error("401 - Unauthorized. Incorrect username or password.");
+              this.rtknToken = result.rtkn;
+              this.atknToken = result.atkn;
+              this.ssoCookie = result.s_ACT_SSO_COOKIE;
+              this.requestHeaders["Cookie"] = `${this.baseCookie}rtkn=${this.rtknToken};ACT_SSO_COOKIE=${this.ssoCookie};atkn=${this.atknToken};`;
+              this.isLoggedIn = true;
+              resolve("Succesfully logged in");
+            })
+            .catch((error) => {
               reject(typeof error === "string" ? error : error.message);
-            });
+            })
+        }).catch((error) => {
+          reject(typeof error === "string" ? error : error.message);
         });
     })
   }
@@ -129,7 +146,7 @@ export class CodApiService {
         `Backend returned code ${error.status}, ` +
         `url was ${error.url}, ` +
         `type was ${error.type}, ` +
-        `body was: ${error.error}`);
+        `body was: ${JSON.stringify(error.error.text)}`);
     }
     // Return error message
     return throwError('Request resulted in an error.');

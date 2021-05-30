@@ -101,6 +101,13 @@ body {
   }
 }
 
+// Cards
+.mat-card-avatar.mat-icon {
+  height: 40px;
+  width: 40px;
+  font-size: 40px;
+}
+
 // Forms
 mat-form-field {
   width: 100%;

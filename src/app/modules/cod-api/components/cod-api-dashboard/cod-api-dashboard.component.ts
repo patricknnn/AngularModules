@@ -18,16 +18,16 @@ export class CodApiDashboardComponent implements OnInit {
     return this.api.isLoggedIn;
   }
 
-  csrfToken(): string {
-    return this.api.csrfToken ? this.api.csrfToken : '';
+  rtknToken(): string {
+    return this.api.rtknToken;
   }
 
-  ssoToken(): string {
-    return this.api.ssoToken ? this.api.ssoToken : '';
+  ssoCookie(): string {
+    return this.api.ssoCookie;
   }
 
   atknToken(): string {
-    return this.api.atknToken ? this.api.atknToken : '';
+    return this.api.atknToken;
   }
 
 }
