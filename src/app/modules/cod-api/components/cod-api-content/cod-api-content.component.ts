@@ -15,6 +15,6 @@ export class CodApiContentComponent implements OnInit {
   ngOnInit(): void {
     //this.api.mwLeaderboard("1", "battle").then(result => this.content = result);
     //this.api.getProfile("mw", "BENNIEMAN", "battle").then(result => this.content = JSON.stringify(result));
-    this.api.getMatches("mw", "mp", {username: "BENNIEMAN#21282", platform: "battle"}).then(result => this.content = JSON.stringify(result));
+    this.api.getMatches("mw", "mp", {username: "BENNIEMAN#21282", platform: "battle"}, true).then(result => this.content = JSON.stringify(result));
   }
 }

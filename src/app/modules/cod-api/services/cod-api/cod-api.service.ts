@@ -20,7 +20,6 @@ export declare type CodApiGameType = 'mp' | 'wz' | 'zm';
 @Injectable()
 export class CodApiService {
   apiURL: string = "https://my.callofduty.com/api/papi-client/";
-  loginURL: string = "https://profile.callofduty.com/cod/mapp/";
   profileURL: string = "https://profile.callofduty.com/";
   isLoggedIn: boolean = false;
   authHeader: string = "";
@@ -42,8 +41,12 @@ export class CodApiService {
    */
   constructor(private http: HttpClient) {
     this.requestHeaders = new HttpHeaders();
-    this.requestHeaders = this.requestHeaders.append("Accept", "application/json");
+    this.requestHeaders = this.requestHeaders.append("Accept", "application/json, text/javascript, */*; q=0.01");
     this.requestHeaders = this.requestHeaders.append('Content-Type', 'application/json');
+    this.requestHeaders = this.requestHeaders.append('Connection', 'keepalive');
+    this.requestHeaders = this.requestHeaders.append('Cookie', this.baseCookie);
+    this.requestHeaders = this.requestHeaders.append('userAgent', this.userAgent);
+    this.requestHeaders = this.requestHeaders.append('x_requested_with', this.userAgent);
     this.requestHeaders = this.requestHeaders.append("x_cod_device_id", this.deviceId);
   }
 
@@ -58,14 +61,14 @@ export class CodApiService {
       const options: HttpOptions = { headers: this.requestHeaders, observe: 'body', responseType: 'json' };
       const body = { "deviceId": this.deviceId };
       // Fetch authHeader for login
-      this.postRequest<any>(`${this.loginURL}registerDevice`, body, options)
+      this.postRequest<any>(`${this.profileURL}cod/mapp/registerDevice`, body, options)
         .toPromise()
         .then((result) => {
           this.requestHeaders = this.requestHeaders.append("Authorization", `bearer ${result.data.authHeader}`);
           const options: HttpOptions = { headers: this.requestHeaders, observe: 'body', responseType: 'json' };
           const body = { "email": username, "password": password };
           // Login and fetch tokens
-          this.postRequest<any>(`${this.loginURL}login`, body, options)
+          this.postRequest<any>(`${this.profileURL}cod/mapp/login`, body, options)
             .toPromise()
             .then((result) => {
               // process login result
