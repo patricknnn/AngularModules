@@ -18,16 +18,4 @@ export class CodApiDashboardComponent implements OnInit {
     return this.api.isLoggedIn;
   }
 
-  rtknToken(): string {
-    return this.api.rtknToken;
-  }
-
-  ssoCookie(): string {
-    return this.api.ssoCookie;
-  }
-
-  atknToken(): string {
-    return this.api.atknToken;
-  }
-
 }
