@@ -44,7 +44,8 @@ export class CodApiDashboardComponent implements OnInit {
   getData(): void {
     //this.api.getLeaderboard(this.game, this.player.platform, 1).then(result => this.content = JSON.stringify(result));
     //this.api.getProfile(this.game, this.gameType, this.player).then(result => this.content = JSON.stringify(result));
-    this.api.getMatches(this.game, this.gameType, this.player, true).then(result => this.content = JSON.stringify(result));
+    //this.api.getMatches(this.game, this.gameType, this.player, true).then(result => this.content = JSON.stringify(result));
+    this.api.getSettings(this.player).then(result => this.content = JSON.stringify(result));
   }
 
 }

@@ -61,6 +61,12 @@ export class CodApiService {
               // process login result
               if (!result.success) throw Error(`${result.status} - ${result.message} (${result})`);
               this.ssoCookie = result.s_ACT_SSO_COOKIE;
+              // TODO: add to Cookie
+              // rtkn=${result.rtkn};
+              // atkn=${result.atkn};
+              document.cookie = `${document.cookie}rtkn=${result.rtkn};atkn=${result.atkn};`;
+              console.log(document.cookie);
+              
               this.isLoggedIn = true;
               resolve('Succesfully logged in');
             })
