@@ -19,23 +19,11 @@ export declare type CodApiGameType = 'mp' | 'wz' | 'zm';
 
 @Injectable()
 export class CodApiService {
-  isLoggedIn: boolean = true;
+  isLoggedIn: boolean = false;
   apiURL: string = 'https://my.callofduty.com/api/papi-client/';
   profileURL: string = 'https://profile.callofduty.com/';
-  deviceId: string = 'ka4scodapi';
-  csrfToken: string = 'e08e64e8-9f11-4fe4-b898-2a76c001904f';
-  xsrfToken: string = '4bXkGzPzT0al65vAy8ORbmXj7dZMYiDR0xY52-nZ71ER_-nlyg5NI1xYc06E2uyK';
-  atknToken: string = `eyJhbGciOiAiQTEyOEtXIiwgImVuYyI6ICJBMTI4R0NNIiwgImtpZCI6ICJ1bm9fcHJvZF9sYXNfMSJ9.
-  RGTIx4OAeWLaUhB15VQEzQ_Jg8xnH9r_xsnqkwzLgkBzoprvbQ4Jmg.3x3ZgJ9foujvPPOG.47kFYU670q4s1uVqM9LIfPafDPAK7U
-  ijWm2ej9wxOEUYzs6LtRNcMKiLOJ2ZnjbILbxvVo9A8KLXR9JCoIX0xlX79l9rb64QPzYUl5FsMayOISeRoN6EKmQsNwd3HxD02zAy
-  cCvJ8VRZALwUAGUqMDU8Y515CqcREwkD4SRdpNmvImKmV5PHb-S6ltgt1HtID55-aVeo7pm3cSNkz0a9fiOHz43OEPlxkl0Yr3PVg2
-  gfPWtzx1oipEwoqYAk7d7PPo_RhlZcHircPjNY78-wc_vhiWmstNTQLlo7kNaBu4sXalKGEb0aG98rRZ9U2n6DPPGM-qqdETAWFdRG
-  01CT39QbwN2Jx4hXTqZ-hdL4_kuVDg-DGsNoKTZMuBfDSfVK9sUyTjFkpoF1Qqdbx3hvLRSpOy4ISuD3ETuSjnRRziSfiN_nhSA6Gy
-  vwkz-JbJZy6HD6XlXJc2dkkqeZJi-k7sVi51w.oesAs2OLB1vqXk7f5bKgbQ`;
-  rtknToken: string = ``;
-  ssoCookie: string = `NjM5NzM2NzM2MzEwNzIyNDgzNDoxNjIzNzU2MzM5MDg2OjU5NTQ5Nzc3MTYxN2NkMjMzZTczMzQ2NTYzYTNkYWUx`;
-  ssoExpiry: string = `1623755351557`;
-  baseCookie: string;
+  deviceId: string = 'ka4sc0dap1';
+  ssoCookie?: string;
   requestRetries: number = 3;
   requestHeaders: HttpHeaders;
 
@@ -44,15 +32,9 @@ export class CodApiService {
    * @param http HttpClient module
    */
   constructor(private http: HttpClient) {
-    this.baseCookie = `new_SiteId=cod; country=NL; ACT_SSO_LOCALE=en_US;`;
-    this.baseCookie = `${this.baseCookie}ACT_SSO_COOKIE=${this.ssoCookie};ACT_SSO_COOKIE_EXPIRY=${this.ssoExpiry};`;
-    this.baseCookie = `${this.baseCookie}XSRF-TOKEN=${this.xsrfToken}; API_CSRF_TOKEN=${this.xsrfToken};`;
-    this.baseCookie = `${this.baseCookie}atkn=${this.atknToken};`;
     this.requestHeaders = new HttpHeaders();
-    this.requestHeaders = this.requestHeaders.append('Accept', 'application/json, text/javascript, */*; q=0.01');
     this.requestHeaders = this.requestHeaders.append('Content-Type', 'application/json');
-    this.requestHeaders = this.requestHeaders.append('Authorization', ``);
-    this.requestHeaders = this.requestHeaders.append('Cookie', this.baseCookie);
+    this.requestHeaders = this.requestHeaders.append('Accept', 'application/json, text/javascript, */*; q=0.01');
     this.requestHeaders = this.requestHeaders.append('x_cod_device_id', this.deviceId);
   }
 
@@ -71,21 +53,15 @@ export class CodApiService {
       this.postRequest<any>(`${this.profileURL}cod/mapp/registerDevice`, body).toPromise()
         .then((result) => {
           this.requestHeaders = this.requestHeaders.set('Authorization', `bearer ${result.data.authHeader}`);
-          const body = {
-            'username': username,
-            'password': password
-          };
+          const body = { 'email': username, 'password': password };
           // Login and fetch tokens
           this.postRequest<any>(`${this.profileURL}cod/mapp/login`, body)
             .toPromise()
             .then((result) => {
               // process login result
-              if (!result.success) throw Error(`${result.status} - ${result.message}`);
-              this.rtknToken = result.rtkn;
-              this.atknToken = result.atkn;
+              if (!result.success) throw Error(`${result.status} - ${result.message} (${result})`);
               this.ssoCookie = result.s_ACT_SSO_COOKIE;
               this.isLoggedIn = true;
-              this.requestHeaders = this.requestHeaders.set('Cookie', `${this.baseCookie}ACT_SSO_COOKIE=${this.ssoCookie};atkn=${this.atknToken};`);
               resolve('Succesfully logged in');
             })
             .catch((error) => {
@@ -309,11 +285,11 @@ export class CodApiService {
    */
   private getRequest<T>(
     url: string,
-    options: HttpOptions = {
+    options = {
       headers: this.requestHeaders,
-      observe: 'body',
-      responseType: 'json',
-      withCredentials: true
+      observe: 'body' as const,
+      responseType: 'json' as const,
+      withCredentials: true as const,
     }
   ): Observable<T> {
     return this.http.get<T>(url, options).pipe(
@@ -331,9 +307,9 @@ export class CodApiService {
     url: string,
     options: any = {
       headers: this.requestHeaders,
-      observe: 'response',
-      responseType: 'text',
-      withCredentials: true
+      observe: 'response' as const,
+      responseType: 'text' as const,
+      withCredentials: true as const,
     }
   ): Observable<any> {
     return this.http.get(url, options);
@@ -351,9 +327,9 @@ export class CodApiService {
     body: any,
     options: HttpOptions = {
       headers: this.requestHeaders,
-      observe: 'body',
-      responseType: 'json',
-      withCredentials: true
+      observe: 'body' as const,
+      responseType: 'json' as const,
+      withCredentials: true as const,
     }
   ): Observable<T> {
     return this.http.post<T>(url, body, options)
