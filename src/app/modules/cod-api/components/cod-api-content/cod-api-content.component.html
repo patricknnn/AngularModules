@@ -5,6 +5,50 @@
     <mat-card-subtitle>COD API</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    {{content}}
+    <div class="row">
+      <div class="column">
+        <mat-form-field [appearance]="appearance" [color]="color" class="form-field">
+          <mat-label>Player</mat-label>
+          <mat-select name="player" [(ngModel)]="player">
+            <mat-option *ngFor="let player of players" [value]="player">
+              {{player.username}} ({{player.platform}})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- <div class="column">
+        <mat-form-field [appearance]="appearance" [color]="color" class="form-field">
+          <mat-label>Platform</mat-label>
+          <mat-select name="platform" [(ngModel)]="platform">
+            <mat-option *ngFor="let platform of platforms" [value]="platform">{{platform}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+      <div class="column">
+        <mat-form-field [appearance]="appearance" [color]="color" class="form-field">
+          <mat-label>Game</mat-label>
+          <mat-select name="game" [(ngModel)]="game">
+            <mat-option *ngFor="let game of games" [value]="game">{{game}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="column">
+        <mat-form-field [appearance]="appearance" [color]="color" class="form-field">
+          <mat-label>Game Type</mat-label>
+          <mat-select name="gameType" [(ngModel)]="gameType">
+            <mat-option *ngFor="let type of gameTypes" [value]="type">{{type}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <button mat-flat-button color="accent" (click)="getData()">Get data</button>
+    </div>
+
+    <div class="row">
+      {{content}}
+    </div>
+
   </mat-card-content>
 </mat-card>

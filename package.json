@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "startSecure": "ng serve --ssl --ssl-key C:\\Users\\niewo\\Documents\\localhost.key --ssl-cert C:\\Users\\niewo\\Documents\\localhost.crt",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
