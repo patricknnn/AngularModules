@@ -33,9 +33,12 @@ export class CodApiService {
    */
   constructor(private http: HttpClient) {
     this.requestHeaders = new HttpHeaders();
-    this.requestHeaders = this.requestHeaders.append('Content-Type', 'application/json');
-    this.requestHeaders = this.requestHeaders.append('Accept', 'application/json, text/javascript, */*; q=0.01');
-    this.requestHeaders = this.requestHeaders.append('x_cod_device_id', this.deviceId);
+    this.requestHeaders = this.requestHeaders.set('Content-Type', 'application/json');
+    this.requestHeaders = this.requestHeaders.set('Accept', 'application/json, text/javascript, */*; q=0.01');
+    this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Origin', '*');
+    this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Credentials', 'true');
+    this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Headers', '*');
+    this.requestHeaders = this.requestHeaders.set('x_cod_device_id', this.deviceId);
   }
 
   /**
@@ -66,7 +69,7 @@ export class CodApiService {
               // atkn=${result.atkn};
               document.cookie = `${document.cookie}rtkn=${result.rtkn};atkn=${result.atkn};`;
               console.log(document.cookie);
-              
+
               this.isLoggedIn = true;
               resolve('Succesfully logged in');
             })

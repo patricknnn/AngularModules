@@ -68,13 +68,70 @@
       </div>
     </div>
 
-    <div class="row">
-      <button mat-flat-button color="accent" (click)="getData()">Get data</button>
+    <div class="row button-row">
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getLeaderBoard()">Leaderboard</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getProfile()">Profile</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getMatches()">Matches</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getSettings()">Settings</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getMatchAnalysis()">Match Analysis</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getFriends()">Friends</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getFriendFeed()">Friend Feed</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getEventFeed()">Event Feed</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getMaps()">Maps</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getLoot()">Loot</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getIdentity()">Identity</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getAccounts()">Accounts</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getInfo()">Info</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getBattlepassInfo()">Battlepass Info</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getBattlepassLoot()">Battlepass Loot</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getCodPoints()">COD Points</button>
+      </div>
+      <div class="column">
+        <button mat-flat-button color="accent" (click)="getPresence()">Presence</button>
+      </div>
     </div>
+  </mat-card-content>
+</mat-card>
 
-    <div class="row">
-      {{content}}
-    </div>
-
+<!-- Result -->
+<mat-card *ngIf="isLoggedIn()" style="margin-top: 16px;">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>info</mat-icon>
+    <mat-card-title>{{resultTitle}}</mat-card-title>
+    <mat-card-subtitle>COD API</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    {{content}}
   </mat-card-content>
 </mat-card>
