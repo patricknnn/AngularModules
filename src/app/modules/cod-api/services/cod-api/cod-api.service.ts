@@ -23,6 +23,7 @@ export class CodApiService {
   apiURL: string = 'https://my.callofduty.com/api/papi-client/';
   profileURL: string = 'https://profile.callofduty.com/';
   deviceId: string = 'ka4sc0dap1';
+  baseCookie: string = 'new_SiteId=cod; ACT_SSO_LOCALE=en_US;country=US;XSRF-TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;API_CSRF_TOKEN=68e8b62e-1d9d-4ce1-b93f-cbe5ff31a041;';
   ssoCookie?: string;
   requestRetries: number = 3;
   requestHeaders: HttpHeaders;
@@ -38,7 +39,9 @@ export class CodApiService {
     this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Origin', '*');
     this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Credentials', 'true');
     this.requestHeaders = this.requestHeaders.set('Access-Control-Allow-Headers', '*');
-    this.requestHeaders = this.requestHeaders.set('x_cod_device_id', this.deviceId);
+    this.requestHeaders = this.requestHeaders.set('x_cod_device_id', `${this.deviceId}`);
+    this.requestHeaders = this.requestHeaders.set('Cookie', `${this.baseCookie}`);
+    document.cookie = `${this.baseCookie}`;
   }
 
   /**
@@ -53,23 +56,20 @@ export class CodApiService {
         'deviceId': this.deviceId
       };
       // Fetch authHeader for login
-      this.postRequest<any>(`${this.profileURL}cod/mapp/registerDevice`, body).toPromise()
+      this.postRequest(`${this.profileURL}cod/mapp/registerDevice`, body).toPromise()
         .then((result) => {
           this.requestHeaders = this.requestHeaders.set('Authorization', `bearer ${result.data.authHeader}`);
           const body = { 'email': username, 'password': password };
           // Login and fetch tokens
-          this.postRequest<any>(`${this.profileURL}cod/mapp/login`, body)
+          this.postRequest(`${this.profileURL}cod/mapp/login`, body)
             .toPromise()
             .then((result) => {
               // process login result
               if (!result.success) throw Error(`${result.status} - ${result.message} (${result})`);
               this.ssoCookie = result.s_ACT_SSO_COOKIE;
               // TODO: add to Cookie
-              // rtkn=${result.rtkn};
-              // atkn=${result.atkn};
-              document.cookie = `${document.cookie}rtkn=${result.rtkn};atkn=${result.atkn};`;
-              console.log(document.cookie);
-
+              this.requestHeaders = this.requestHeaders.set('Cookie', `${this.baseCookie}rtkn=${result.rtkn};atkn=${result.atkn};`);
+              document.cookie = `${this.baseCookie}rtkn=${result.rtkn};atkn=${result.atkn};`;
               this.isLoggedIn = true;
               resolve('Succesfully logged in');
             })
@@ -292,16 +292,14 @@ export class CodApiService {
    * @param url Request url
    * @returns Observable<T>
    */
-  private getRequest<T>(
+  private getRequest(
     url: string,
     options = {
       headers: this.requestHeaders,
-      observe: 'body' as const,
-      responseType: 'json' as const,
-      withCredentials: true as const,
+      withCredentials: true,
     }
-  ): Observable<T> {
-    return this.http.get<T>(url, options).pipe(
+  ): Observable<any> {
+    return this.http.get(url, options).pipe(
       retry(this.requestRetries),
       catchError(this.handleError)
     );
@@ -316,9 +314,6 @@ export class CodApiService {
     url: string,
     options: any = {
       headers: this.requestHeaders,
-      observe: 'response' as const,
-      responseType: 'text' as const,
-      withCredentials: true as const,
     }
   ): Observable<any> {
     return this.http.get(url, options);
@@ -331,17 +326,15 @@ export class CodApiService {
    * @param options Post options
    * @returns 
    */
-  private postRequest<T>(
+  private postRequest(
     url: string,
     body: any,
-    options: HttpOptions = {
+    options: any = {
       headers: this.requestHeaders,
-      observe: 'body' as const,
-      responseType: 'json' as const,
-      withCredentials: true as const,
+      withCredentials: true,
     }
-  ): Observable<T> {
-    return this.http.post<T>(url, body, options)
+  ): Observable<any> {
+    return this.http.post(url, body, options)
       .pipe(
         retry(this.requestRetries),
         catchError(this.handleError)
