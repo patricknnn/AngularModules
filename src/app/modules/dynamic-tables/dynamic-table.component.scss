@@ -1,0 +1,131 @@
+.dynamic-table-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 2rem;
+
+  // filter
+  & .dynamic-table-filter {
+    display: flex;
+
+    & mat-form-field {
+      width: 100%;
+    }
+  }
+
+  // table
+  & .dynamic-table-table {
+    width: 100%;
+    overflow: auto;
+
+    // selecting
+    & .dynamic-table-select-header,
+    & .dynamic-table-select-cell,
+    & .dynamic-table-select-footer {
+      max-width: min-content;
+      padding-right: 24px !important;
+
+      & .checkbox-hidden {
+        opacity: 0;
+      }
+    }
+
+    // header row
+    & .dynamic-table-header-row {
+      border-radius: 4px 4px 0 0;
+
+      & mat-header-cell:first-child {
+        border-top-left-radius: 4px;
+      }
+
+      & mat-header-cell:last-child {
+        border-top-right-radius: 4px;
+      }
+    }
+
+    // table rows
+    & .dynamic-table-row {
+
+      & .dynamic-table-cell {
+        display: flex;
+        flex-grow: 1;
+
+        & img {
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          margin-top: 4px;
+        }
+      }
+
+      & .dynamic-table-cell-buttons {
+        padding-right: 8px;
+      }
+    }
+
+    & .dynamic-table-row:hover {
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    & .dynamic-table-row-even {
+      background-color: inherit;
+    }
+    & .dynamic-table-row-odd {
+      background-color: inherit;
+    }
+
+    // footer row
+    & .dynamic-table-footer-row {
+      border-radius: 0 0 4px 4px;
+
+      & mat-footer-cell {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      & mat-footer-cell:first-child {
+        border-bottom-left-radius: 4px;
+      }
+
+      & mat-footer-cell:last-child {
+        border-bottom-right-radius: 4px;
+      }
+    }
+
+    // empty row
+    & .dynamic-table-row-empty {
+      min-height: 0;
+      border: 0;
+
+      & .checkbox-hidden {
+        display: none;
+      }
+    }
+
+    // no data row
+    & .dynamic-table-row-no-data {
+      display: flex;
+      align-items: center;
+      position: relative;
+      min-height: 48px;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+      & .mat-cell {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        word-wrap: break-word;
+        min-height: inherit;
+        padding-left: 24px;
+      }
+    }
+  }
+
+  // paginator
+  & .dynamic-table-paginator.material-dark {
+    border-radius: 0 0 4px 4px;
+  }
+}

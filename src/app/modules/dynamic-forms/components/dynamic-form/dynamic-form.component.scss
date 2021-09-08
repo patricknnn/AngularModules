@@ -1,0 +1,31 @@
+.dynamic-form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: calc(800px + 2rem);
+  margin-bottom: 2rem;
+
+  // full width for :
+  // textarea
+  // radio
+  // slide
+  // checkbox
+  // chips
+  & .dynamic-form-control-container {
+    width: 100%;
+    margin-right: 1rem;
+  }
+
+  // max-width for :
+  // text
+  // date
+  // date-range
+  // dropdown
+  & .dynamic-form-control-container.text,
+  & .dynamic-form-control-container.date,
+  & .dynamic-form-control-container.date-range,
+  & .dynamic-form-control-container.dropdown {
+    max-width: 400px;
+  }
+}

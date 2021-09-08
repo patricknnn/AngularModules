@@ -1,109 +1,58 @@
 import { Injectable } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { FormControlBase } from 'src/app/modules/dynamic-forms/models/form-control-base';
-import { FormControlCheckbox } from 'src/app/modules/dynamic-forms/models/form-control-checkbox';
-import { FormControlChips } from 'src/app/modules/dynamic-forms/models/form-control-chips';
-import { FormControlDate } from 'src/app/modules/dynamic-forms/models/form-control-date';
-import { FormControlDateRange } from 'src/app/modules/dynamic-forms/models/form-control-date-range';
-import { FormControlDropdown } from 'src/app/modules/dynamic-forms/models/form-control-dropdown';
-import { FormControlRadio } from 'src/app/modules/dynamic-forms/models/form-control-radio';
-import { FormControlSlide } from 'src/app/modules/dynamic-forms/models/form-control-slide';
-import { FormControlText } from 'src/app/modules/dynamic-forms/models/form-control-text';
-import { FormControlTextArea } from 'src/app/modules/dynamic-forms/models/form-control-textarea';
+import { PeriodicElement } from 'src/app/models/periodic-element';
+import { DynamicFormControlBuilder } from 'src/app/modules/dynamic-forms/builders/dynamic-form-control-builder';
+import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic-form-control';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormService {
-
-  constructor() { }
-
-  /**
-   * Returns form controls
-   * @returns Observable stream of form controls
-   */
-  getFormControls(): Observable<FormControlBase<any>[]> {
-    const formControls: FormControlBase<any>[] = [
-      new FormControlText({
-        key: 'text',
-        label: 'Text',
-        class: 'column',
-        order: 1
-      }),
-      new FormControlDropdown({
-        key: 'dropdown',
-        label: 'Dropdown',
-        class: 'column',
-        options: [
-          { key: 'one', value: 'One' },
-          { key: 'two', value: 'Two' },
-          { key: 'three', value: 'Three' }
-        ],
-        order: 2
-      }),
-      new FormControlDate({
-        key: 'date',
-        label: 'Date',
-        class: 'column',
-        order: 3
-      }),
-      new FormControlDateRange({
-        key: 'daterange',
-        label: 'Date range',
-        class: 'column',
-        order: 4
-      }),
-      new FormControlTextArea({
-        key: 'textarea',
-        label: 'Textarea',
-        class: 'column',
-        order: 7
-      }),
-      new FormControlChips({
-        key: 'chips',
-        label: 'Chip list',
-        value: ['One', 'Two'],
-        class: 'column',
-        selectable: true,
-        removable: true,
-        addOnBlur: true,
-        validators: [Validators.required],
-        order: 6
-      }),
-      new FormControlRadio({
-        key: 'radio',
-        label: 'Radio',
-        floatLabel: 'always',
-        class: 'column radio-group-vertical',
-        options: [
-          { key: 'one', value: 'One' },
-          { key: 'two', value: 'Two' },
-          { key: 'three', value: 'Three' }
-        ],
-        order: 5,
-        validators: [Validators.required]
-      }),
-      new FormControlCheckbox({
-        key: 'checkbox',
-        label: 'Checkbox',
-        floatLabel: 'always',
-        placeholder: 'Please check this box',
-        class: 'column',
-        indeterminate: false,
-        validators: [Validators.required],
-        order: 8
-      }),
-      new FormControlSlide({
-        key: 'slide',
-        label: 'Slide toggle',
-        floatLabel: 'always',
-        placeholder: 'Please slide this slide toggle',
-        class: 'column',
-        validators: [Validators.required],
-        order: 9
-      })
+  public getFormControls(): DynamicFormControl<any>[] {
+    const formControls: DynamicFormControl<any>[] = [
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('name')
+        .setLabel('Name')
+        .setValue('Bennie')
+        .setOrder(1)
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('street')
+        .setLabel('Street')
+        .setValue('Zuidenveld')
+        .setOrder(2)
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('postalCode')
+        .setLabel('Postal Code')
+        .setValue('9642 GK')
+        .setOrder(3)
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('city')
+        .setLabel('City')
+        .setValue('Veendam')
+        .setOrder(4)
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('country')
+        .setLabel('Country')
+        .setValue('Netherlands')
+        .setOrder(5)
+        .build(),
     ];
-    return of(formControls.sort((a, b) => a.order - b.order));
+
+    return formControls.sort(
+      (a: DynamicFormControl<any>, b: DynamicFormControl<any>) =>
+        a.order - b.order
+    );
+  }
+
+  getElement(): PeriodicElement {
+    return new PeriodicElement(1, 'Hydrogen', 1.0079, 'H');
   }
 }

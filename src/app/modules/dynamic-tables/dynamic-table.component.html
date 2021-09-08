@@ -1,0 +1,173 @@
+<!-- Container -->
+<div class="dynamic-table-container">
+  <!-- Filter -->
+  <div class="dynamic-table-filter" *ngIf="tableConfig.filter">
+    <mat-form-field
+      [appearance]="tableConfig.filterAppearance"
+      [color]="tableConfig.filterColor"
+    >
+      <mat-label>{{ tableConfig.filterLabel }}</mat-label>
+      <input
+        matInput
+        #filterInput
+        (keyup)="applyFilter($event)"
+        [placeholder]="tableConfig.filterPlaceholder"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- Table -->
+  <div [ngClass]="tableConfig.tableClass">
+    <div
+      class="dynamic-table-table"
+      [style.minWidth]="tableConfig.scrollX"
+      [style.maxHeight]="tableConfig.scrollY"
+    >
+      <mat-table
+        matSort
+        recycleRows
+        [dataSource]="dataSource"
+        [matSortActive]="tableConfig.sortingActiveField"
+        [matSortDirection]="tableConfig.sortingActiveDirection"
+      >
+        <!-- Select column -->
+        <ng-container
+          matColumnDef="selectRowColumn"
+          [sticky]="tableConfig.selectingSticky === 'start'"
+          [stickyEnd]="tableConfig.selectingSticky === 'end'"
+        >
+          <mat-header-cell
+            *matHeaderCellDef
+            class="dynamic-table-select-header"
+          >
+            <mat-checkbox
+              (change)="$event ? toggleSelectAllRows() : null"
+              [checked]="selection.hasValue() && areAllRowsSelected()"
+              [indeterminate]="selection.hasValue() && !areAllRowsSelected()"
+              [matBadge]="selection.selected.length"
+              [matBadgeHidden]="!selection.selected.length"
+              matBadgeSize="medium"
+              matBadgeOverlap="true"
+              matBadgeColor="warn"
+            >
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="dynamic-table-select-cell">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? toggleSelectedRow(row) : null"
+              [checked]="selection.isSelected(row)"
+            >
+            </mat-checkbox>
+          </mat-cell>
+          <mat-footer-cell
+            *matFooterCellDef
+            class="dynamic-table-select-footer"
+          >
+            <mat-checkbox class="checkbox-hidden"></mat-checkbox>
+          </mat-footer-cell>
+        </ng-container>
+
+        <!-- Regular columns -->
+        <ng-container
+          *ngFor="let column of columnConfig"
+          matColumnDef="{{ column.key }}"
+          [sticky]="column.sticky === 'start'"
+          [stickyEnd]="column.sticky === 'end'"
+        >
+          <!-- Header -->
+          <mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            [disabled]="!tableConfig.sorting || !column.sortable"
+          >
+            {{ column.header }}
+          </mat-header-cell>
+          <!-- Cells -->
+          <mat-cell *matCellDef="let row" [ngSwitch]="column.type">
+            <!-- text -->
+            <div *ngSwitchCase="'text'" class="dynamic-table-cell">
+              {{ row[column.key] }}
+            </div>
+            <!-- image -->
+            <div *ngSwitchCase="'image'" class="dynamic-table-cell">
+              <img [src]="row[column.key]" />
+            </div>
+            <!-- date -->
+            <div *ngSwitchCase="'date'" class="dynamic-table-cell">
+              {{ row[column.key] | date }}
+            </div>
+            <!-- buttons -->
+            <div
+              *ngIf="column.buttons?.length"
+              class="dynamic-table-cell-buttons"
+            >
+              <button
+                mat-icon-button
+                *ngFor="let button of column.buttons"
+                (click)="
+                  $event.stopPropagation();
+                  $event ? emitButtonClickEvent(button, row, column) : null
+                "
+              >
+                <!-- Icon -->
+                <mat-icon [color]="button.color">{{ button.icon }}</mat-icon>
+              </button>
+            </div>
+          </mat-cell>
+
+          <!-- Footer -->
+          <mat-footer-cell *matFooterCellDef>
+            {{ column.footer }}
+          </mat-footer-cell>
+        </ng-container>
+
+        <!-- Header row definition -->
+        <mat-header-row
+          *matHeaderRowDef="displayColumns; sticky: tableConfig.stickyHeaders"
+          class="dynamic-table-header-row material-dark"
+        >
+        </mat-header-row>
+
+        <!-- Content row definition -->
+        <mat-row
+          *matRowDef="
+            let row;
+            let even = even;
+            let odd = odd;
+            columns: displayColumns
+          "
+          class="dynamic-table-row"
+          [class.dynamic-table-row-even]="even"
+          [class.dynamic-table-row-odd]="odd"
+          (click)="emitRowClickEvent(row)"
+        >
+        </mat-row>
+
+        <!-- Footer row definition, row not shown when paging is used. -->
+        <div *ngIf="!tableConfig.paging">
+          <mat-footer-row
+            *matFooterRowDef="displayColumns; sticky: tableConfig.stickyFooters"
+            class="dynamic-table-footer-row material-dark"
+            [class.dynamic-table-row-empty]="isFooterEmpty()"
+          >
+          </mat-footer-row>
+        </div>
+
+        <!-- Row shown when there is no matching data. -->
+        <div *matNoDataRow class="dynamic-table-row-no-data">
+          <div class="mat-cell">No data to display</div>
+        </div>
+      </mat-table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      class="dynamic-table-paginator material-dark"
+      [pageSizeOptions]="tableConfig.pagingSizeOptions"
+      [pageSize]="tableConfig.pagingSizeDefault"
+      [ngStyle]="{ display: tableConfig.paging ? 'block' : 'none' }"
+    >
+    </mat-paginator>
+  </div>
+</div>

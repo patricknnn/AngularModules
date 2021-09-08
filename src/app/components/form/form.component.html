@@ -5,47 +5,18 @@
     <mat-card-title>Dynamic forms</mat-card-title>
     <mat-card-subtitle>Module</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <!-- Dynamic form options -->
-    <form [formGroup]="options">
-      <div class="row">
-        <div class="column">
-          <mat-form-field [appearance]="appearanceControl.value" [color]="colorControl.value" class="form-field">
-            <mat-label>Appearance</mat-label>
-            <mat-select [formControl]="appearanceControl">
-              <mat-option *ngFor="let option of appearanceOptions" [value]="option">{{option}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="column">
-          <mat-form-field [appearance]="appearanceControl.value" [color]="colorControl.value" class="form-field">
-            <mat-label>Color</mat-label>
-            <mat-select [formControl]="colorControl">
-              <mat-option *ngFor="let option of colorOptions" [value]="option">{{option}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="column">
-          <mat-form-field [appearance]="appearanceControl.value" [color]="colorControl.value" [floatLabel]="'always'"
-            class="form-field">
-            <mat-label>Submit invalid form</mat-label>
-            <mat-select [formControl]="submitControl">
-              <mat-option [value]="false">not allowed</mat-option>
-              <mat-option [value]="true">allowed</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-    </form>
-  </mat-card-content>
 </mat-card>
 
 <!-- Dynamic form -->
 <mat-card style="margin-top: 16px;">
   <mat-card-content>
-    <app-dynamic-form [appearance]="appearanceControl.value" [color]="colorControl.value"
-      [formControls]="(formControls$ | async)!" [allowInvalidSubmit]="submitControl.value"
-      (formSubmit)="handleFormSubmit($event)">
+    <app-dynamic-form
+      *ngIf="formControls"
+      [formAppearance]="'fill'"
+      [formColor]="'primary'"
+      [(formControls)]="formControls"
+      [(formValid)]="isFormValid"
+    >
     </app-dynamic-form>
   </mat-card-content>
 </mat-card>

@@ -1,20 +1,16 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormControlBase } from '../models/form-control-base';
+import { DynamicFormControl } from '../models/dynamic-form-control';
 
 @Injectable()
 export class FormControlService {
-  constructor() { }
-
-  /**
-   * Converts array of form controls to form group
-   * @param formControls Array of form controls
-   * @returns Formgroup contaaining form controls
-   */
-  toFormGroup(formControls: FormControlBase<any>[]): FormGroup {
+  public toFormGroup(formControls: DynamicFormControl<any>[]): FormGroup {
     const group: any = {};
-    formControls.forEach(formControl => {
-      group[formControl.key] = new FormControl(formControl.value || '', formControl.validators);
+    formControls.forEach((formControl: DynamicFormControl<any>) => {
+      group[formControl.key] = new FormControl(
+        { value: formControl.value || '', disabled: formControl.disabled },
+        formControl.validators
+      );
     });
     return new FormGroup(group);
   }

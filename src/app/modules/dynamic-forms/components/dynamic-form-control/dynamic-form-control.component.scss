@@ -1,0 +1,36 @@
+.dynamic-form-control {
+  margin-bottom: 8px;
+
+  & mat-form-field {
+    width: 100%;
+  }
+
+  & .dynamic-form-label {
+    color: rgba($color: #000000, $alpha: 0.2);
+  }
+
+  & .dynamic-form-label.show-error {
+    color: red;
+  }
+
+  & .remove-chip-button {
+    height: 28px;
+    width: 28px;
+    margin-left: 4px;
+  }
+
+  & .no-form-field {
+    margin-top: 4px;
+
+    & .mat-radio-button ~ .mat-radio-button {
+      margin-left: 16px;
+    }
+
+    & .form-control-error {
+      font-weight: 400;
+      font-size: 75%;
+      min-height: 1.5em;
+      padding-top: 0.25em;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
+import { DynamicTableComponent } from './dynamic-table.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -11,6 +11,6 @@ import { SharedModule } from '../shared/shared.module';
   ],
   exports: [
     DynamicTableComponent
-  ]
+  ],
 })
-export class DynamicTablesModule { }
+export class DynamicTablesModule {}

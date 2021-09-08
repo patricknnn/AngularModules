@@ -1,33 +1,22 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { FormControlBase } from 'src/app/modules/dynamic-forms/models/form-control-base';
+import { PeriodicElement } from 'src/app/models/periodic-element';
+import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic-form-control';
 import { FormService } from 'src/app/services/forms/form.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  formControls$: Observable<FormControlBase<any>[]>;
-  appearanceOptions = ["legacy", "standard", "fill", "outline"];
-  colorOptions = ["primary", "accent", "warn"];
-  options: FormGroup;
-  appearanceControl = new FormControl('fill');
-  colorControl = new FormControl('primary');
-  submitControl = new FormControl(false);
+  isFormValid: boolean;
+  formControls: DynamicFormControl<any>[];
+  element: PeriodicElement;
 
-  constructor(
-    formService: FormService,
-    fb: FormBuilder
-  ) {
-    this.formControls$ = formService.getFormControls();
-    this.options = fb.group({
-      color: this.colorControl,
-      appearance: this.appearanceControl,
-      submit: this.submitControl,
-    });
+  constructor(formService: FormService) {
+    this.isFormValid = false;
+    this.formControls = formService.getFormControls();
+    this.element = formService.getElement();
   }
 
   handleFormSubmit(event: any): void {
