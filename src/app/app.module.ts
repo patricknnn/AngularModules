@@ -11,7 +11,6 @@ import { SharedModule } from './modules/shared/shared.module';
 import { SharedComponent } from './components/shared/shared.component';
 import { TableComponent } from './components/table/table.component';
 import { DynamicTablesModule } from './modules/dynamic-tables/dynamic-tables.module';
-import { CodApiModule } from './modules/cod-api/cod-api.module';
 
 @NgModule({
   declarations: [
@@ -28,8 +27,7 @@ import { CodApiModule } from './modules/cod-api/cod-api.module';
     CoreModule,
     SharedModule,
     DynamicFormsModule,
-    DynamicTablesModule,
-    CodApiModule
+    DynamicTablesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
