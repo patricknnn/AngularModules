@@ -7,42 +7,35 @@ import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic
   providedIn: 'root',
 })
 export class FormService {
-  public getFormControls(): DynamicFormControl<any>[] {
+  public getFormControls(element: PeriodicElement): DynamicFormControl<any>[] {
     const formControls: DynamicFormControl<any>[] = [
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
         .setKey('name')
-        .setLabel('Name')
-        .setValue('Bennie')
+        .setLabel('name')
+        .setValue(element.name)
         .setOrder(1)
         .build(),
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
-        .setKey('street')
-        .setLabel('Street')
-        .setValue('Zuidenveld')
+        .setKey('symbol')
+        .setLabel('symbol')
+        .setValue(element.symbol)
         .setOrder(2)
         .build(),
-      new DynamicFormControlBuilder<string>()
+      new DynamicFormControlBuilder<number>()
         .setControlType('text')
-        .setKey('postalCode')
-        .setLabel('Postal Code')
-        .setValue('9642 GK')
+        .setKey('weight')
+        .setLabel('weight')
+        .setValue(element.weight)
         .setOrder(3)
         .build(),
-      new DynamicFormControlBuilder<string>()
+      new DynamicFormControlBuilder<number>()
         .setControlType('text')
-        .setKey('city')
-        .setLabel('City')
-        .setValue('Veendam')
+        .setKey('position')
+        .setLabel('position')
+        .setValue(element.position)
         .setOrder(4)
-        .build(),
-      new DynamicFormControlBuilder<string>()
-        .setControlType('text')
-        .setKey('country')
-        .setLabel('Country')
-        .setValue('Netherlands')
-        .setOrder(5)
         .build(),
     ];
 

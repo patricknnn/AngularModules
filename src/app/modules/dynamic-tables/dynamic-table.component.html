@@ -87,15 +87,15 @@
           <mat-cell *matCellDef="let row" [ngSwitch]="column.type">
             <!-- text -->
             <div *ngSwitchCase="'text'" class="dynamic-table-cell">
-              {{ row[column.key] }}
+              {{ getCellContent(row, column.key) }}
             </div>
             <!-- image -->
             <div *ngSwitchCase="'image'" class="dynamic-table-cell">
-              <img [src]="row[column.key]" />
+              <img [src]="getCellContent(row, column.key)" />
             </div>
             <!-- date -->
             <div *ngSwitchCase="'date'" class="dynamic-table-cell">
-              {{ row[column.key] | date }}
+              {{ getCellContent(row, column.key) | date }}
             </div>
             <!-- buttons -->
             <div

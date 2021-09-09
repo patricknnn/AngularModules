@@ -1,0 +1,12 @@
+<form #modelForm="ngForm">
+  <mat-form-field appearance="fill" *ngFor="let control of modelFormControls">
+    <mat-label>{{control.label}}</mat-label>
+    <input
+      matInput
+      [type]="control.type"
+      [id]="control.key"
+      [(ngModel)]="model[control.key]"
+      [name]="control.key"
+    />
+  </mat-form-field>
+</form>
