@@ -7,35 +7,37 @@ import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic
   providedIn: 'root',
 })
 export class FormService {
-  public getFormControls(element: PeriodicElement): DynamicFormControl<any>[] {
+  public getFormControls(): DynamicFormControl<any>[] {
     const formControls: DynamicFormControl<any>[] = [
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
         .setKey('name')
         .setLabel('name')
-        .setValue(element.name)
         .setOrder(1)
         .build(),
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
         .setKey('symbol')
         .setLabel('symbol')
-        .setValue(element.symbol)
         .setOrder(2)
         .build(),
       new DynamicFormControlBuilder<number>()
         .setControlType('text')
         .setKey('weight')
         .setLabel('weight')
-        .setValue(element.weight)
         .setOrder(3)
         .build(),
       new DynamicFormControlBuilder<number>()
         .setControlType('text')
         .setKey('position')
         .setLabel('position')
-        .setValue(element.position)
         .setOrder(4)
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('nested.element')
+        .setLabel('Nested')
+        .setOrder(5)
         .build(),
     ];
 
@@ -46,6 +48,14 @@ export class FormService {
   }
 
   getElement(): PeriodicElement {
-    return new PeriodicElement(1, 'Hydrogen', 1.0079, 'H');
+    return {
+      position: 1,
+      name: 'Hydrogen',
+      weight: 1.0079,
+      symbol: 'H',
+      nested: {
+        element: 'Nested Element',
+      },
+    };
   }
 }

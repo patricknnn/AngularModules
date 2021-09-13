@@ -24,20 +24,64 @@ export class TableService {
 
   getColumnConfig(): DynamicTableColumnConfig[] {
     return [
-      this._columnConfigBuilder.setKey('position').setHeader('position').build(),
+      this._columnConfigBuilder
+        .setKey('position')
+        .setHeader('position')
+        .build(),
       this._columnConfigBuilder.setKey('name').setHeader('name').build(),
       this._columnConfigBuilder.setKey('weight').setHeader('weight').build(),
       this._columnConfigBuilder.setKey('symbol').setHeader('symbol').build(),
+      this._columnConfigBuilder.setKey('nested.element').setHeader('nested').build(),
     ];
   }
 
   getTableData(): Observable<PeriodicElement[]> {
     const ELEMENT_DATA: PeriodicElement[] = [
-      new PeriodicElement(1, 'Hydrogen', 1.0079, 'H'),
-      new PeriodicElement(2, 'Helium', 4.0026, 'He'),
-      new PeriodicElement(3, 'Lithium', 6.941, 'Li'),
-      new PeriodicElement(4, 'Beryllium', 9.0122, 'Be'),
-      new PeriodicElement(5, 'Boron', 10.811, 'B'),
+      {
+        position: 1,
+        name: 'Hydrogen',
+        weight: 1.0079,
+        symbol: 'H',
+        nested: {
+          element: 'Nested Element',
+        },
+      },
+      {
+        position: 2,
+        name: 'Helium',
+        weight: 4.0026,
+        symbol: 'He',
+        nested: {
+          element: 'Nested Element',
+        },
+      },
+      {
+        position: 3,
+        name: 'Lithium',
+        weight: 6.941,
+        symbol: 'Li',
+        nested: {
+          element: 'Nested Element',
+        },
+      },
+      {
+        position: 4,
+        name: 'Beryllium',
+        weight: 9.0122,
+        symbol: 'Be',
+        nested: {
+          element: 'Nested Element',
+        },
+      },
+      {
+        position: 5,
+        name: 'Boron',
+        weight: 10.811,
+        symbol: 'B',
+        nested: {
+          element: 'Nested Element',
+        },
+      },
     ];
     return of(ELEMENT_DATA);
   }

@@ -11,7 +11,6 @@ import { SharedComponent } from './components/shared/shared.component';
 import { TableComponent } from './components/table/table.component';
 import { DynamicFormsModule } from './modules/dynamic-forms/dynamic-forms.module';
 import { DynamicTablesModule } from './modules/dynamic-tables/dynamic-tables.module';
-import { DynamicFormsTdModule } from './modules/dynamic-forms-td/dynamic-forms-td.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { DynamicFormsTdModule } from './modules/dynamic-forms-td/dynamic-forms-t
     CoreModule,
     SharedModule,
     DynamicFormsModule,
-    DynamicFormsTdModule,
     DynamicTablesModule
   ],
   providers: [],

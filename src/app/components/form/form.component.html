@@ -5,42 +5,16 @@
     <mat-card-title>Dynamic forms</mat-card-title>
     <mat-card-subtitle>Module</mat-card-subtitle>
   </mat-card-header>
-</mat-card>
-
-<!-- Dynamic form -->
-<mat-card style="margin-top: 16px">
   <mat-card-content>
     <app-dynamic-form
       *ngIf="formControls"
       [formAppearance]="'fill'"
       [formColor]="'primary'"
-      [(formControls)]="formControls"
+      [formControls]="formControls"
       [(formValid)]="isFormValid"
+      [(formModel)]="element"
     >
     </app-dynamic-form>
-  </mat-card-content>
-</mat-card>
-
-<!-- Dynamic forms td -->
-<mat-card style="margin-top: 16px">
-  <mat-card-header>
-    <mat-icon mat-card-avatar>edit</mat-icon>
-    <mat-card-title>Dynamic forms td</mat-card-title>
-    <mat-card-subtitle>Module</mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
-
-<!-- Dynamic form td -->
-<mat-card style="margin-top: 16px">
-  <mat-card-content>
-    <app-dynamic-form-td
-      [formAppearance]="'fill'"
-      [formColor]="'primary'"
-      [modelFormControls]="modelFormControls"
-      [(model)]="element"
-      [(formValid)]="isFormValid"
-    >
-    </app-dynamic-form-td>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="logElement()">LOG</button>
