@@ -39,6 +39,12 @@ export class FormService {
         .setLabel('Nested')
         .setOrder(5)
         .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('nested.deep.element')
+        .setLabel('Nested deep')
+        .setOrder(5)
+        .build(),
     ];
 
     return formControls.sort(
@@ -55,6 +61,9 @@ export class FormService {
       symbol: 'H',
       nested: {
         element: 'Nested Element',
+        deep: {
+          element: 'Nested deep',
+        },
       },
     };
   }

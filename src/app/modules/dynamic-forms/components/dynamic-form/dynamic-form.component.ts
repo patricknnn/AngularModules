@@ -47,8 +47,8 @@ export class DynamicFormComponent implements OnInit {
           });
 
           // emit changes
-          this.formValidChange.emit(this.form.valid);
           this.formModelChange.emit(this.formModel);
+          this.formValidChange.emit(this.form.valid);
         })
       )
       .subscribe();

@@ -5,5 +5,8 @@ export interface PeriodicElement {
   symbol: string;
   nested?: {
     element: string;
+    deep?: {
+      element: string;
+    }
   };
 }
