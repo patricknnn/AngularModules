@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/schematics": "^12.0.0",
+    "@angular-eslint/schematics": "^12.4.1",
     "@angular/animations": "~12.2.5",
     "@angular/cdk": "~12.2.6",
     "@angular/common": "~12.2.5",
