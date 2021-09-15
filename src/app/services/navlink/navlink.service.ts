@@ -16,8 +16,6 @@ export class NavlinkService {
   getNavlinks(): Observable<Navlink[]> {
     const navlinks: Navlink[] = [
       new Navlink("Home", "edit", "/home"),
-      new Navlink("Core", "edit", "/core"),
-      new Navlink("Shared", "edit", "/shared"),
       new Navlink("Dynamic forms", "edit", "/forms"),
       new Navlink("Dynamic tables", "edit", "/tables"),
     ];
