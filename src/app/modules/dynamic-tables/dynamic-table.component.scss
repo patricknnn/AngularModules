@@ -8,8 +8,44 @@
   & .dynamic-table-filter {
     display: flex;
 
-    & mat-form-field {
+    & .filter-panel {
       width: 100%;
+      border-radius: 4px;
+
+      & mat-expansion-panel-header {
+        height: auto;
+      }
+
+      & .filter-panel-header-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        padding: 0;
+        color: rgba(0, 0, 0, 0.87) !important;
+
+        & .filter-panel-search {
+          display: flex;
+          flex-grow: 1;
+        }
+      }
+
+      & .filter-panel-dropdown-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: space-between;
+
+        & .filter-panel-dropdown-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+          grid-gap: 16px;
+          width: 100%;
+
+          & .empty {
+            display: none;
+          }
+        }
+      }
     }
   }
 
@@ -45,7 +81,6 @@
 
     // table rows
     & .dynamic-table-row {
-
       & .dynamic-table-cell {
         display: flex;
         flex-grow: 1;

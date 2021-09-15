@@ -8,6 +8,7 @@ export class DynamicTableColumnConfig {
     public footer: string = '',
     public sticky: 'start' | 'end' | 'false' = 'false',
     public sortable: boolean = true,
+    public filterable: boolean = false,
     public buttons: DynamicTableButton[] = [],
   ) {
   }

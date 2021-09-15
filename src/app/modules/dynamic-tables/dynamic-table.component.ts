@@ -26,13 +26,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) public paginator?: MatPaginator;
   @ViewChild(MatSort) public sort?: MatSort;
 
+  public filteredData?: any[];
   public dataSource!: MatTableDataSource<any>;
   public displayColumns: string[] = [];
   public selection: SelectionModel<any> = new SelectionModel<any>(true, []);
   public resultsLength: number = 0;
+  public areDropdownFiltersVisible: boolean = false;
+  public activeDropdownFilters: any = {};
 
   public ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<any>(this.data);
+    this.filteredData = this.data;
+    this.createDataSource();
     this.initTableColumns();
   }
 
@@ -54,7 +58,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public applyFilter(event: Event): void {
+  public applyTextFilter(event: Event): void {
     const htmlInputElement: HTMLInputElement = event.target as HTMLInputElement;
     this.dataSource.filter = htmlInputElement.value.trim().toLowerCase();
 
@@ -63,12 +67,58 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public applyDropdownFilter(key: string, option: string): void {
+    this.activeDropdownFilters[key] = option;
+
+    this.filteredData = this.data.filter((row: any) => {
+      let isPassed: boolean = true;
+      for (const [key, value] of Object.entries(this.activeDropdownFilters)) {
+        if (this.getCellContent(row, key) != value) {
+          isPassed = false;
+        }
+      }
+      return isPassed;
+    });
+
+    this.createDataSource();
+  }
+
+  public areDropdownFiltersEmpty(): boolean {
+    return !this.columnConfig.some(
+      (column: DynamicTableColumnConfig) => column.filterable
+    );
+  }
+
+  public resetDropdownFilters(): void {
+    this.activeDropdownFilters = {};
+    this.filteredData = this.data;
+    this.createDataSource();
+  }
+
+  public toggleDropdownFilters(): void {
+    this.areDropdownFiltersVisible = !this.areDropdownFiltersVisible;
+  }
+
+  public getFilterOptions(key: string): string[] {
+    return this.data
+      .map((row) => {
+        return this.getCellContent(row, key);
+      })
+      .filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+  }
+
   public getCellContent(row: any, key: string): any {
-    return key.split('.').reduce((value: any, key: string) => value?.[key], row);
+    return key
+      .split('.')
+      .reduce((value: any, key: string) => value?.[key], row);
   }
 
   public isFooterEmpty(): boolean {
-    return this.columnConfig.some((column: DynamicTableColumnConfig) => column.footer);
+    return this.columnConfig.some(
+      (column: DynamicTableColumnConfig) => column.footer
+    );
   }
 
   public emitButtonClickEvent(
@@ -99,5 +149,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   public areAllRowsSelected(): boolean {
     return this.selection.selected.length === this.dataSource.data.length;
+  }
+
+  private createDataSource(): void {
+    this.dataSource = new MatTableDataSource<any>(this.filteredData);
   }
 }

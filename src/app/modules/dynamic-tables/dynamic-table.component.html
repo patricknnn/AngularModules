@@ -2,18 +2,66 @@
 <div class="dynamic-table-container">
   <!-- Filter -->
   <div class="dynamic-table-filter" *ngIf="tableConfig.filter">
-    <mat-form-field
-      [appearance]="tableConfig.filterAppearance"
-      [color]="tableConfig.filterColor"
+    <mat-expansion-panel
+      class="mat-elevation-z0 filter-panel"
+      disabled
+      [expanded]="areDropdownFiltersVisible"
+      hideToggle
     >
-      <mat-label>{{ tableConfig.filterLabel }}</mat-label>
-      <input
-        matInput
-        #filterInput
-        (keyup)="applyFilter($event)"
-        [placeholder]="tableConfig.filterPlaceholder"
-      />
-    </mat-form-field>
+      <mat-expansion-panel-header>
+        <div class="filter-panel-header-content">
+          <div class="filter-panel-search">
+            <mat-form-field
+              [appearance]="tableConfig.filterAppearance"
+              [color]="tableConfig.filterColor"
+            >
+              <mat-label>{{ tableConfig.filterLabel }}</mat-label>
+              <input
+                matInput
+                #filterInput
+                (keyup)="applyTextFilter($event)"
+                [placeholder]="tableConfig.filterPlaceholder"
+              />
+            </mat-form-field>
+          </div>
+
+          <button
+            mat-icon-button
+            *ngIf="!areDropdownFiltersEmpty()"
+            (click)="toggleDropdownFilters()"
+          >
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+        </div>
+      </mat-expansion-panel-header>
+      <!-- Filters -->
+      <div class="filter-panel-dropdown-content">
+        <div class="filter-panel-dropdown-grid">
+          <div *ngFor="let column of columnConfig" [class.empty]="!column.filterable">
+            <mat-form-field
+              *ngIf="column.filterable"
+              [appearance]="tableConfig.filterAppearance"
+              [color]="tableConfig.filterColor"
+            >
+              <mat-label>{{ column.header }}</mat-label>
+              <mat-select [(value)]="activeDropdownFilters[column.key]">
+                <mat-option
+                  *ngFor="let option of getFilterOptions(column.key)"
+                  (click)="applyDropdownFilter(column.key, option)"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Reset filters -->
+        <button mat-icon-button (click)="resetDropdownFilters()">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </mat-expansion-panel>
   </div>
 
   <!-- Table -->
@@ -137,6 +185,7 @@
             let odd = odd;
             columns: displayColumns
           "
+          matRipple
           class="dynamic-table-row"
           [class.dynamic-table-row-even]="even"
           [class.dynamic-table-row-odd]="odd"

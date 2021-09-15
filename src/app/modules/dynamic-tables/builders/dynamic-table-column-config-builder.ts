@@ -44,6 +44,12 @@ export class DynamicTableColumnConfigBuilder {
     return this;
   }
 
+  public setFilterable(value: boolean): this {
+    this.dynamicTableColumnConfig.filterable = value;
+
+    return this;
+  }
+
   public addButton(value: DynamicTableButton): this {
     this.dynamicTableColumnConfig.buttons.push(value);
 

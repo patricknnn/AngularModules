@@ -28,10 +28,25 @@ export class TableService {
         .setKey('position')
         .setHeader('position')
         .build(),
-      this._columnConfigBuilder.setKey('name').setHeader('name').build(),
-      this._columnConfigBuilder.setKey('weight').setHeader('weight').build(),
-      this._columnConfigBuilder.setKey('symbol').setHeader('symbol').build(),
-      this._columnConfigBuilder.setKey('nested.element').setHeader('nested').build(),
+      this._columnConfigBuilder
+        .setKey('name')
+        .setHeader('name')
+        .setFilterable(true)
+        .build(),
+      this._columnConfigBuilder
+        .setKey('weight')
+        .setHeader('weight')
+        .setFilterable(true)
+        .build(),
+      this._columnConfigBuilder
+        .setKey('symbol')
+        .setHeader('symbol')
+        .setFilterable(true)
+        .build(),
+      this._columnConfigBuilder
+        .setKey('nested.element')
+        .setHeader('nested')
+        .build(),
     ];
   }
 
