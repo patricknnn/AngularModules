@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
@@ -17,18 +17,17 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
   ],
 })
-export class DynamicFormControlComponent {
+export class DynamicFormControlComponent implements OnInit {
   @Input() public control!: DynamicFormControl<any>;
   @Input() public form!: FormGroup;
   @Input() public appearance!: 'legacy' | 'standard' | 'fill' | 'outline';
   @Input() public color!: 'primary' | 'accent' | 'warn';
 
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  public dateRange: FormGroup = new FormGroup(
-    {
-      start: new FormControl(),
-      end: new FormControl(),
-    });
+  public dateRange: FormGroup = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   private readonly formFieldControls: string[] = [
     'text',
@@ -38,6 +37,12 @@ export class DynamicFormControlComponent {
     'date-range',
     'chips',
   ];
+
+  public ngOnInit(): void {
+    if (this.control.controlType == 'date-range') {
+      this.dateRange.setValue(this.control.value);
+    }
+  }
 
   public get isFormFieldControl(): boolean {
     return this.formFieldControls.includes(this.control.controlType);
@@ -87,7 +92,7 @@ export class DynamicFormControlComponent {
 
   public addToValue(item: string): void {
     const value: string = item.trim();
-    const controlValue: Array<string> = this.form.controls[this.control.key].value;
+    const controlValue: Array<string> = this.form.controls[this.control.key].value || [];
 
     if (value && controlValue instanceof Array) {
       controlValue.push(value);
