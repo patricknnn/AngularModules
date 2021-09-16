@@ -98,6 +98,20 @@ export class TableService {
         },
       },
     ];
+
+    for (let index = 0; index < 500; index++) {
+      ELEMENT_DATA.push(
+        {
+          position: index,
+          name: 'Boron',
+          weight: 10.811,
+          symbol: 'B',
+          nested: {
+            element: 'Nested Element ' + index,
+          },
+        },
+      );
+    }
     return of(ELEMENT_DATA);
   }
 }

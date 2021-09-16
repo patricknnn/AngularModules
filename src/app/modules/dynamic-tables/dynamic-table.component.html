@@ -5,7 +5,7 @@
     <mat-expansion-panel
       class="mat-elevation-z0 filter-panel"
       disabled
-      [expanded]="areDropdownFiltersVisible"
+      [expanded]="areDropdownFiltersExpanded"
       hideToggle
     >
       <mat-expansion-panel-header>
@@ -18,10 +18,13 @@
               <mat-label>{{ tableConfig.filterLabel }}</mat-label>
               <input
                 matInput
-                #filterInput
-                (keyup)="applyTextFilter($event)"
+                [(ngModel)]="activeTextFilter"
+                (keyup)="applyTextFilter()"
                 [placeholder]="tableConfig.filterPlaceholder"
               />
+              <button *ngIf="activeTextFilter" matSuffix mat-icon-button (click)="resetTextFilter()">
+                <mat-icon>close</mat-icon>
+              </button>
             </mat-form-field>
           </div>
 
@@ -37,7 +40,10 @@
       <!-- Filters -->
       <div class="filter-panel-dropdown-content">
         <div class="filter-panel-dropdown-grid">
-          <div *ngFor="let column of columnConfig" [class.empty]="!column.filterable">
+          <div
+            *ngFor="let column of columnConfig"
+            [class.empty]="!column.filterable"
+          >
             <mat-form-field
               *ngIf="column.filterable"
               [appearance]="tableConfig.filterAppearance"

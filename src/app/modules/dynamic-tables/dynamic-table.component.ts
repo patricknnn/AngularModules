@@ -31,21 +31,19 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   public displayColumns: string[] = [];
   public selection: SelectionModel<any> = new SelectionModel<any>(true, []);
   public resultsLength: number = 0;
-  public areDropdownFiltersVisible: boolean = false;
+  public areDropdownFiltersExpanded: boolean = false;
   public activeDropdownFilters: any = {};
+  public activeTextFilter: string = '';
 
   public ngOnInit(): void {
     this.filteredData = this.data;
-    this.createDataSource();
     this.initTableColumns();
   }
 
   public ngAfterViewInit(): void {
-    if (this.tableConfig.paging) {
-      this.dataSource.paginator = this.paginator ? this.paginator : null;
-    }
-
-    this.dataSource.sort = this.sort ? this.sort : null;
+    setTimeout(() => {
+      this.createDataSource();
+    });
   }
 
   public initTableColumns(): void {
@@ -58,13 +56,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public applyTextFilter(event: Event): void {
-    const htmlInputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.dataSource.filter = htmlInputElement.value.trim().toLowerCase();
+  public applyTextFilter(): void {
+    this.dataSource.filter = this.activeTextFilter.toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  public resetTextFilter(): void {
+    this.activeTextFilter = '';
+    this.applyTextFilter();
   }
 
   public applyDropdownFilter(key: string, option: string): void {
@@ -81,22 +83,24 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     });
 
     this.createDataSource();
-  }
-
-  public areDropdownFiltersEmpty(): boolean {
-    return !this.columnConfig.some(
-      (column: DynamicTableColumnConfig) => column.filterable
-    );
+    this.applyTextFilter();
   }
 
   public resetDropdownFilters(): void {
     this.activeDropdownFilters = {};
     this.filteredData = this.data;
     this.createDataSource();
+    this.applyTextFilter();
   }
 
   public toggleDropdownFilters(): void {
-    this.areDropdownFiltersVisible = !this.areDropdownFiltersVisible;
+    this.areDropdownFiltersExpanded = !this.areDropdownFiltersExpanded;
+  }
+
+  public areDropdownFiltersEmpty(): boolean {
+    return !this.columnConfig.some(
+      (column: DynamicTableColumnConfig) => column.filterable
+    );
   }
 
   public getFilterOptions(key: string): string[] {
@@ -153,5 +157,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   private createDataSource(): void {
     this.dataSource = new MatTableDataSource<any>(this.filteredData);
+
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      return JSON.stringify(data).toLowerCase().includes(filter);
+    };
+
+    if (this.tableConfig.paging) {
+      this.dataSource.paginator = this.paginator ? this.paginator : null;
+    }
+
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
   }
 }
