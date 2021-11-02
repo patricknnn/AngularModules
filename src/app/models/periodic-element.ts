@@ -3,6 +3,7 @@ export interface PeriodicElement {
   name: string;
   weight: number;
   symbol: string;
+  bool: boolean;
   nested?: {
     element: string;
     deep?: {

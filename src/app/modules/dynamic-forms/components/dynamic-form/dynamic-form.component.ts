@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { tap } from 'rxjs/operators';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
+import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { FormControlService } from '../../services/form-control.service';
 
 @Component({
@@ -10,48 +17,31 @@ import { FormControlService } from '../../services/form-control.service';
   styleUrls: ['./dynamic-form.component.scss'],
   providers: [FormControlService],
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnChanges {
   @Input() public formAppearance: 'legacy' | 'standard' | 'fill' | 'outline' = 'fill';
   @Input() public formColor: 'primary' | 'accent' | 'warn' = 'primary';
-  @Input() public formControls: DynamicFormControl<any>[] = [];
-  @Input() public formValid: boolean = false;
   @Input() public formModel: any = {};
+  @Input() public formControls: DynamicFormControl<any>[] | null = null;
 
-  @Output() public formValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public formModelChange: EventEmitter<any> = new EventEmitter<any>();
 
-  public form!: FormGroup;
+  public form?: FormGroup;
 
   public constructor(private readonly formControlService: FormControlService) {}
 
-  public ngOnInit(): void {
-    // set control values based on model values
-    this.formControls.forEach((formControl: DynamicFormControl<any>) => {
-      formControl.value = this.getModelValue(formControl.key);
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formControls && this.formControls) {
+      this.formControls.forEach((formControl: DynamicFormControl<any>) => {
+        formControl.value = this.getModelValue(formControl.key);
+      });
 
-    // create form group
-    this.form = this.formControlService.toFormGroup(this.formControls);
+      this.form = this.formControlService.toFormGroup(this.formControls);
+    }
+  }
 
-    // tap into value changes
-    this.form.valueChanges
-      .pipe(
-        tap(() => {
-          // set model values based on form control values
-          this.formControls.forEach((formControl: DynamicFormControl<any>) => {
-            this.setModelValue(
-              this.formModel,
-              formControl.key,
-              this.form.controls[formControl.key].value
-            );
-          });
-
-          // emit changes
-          this.formModelChange.emit(this.formModel);
-          this.formValidChange.emit(this.form.valid);
-        })
-      )
-      .subscribe();
+  public handleControlValueChange(valueChange: DynamicFormControlValueChange): void {
+    this.setModelValue(this.formModel, valueChange.key, valueChange.value);
+    this.formModelChange.emit(this.formModel);
   }
 
   private getModelValue(key: string) {

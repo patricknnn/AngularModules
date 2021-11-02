@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="dynamic-form-container">
+<form *ngIf="formControls && form" [formGroup]="form" class="dynamic-form-container">
   <div
     class="dynamic-form-control-container"
     *ngFor="let formControl of formControls"
@@ -10,6 +10,7 @@
       [color]="formColor"
       [control]="formControl"
       [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
     >
     </app-dynamic-form-control>
   </div>

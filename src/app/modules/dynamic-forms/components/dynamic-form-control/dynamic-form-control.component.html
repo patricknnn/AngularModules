@@ -35,9 +35,10 @@
         *ngSwitchCase="'dropdown'"
         [formControlName]="control.key"
         [id]="control.key"
+        [(value)]="control.value"
       >
-        <mat-option *ngFor="let option of control.options" [value]="option.key">
-          {{ option.value }}
+        <mat-option *ngFor="let option of control.options" [value]="option.value" >
+          {{ option.label }}
         </mat-option>
       </mat-select>
 
@@ -137,9 +138,10 @@
       >
         <mat-radio-button
           *ngFor="let option of control.options"
-          [value]="option.key"
+          [value]="option.value"
+          [checked]="control.value === option.value"
         >
-          {{ option.value }}
+          {{ option.label }}
         </mat-radio-button>
       </mat-radio-group>
 
@@ -152,6 +154,7 @@
         [labelPosition]="control.labelPosition"
         [indeterminate]="control.indeterminate"
         [required]="isRequired"
+        [checked]="control.value"
         (change)="markAsTouched()"
       >
         {{ control.placeholder }}
@@ -166,6 +169,7 @@
         [labelPosition]="control.labelPosition"
         [checked]="control.value"
         [required]="isRequired"
+        [checked]="control.value"
         (change)="markAsTouched()"
       >
         {{ control.placeholder }}

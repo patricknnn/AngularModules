@@ -57,6 +57,7 @@ export class TableService {
         name: 'Hydrogen',
         weight: 1.0079,
         symbol: 'H',
+        bool: true,
         nested: {
           element: 'Nested Element',
         },
@@ -66,6 +67,7 @@ export class TableService {
         name: 'Helium',
         weight: 4.0026,
         symbol: 'He',
+        bool: true,
         nested: {
           element: 'Nested Element',
         },
@@ -75,6 +77,7 @@ export class TableService {
         name: 'Lithium',
         weight: 6.941,
         symbol: 'Li',
+        bool: true,
         nested: {
           element: 'Nested Element',
         },
@@ -84,6 +87,7 @@ export class TableService {
         name: 'Beryllium',
         weight: 9.0122,
         symbol: 'Be',
+        bool: true,
         nested: {
           element: 'Nested Element',
         },
@@ -93,6 +97,7 @@ export class TableService {
         name: 'Boron',
         weight: 10.811,
         symbol: 'B',
+        bool: true,
         nested: {
           element: 'Nested Element',
         },
@@ -106,6 +111,7 @@ export class TableService {
           name: 'Boron',
           weight: 10.811,
           symbol: 'B',
+          bool: true,
           nested: {
             element: 'Nested Element ' + index,
           },

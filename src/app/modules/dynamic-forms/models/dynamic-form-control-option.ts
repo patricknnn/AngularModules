@@ -1,4 +1,4 @@
 export interface DynamicFormControlOption {
-  key: string;
-  value: string;
+  label: string;
+  value: any;
 }
