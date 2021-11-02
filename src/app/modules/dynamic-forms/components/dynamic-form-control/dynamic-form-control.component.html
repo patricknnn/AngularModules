@@ -62,6 +62,7 @@
         *ngSwitchCase="'date-range'"
         [formGroup]="dateRange"
         [rangePicker]="dateRangePicker"
+        [disabled]="control.disabled"
       >
         <input
           matStartDate

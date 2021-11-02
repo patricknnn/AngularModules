@@ -60,6 +60,10 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
   private abstractControl?: AbstractControl | null;
 
   ngOnInit(): void {
+    if (this.control.controlType == 'date-range') {
+      this.dateRange.setValue(this.control.value);
+    }
+    
     this.abstractControl = this.form.get(this.control.key);
     this.controlSubscription = this.abstractControl?.valueChanges
       .pipe(
@@ -126,7 +130,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
   public addToValue(item: string): void {
     const value: string = item.trim();
-    const controlValue: Array<string> = this.abstractControl?.value;
+    const controlValue: Array<string> = this.abstractControl?.value || [];
 
     if (value && controlValue instanceof Array) {
       controlValue.push(value);
