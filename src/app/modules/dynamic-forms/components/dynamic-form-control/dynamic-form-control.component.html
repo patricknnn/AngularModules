@@ -21,8 +21,19 @@
         [id]="control.key"
         [type]="control.inputType"
         [required]="isRequired"
+        [matAutocomplete]="autoComp"
+        [matAutocompleteDisabled]="!control.options.length"
         class="dynamic-form-control-input"
       />
+      <!-- Autocomplete -->
+      <mat-autocomplete autoActiveFirstOption #autoComp="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredAutocompleteOptions | async"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-autocomplete>
 
       <!-- Text area -->
       <textarea

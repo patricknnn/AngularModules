@@ -4,8 +4,10 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map, startWith, tap } from 'rxjs/operators';
+import { DynamicFormControlOption } from '../../models/dynamic-form-control-option';
+import { FormControlType } from '../../enums/form-control-type';
 
 @Component({
   selector: 'app-dynamic-form-control',
@@ -34,6 +36,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     start: new FormControl(),
     end: new FormControl(),
   });
+  public filteredAutocompleteOptions?: Observable<DynamicFormControlOption[]>;
 
   private readonly formFieldControls: string[] = [
     'text',
@@ -52,7 +55,15 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     }
 
     this.abstractControl = this.form.controls[this.control.key];
-    
+
+    if (this.control.controlType == FormControlType.TEXT && this.control.options.length) {
+      this.filteredAutocompleteOptions = this.abstractControl.valueChanges.pipe(
+        startWith(''),
+        map((value: string) => this.filterAutocomplete(value)),
+      );
+    }
+
+
     this.controlSubscription = this.abstractControl.valueChanges
       .pipe(
         tap(() => {
@@ -103,6 +114,8 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
       return label + ' has to much characters';
     } else if (this.hasError('pattern')) {
       return label + ' does not match required pattern';
+    } else if (this.hasError('autocomplete')) {
+      return label + ' does not match any autocomplete value';
     } else {
       return '';
     }
@@ -138,5 +151,13 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
   private hasError(error: string): boolean | undefined {
     return this.abstractControl?.hasError(error);
+  }
+
+  private filterAutocomplete(value: string): DynamicFormControlOption[] {
+    const filterValue = value.toLowerCase();
+
+    return this.control.options.filter((option: DynamicFormControlOption) => {
+      return option.value.toLowerCase().includes(filterValue);
+    });
   }
 }

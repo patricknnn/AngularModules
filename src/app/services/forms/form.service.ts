@@ -28,6 +28,28 @@ export class FormService {
         .setControlType('text')
         .setKey('name')
         .setLabel('name')
+        .setOptions([
+          {
+            value: 'Hydrogen',
+            label: 'Hydrogen'
+          },
+          {
+            value: 'Helium',
+            label: 'Helium'
+          },
+          {
+            value: 'Lithium',
+            label: 'Lithium'
+          },
+          {
+            value: 'Beryllium',
+            label: 'Beryllium'
+          },
+          {
+            value: 'Boron',
+            label: 'Boron'
+          },
+        ])
         .build(),
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
