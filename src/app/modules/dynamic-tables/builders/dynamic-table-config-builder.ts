@@ -26,7 +26,7 @@ export class DynamicTableConfigBuilder {
   }
 
   public setFilterAppearance(
-    value: 'legacy' | 'standard' | 'fill' | 'outline'
+    value: 'legacy' | 'standard' | 'fill' | 'outline',
   ): this {
     this.dynamicTableConfig.filterAppearance = value;
 

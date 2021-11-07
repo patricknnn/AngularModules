@@ -1,24 +1,38 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormControlBuilder } from '../../builders/dynamic-form-control-builder';
+import { FormControlType } from '../../enums/form-control-type';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
+import { FormControlService } from '../../services/form-control.service';
 import { DynamicFormControlComponent } from './dynamic-form-control.component';
 
+const dynamicFormControl: DynamicFormControl<any> = new DynamicFormControlBuilder<string>().build();
+const formGroup: FormGroup = new FormControlService().toFormGroup([dynamicFormControl]);
+
+let component: DynamicFormControlComponent;
+let fixture: ComponentFixture<DynamicFormControlComponent>;
+
+async function createComponent(): Promise<void> {
+  fixture = TestBed.createComponent(DynamicFormControlComponent);
+  component = fixture.componentInstance;
+  component.form = formGroup;
+  component.control = dynamicFormControl;
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+}
+
 describe('DynamicFormControlComponent', () => {
-  const dynamicFormControl: DynamicFormControl<any> = new DynamicFormControlBuilder<string>().build();
-  const formGroup: FormGroup = new FormGroup({
-    [dynamicFormControl.key]: new FormControl(dynamicFormControl),
-  });
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [DynamicFormControlComponent],
+      imports: [BrowserAnimationsModule],
+    }).compileComponents();
 
-  let component: DynamicFormControlComponent;
-  let fixture: ComponentFixture<DynamicFormControlComponent>;
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DynamicFormControlComponent);
-    component = fixture.componentInstance;
-    component.form = formGroup;
-    component.control = dynamicFormControl;
-    fixture.detectChanges();
+    await createComponent();
   });
 
   it('should create', () => {
@@ -27,12 +41,12 @@ describe('DynamicFormControlComponent', () => {
 
   describe('using isFormFieldControl()', () => {
     it('Should return "true" if control is a form field control', () => {
-      component.control.controlType = 'text';
+      component.control.controlType = FormControlType.TEXT;
 
       expect(component.isFormFieldControl).toEqual(true);
     });
     it('Should return "false" if control is not a form field control', () => {
-      component.control.controlType = 'checkbox';
+      component.control.controlType = FormControlType.CHECKBOX;
 
       expect(component.isFormFieldControl).toEqual(false);
     });
@@ -141,7 +155,7 @@ describe('DynamicFormControlComponent', () => {
       });
 
       expect(component.errorMessage).toContain(
-        'does not match required pattern'
+        'does not match required pattern',
       );
     });
   });

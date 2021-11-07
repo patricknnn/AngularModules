@@ -21,6 +21,6 @@ export class DynamicFormControl<T> {
     public addOnBlur: boolean = true,
     public disabled: boolean = false,
     public options: DynamicFormControlOption[] = [],
-    public validators: ValidatorFn[] = []
+    public validators: ValidatorFn[] = [],
   ) {}
 }

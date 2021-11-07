@@ -9,7 +9,7 @@ export class FormControlService {
     formControls.forEach((formControl: DynamicFormControl<any>) => {
       group[formControl.key] = new FormControl(
         { value: formControl.value || '', disabled: formControl.disabled },
-        formControl.validators
+        formControl.validators,
       );
     });
     return new FormGroup(group);

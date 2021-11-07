@@ -1,8 +1,8 @@
 import { ValidatorFn, Validators } from '@angular/forms';
+import { FormControlInputType } from '../enums/form-control-input-type';
+import { FormControlType } from '../enums/form-control-type';
 import { DynamicFormControl } from '../models/dynamic-form-control';
 import { DynamicFormControlOption } from '../models/dynamic-form-control-option';
-import { FormControlType } from '../models/dynamic-form-control-type';
-import { FormControlInputType } from '../models/dynamic-form-input-type';
 import { DynamicFormControlBuilder } from './dynamic-form-control-builder';
 
 describe('DynamicFormControlBuilder', () => {
@@ -10,8 +10,8 @@ describe('DynamicFormControlBuilder', () => {
     new DynamicFormControlBuilder<string>();
   const fakeValue: string = 'fakeValue';
   const fakeKey: string = 'fakeKey';
-  const fakeInputType: FormControlInputType = 'text';
-  const fakeControlType: FormControlType = 'text';
+  const fakeInputType: FormControlInputType = FormControlInputType.TEXT;
+  const fakeControlType: FormControlType = FormControlType.TEXT;
   const fakeOrder: number = 1;
   const fakePlaceholder: string = 'fakePlaceholder';
   const fakeLabel: string = 'fakeLabel';
@@ -21,7 +21,7 @@ describe('DynamicFormControlBuilder', () => {
   const fakeRemovable: boolean = true;
   const fakeAddOnBlur: boolean = false;
   const fakeOption: DynamicFormControlOption = {
-    key: 'fakeOptions',
+    label: 'fakeOptions',
     value: 'fakeOptions',
   };
   const fakeValidators: ValidatorFn[] = [Validators.required];

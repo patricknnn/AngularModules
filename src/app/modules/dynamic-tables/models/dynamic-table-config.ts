@@ -17,6 +17,6 @@ export class DynamicTableConfig {
     public stickyFooters: boolean = true,
     public tableClass: string = '',
     public scrollX: string = '',
-    public scrollY: string = ''
+    public scrollY: string = '',
   ) { }
 }

@@ -9,7 +9,7 @@
       [ngSwitch]="control.controlType"
     >
       <!-- Label -->
-      <mat-label [attr.for]="control.key">
+      <mat-label [attr.for]="control.key" class="dynamic-form-control-label">
         {{ control.label }}
       </mat-label>
 
@@ -20,6 +20,8 @@
         [formControlName]="control.key"
         [id]="control.key"
         [type]="control.inputType"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
       />
 
       <!-- Text area -->
@@ -28,6 +30,8 @@
         *ngSwitchCase="'textarea'"
         [formControlName]="control.key"
         [id]="control.key"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
       ></textarea>
 
       <!-- Select -->
@@ -35,9 +39,13 @@
         *ngSwitchCase="'dropdown'"
         [formControlName]="control.key"
         [id]="control.key"
-        [(value)]="control.value"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
       >
-        <mat-option *ngFor="let option of control.options" [value]="option.value" >
+        <mat-option
+          *ngFor="let option of control.options"
+          [value]="option.value"
+        >
           {{ option.label }}
         </mat-option>
       </mat-select>
@@ -49,6 +57,8 @@
         [formControlName]="control.key"
         [id]="control.key"
         [matDatepicker]="datePicker"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
       />
       <mat-datepicker-toggle
         *ngSwitchCase="'date'"
@@ -63,17 +73,21 @@
         [formGroup]="dateRange"
         [rangePicker]="dateRangePicker"
         [disabled]="control.disabled"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
       >
         <input
           matStartDate
           placeholder="Start"
           formControlName="start"
+          class="dynamic-form-control-input"
           (dateChange)="setDateRange()"
         />
         <input
           matEndDate
           placeholder="Eind"
           formControlName="end"
+          class="dynamic-form-control-input"
           (dateChange)="setDateRange()"
         />
       </mat-date-range-input>
@@ -89,6 +103,8 @@
         *ngSwitchCase="'chips'"
         [formControlName]="control.key"
         [id]="control.key"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
         #chipList
       >
         <mat-chip
@@ -96,9 +112,12 @@
           [selectable]="control.selectable"
           [removable]="control.removable"
           (removed)="removeFromValue(item)"
+          class="dynamic-form-control-chip"
         >
           {{ item }}
-          <mat-icon matChipRemove *ngIf="control.removable">cancel</mat-icon>
+          <button matChipRemove *ngIf="!control.disabled && control.removable">
+            <mat-icon>cancel</mat-icon>
+          </button>
         </mat-chip>
         <input
           #chipInput
@@ -106,7 +125,10 @@
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="control.addOnBlur"
-          (matChipInputTokenEnd)="addToValue($event.value); chipInput.value = ''"
+          (matChipInputTokenEnd)="
+            addToValue($event.value); chipInput.value = ''
+          "
+          class="dynamic-form-control-input"
         />
       </mat-chip-list>
 
@@ -118,14 +140,23 @@
   </div>
 
   <!-- Non form fields -->
-  <div *ngIf="!isFormFieldControl" class="dynamic-form-control">
+  <div
+    *ngIf="!isFormFieldControl"
+    class="dynamic-form-control dynamic-form-control-non-form-field"
+  >
     <!-- Label -->
     <label
-      class="dynamic-form-label"
+      class="dynamic-form-control-label"
       [class.show-error]="!isValid && isTouched"
       [attr.for]="control.key"
     >
       {{ control.label }}
+      <span
+        style="display: inline"
+        *ngIf="isRequired"
+        [class.mat-error]="!isValid && isTouched"
+        >*</span
+      >
     </label>
 
     <div [ngSwitch]="control.controlType" class="no-form-field">
@@ -136,11 +167,11 @@
         [color]="color"
         [formControlName]="control.key"
         [required]="isRequired"
+        (change)="markAsTouched()"
       >
         <mat-radio-button
           *ngFor="let option of control.options"
           [value]="option.value"
-          [checked]="control.value === option.value"
         >
           {{ option.label }}
         </mat-radio-button>
@@ -155,7 +186,6 @@
         [labelPosition]="control.labelPosition"
         [indeterminate]="control.indeterminate"
         [required]="isRequired"
-        [checked]="control.value"
         (change)="markAsTouched()"
       >
         {{ control.placeholder }}
@@ -170,7 +200,6 @@
         [labelPosition]="control.labelPosition"
         [checked]="control.value"
         [required]="isRequired"
-        [checked]="control.value"
         (change)="markAsTouched()"
       >
         {{ control.placeholder }}

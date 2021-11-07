@@ -1,0 +1,15 @@
+export enum FormControlInputType {
+  COLOR = 'color',
+  DATE = 'date',
+  DATE_TIME = 'datetime-local',
+  EMAIL = 'email',
+  MONTH = 'month',
+  NUMBER = 'number',
+  PASSWORD = 'password',
+  SEARCH = 'search',
+  TEL = 'tel',
+  TEXT = 'text',
+  TIME = 'time',
+  URL = 'url',
+  WEEK = 'week',
+}

@@ -1,0 +1,59 @@
+@import "../../../../../variables.scss";
+
+.notification-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  box-shadow: none;
+  min-height: 48px;
+  padding: 8px;
+  border-radius: 4px !important;
+
+  & .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  & .text-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+
+  & .button-container {
+    display: flex;
+    flex-direction: row;
+
+    & .icon-button {
+      & .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
+}
+
+.notification-container.succes {
+  border-left: 4px solid $color-green;
+  color: $color-green;
+  background-color: $color-green-dimmed;
+}
+
+.notification-container.info {
+  border-left: 4px solid $color-yellow;
+  color: $color-yellow-text;
+  background-color: $color-yellow-dimmed;
+}
+
+.notification-container.warn {
+  border-left: 4px solid $color-warn;
+  color: $color-warn;
+  background-color: $color-warn-dimmed;
+}

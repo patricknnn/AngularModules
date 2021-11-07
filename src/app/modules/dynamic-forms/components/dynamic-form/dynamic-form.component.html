@@ -1,4 +1,4 @@
-<form *ngIf="formControls && form" [formGroup]="form" class="dynamic-form-container">
+<form *ngIf="form" [formGroup]="form" class="dynamic-form-container">
   <div
     class="dynamic-form-control-container"
     *ngFor="let formControl of formControls"

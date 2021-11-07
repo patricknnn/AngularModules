@@ -1,23 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { tap } from 'rxjs/operators';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dynamic-form-control',
@@ -55,17 +43,17 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     'date-range',
     'chips',
   ];
-
   private controlSubscription?: Subscription;
   private abstractControl?: AbstractControl | null;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.control.controlType == 'date-range') {
       this.dateRange.setValue(this.control.value);
     }
+
+    this.abstractControl = this.form.controls[this.control.key];
     
-    this.abstractControl = this.form.get(this.control.key);
-    this.controlSubscription = this.abstractControl?.valueChanges
+    this.controlSubscription = this.abstractControl.valueChanges
       .pipe(
         tap(() => {
           const valueChange: DynamicFormControlValueChange = {
@@ -73,12 +61,12 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
             value: this.abstractControl?.value,
           };
           this.formControlValueChange.emit(valueChange);
-        })
+        }),
       )
       .subscribe();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.controlSubscription?.unsubscribe();
   }
 
@@ -148,7 +136,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     }
   }
 
-  private hasError(error: string): boolean {
-    return this.abstractControl?.hasError(error) || false;
+  private hasError(error: string): boolean | undefined {
+    return this.abstractControl?.hasError(error);
   }
 }
