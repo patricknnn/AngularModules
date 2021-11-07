@@ -31,7 +31,8 @@ export class FormService {
         .setOptions([
           {
             value: 'Hydrogen',
-            label: 'Hydrogen'
+            label: 'Hydrogen',
+            image: 'https://cdn.icon-icons.com/icons2/2699/PNG/512/youtube_logo_icon_168737.png'
           },
           {
             value: 'Helium',

@@ -59,7 +59,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     if (this.control.controlType == FormControlType.TEXT && this.control.options.length) {
       this.filteredAutocompleteOptions = this.abstractControl.valueChanges.pipe(
         startWith(''),
-        map((value: string) => this.filterAutocomplete(value)),
+        map((value: string) => this.filterAutocompleteOptions(value)),
       );
     }
 
@@ -153,7 +153,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     return this.abstractControl?.hasError(error);
   }
 
-  private filterAutocomplete(value: string): DynamicFormControlOption[] {
+  private filterAutocompleteOptions(value: string): DynamicFormControlOption[] {
     const filterValue = value.toLowerCase();
 
     return this.control.options.filter((option: DynamicFormControlOption) => {

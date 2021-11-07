@@ -31,7 +31,12 @@
           *ngFor="let option of filteredAutocompleteOptions | async"
           [value]="option.value"
         >
-          {{ option.label }}
+          <div class="dynamic-form-control-autocomplete-option">
+            <div *ngIf="option.image" class="dynamic-form-control-autocomplete-option-img">
+              <img [src]="option.image" />
+            </div>
+            {{ option.label }}
+          </div>
         </mat-option>
       </mat-autocomplete>
 
