@@ -1,5 +1,6 @@
 import { ValidatorFn } from '@angular/forms';
 import { DynamicFormControl } from '../models/dynamic-form-control';
+import { DynamicFormControlAutocompleteOption } from '../models/dynamic-form-control-autocomplete-option';
 import { DynamicFormControlOption } from '../models/dynamic-form-control-option';
 import { FormControlType } from '../models/dynamic-form-control-type';
 import { FormControlInputType } from '../models/dynamic-form-input-type';
@@ -97,6 +98,12 @@ export class DynamicFormControlBuilder<T> {
 
   public setOptions(value: DynamicFormControlOption[]): this {
     this.dynamicFormControl.options = value;
+
+    return this;
+  }
+
+  public setAutocompleteOptions(value: DynamicFormControlAutocompleteOption[]): this {
+    this.dynamicFormControl.autocompleteOptions = value;
 
     return this;
   }

@@ -65,13 +65,13 @@
   max-height: 48px;
 
   & .dynamic-form-control-autocomplete-option-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-right: 16px;
-    height: 40px;
-    width: 40px;
+    height: 32px;
+    width: 32px;
     overflow: hidden;
-
-    & img {
-      max-height: 100%;
-    }
+    border-radius: 8px;
   }
 }

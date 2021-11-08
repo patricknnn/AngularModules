@@ -22,7 +22,7 @@
         [type]="control.inputType"
         [required]="isRequired"
         [matAutocomplete]="autoComp"
-        [matAutocompleteDisabled]="!control.options.length"
+        [matAutocompleteDisabled]="!control.autocompleteOptions.length"
         class="dynamic-form-control-input"
       />
       <!-- Autocomplete -->
@@ -35,7 +35,7 @@
             <div *ngIf="option.image" class="dynamic-form-control-autocomplete-option-img">
               <img [src]="option.image" />
             </div>
-            {{ option.label }}
+            {{ option.value }}
           </div>
         </mat-option>
       </mat-autocomplete>

@@ -6,8 +6,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
-import { DynamicFormControlOption } from '../../models/dynamic-form-control-option';
 import { FormControlType } from '../../enums/form-control-type';
+import { DynamicFormControlAutocompleteOption } from '../../models/dynamic-form-control-autocomplete-option';
 
 @Component({
   selector: 'app-dynamic-form-control',
@@ -36,7 +36,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     start: new FormControl(),
     end: new FormControl(),
   });
-  public filteredAutocompleteOptions?: Observable<DynamicFormControlOption[]>;
+  public filteredAutocompleteOptions?: Observable<DynamicFormControlAutocompleteOption[]>;
 
   private readonly formFieldControls: string[] = [
     'text',
@@ -56,7 +56,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
     this.abstractControl = this.form.controls[this.control.key];
 
-    if (this.control.controlType == FormControlType.TEXT && this.control.options.length) {
+    if (this.control.controlType == FormControlType.TEXT && this.control.autocompleteOptions.length) {
       this.filteredAutocompleteOptions = this.abstractControl.valueChanges.pipe(
         startWith(''),
         map((value: string) => this.filterAutocompleteOptions(value)),
@@ -115,7 +115,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     } else if (this.hasError('pattern')) {
       return label + ' does not match required pattern';
     } else if (this.hasError('autocomplete')) {
-      return label + ' does not match any autocomplete value';
+      return label + ' does not match any autocomplete option';
     } else {
       return '';
     }
@@ -153,11 +153,9 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     return this.abstractControl?.hasError(error);
   }
 
-  private filterAutocompleteOptions(value: string): DynamicFormControlOption[] {
-    const filterValue = value.toLowerCase();
-
-    return this.control.options.filter((option: DynamicFormControlOption) => {
-      return option.value.toLowerCase().includes(filterValue);
+  private filterAutocompleteOptions(value: string): DynamicFormControlAutocompleteOption[] {
+    return this.control.autocompleteOptions.filter((option: DynamicFormControlAutocompleteOption) => {
+      return option.value.toLowerCase().includes(value.toLowerCase());
     });
   }
 }

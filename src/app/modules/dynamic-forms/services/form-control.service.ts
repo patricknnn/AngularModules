@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { FormControlType } from '../enums/form-control-type';
 import { DynamicFormControl } from '../models/dynamic-form-control';
-import { DynamicFormControlOption } from '../models/dynamic-form-control-option';
+import { autocompleteValidator } from '../validators/autocomplete-validator';
 
 @Injectable()
 export class FormControlService {
@@ -20,20 +20,10 @@ export class FormControlService {
   private getValidators(formControl: DynamicFormControl<any>): ValidatorFn[] {
     const validators: ValidatorFn[] = formControl.validators;
 
-    if (formControl.controlType == FormControlType.TEXT && formControl.options.length) {
-      validators.push(this.autocompleteValidator(formControl.options));
+    if (formControl.controlType == FormControlType.TEXT && formControl.autocompleteOptions.length) {
+      validators.push(autocompleteValidator(formControl.autocompleteOptions));
     }
 
     return validators;
-  }
-
-  private autocompleteValidator(options: DynamicFormControlOption[]): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const invalid: boolean = !options
-        .map((option: DynamicFormControlOption) => { return option.value; })
-        .includes(control.value);
-
-      return invalid ? { autocomplete: { value: control.value } } : null;
-    };
   }
 }

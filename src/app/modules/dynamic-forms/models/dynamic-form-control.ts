@@ -1,4 +1,5 @@
 import { ValidatorFn } from '@angular/forms';
+import { DynamicFormControlAutocompleteOption } from './dynamic-form-control-autocomplete-option';
 import { DynamicFormControlOption } from './dynamic-form-control-option';
 import { FormControlType } from './dynamic-form-control-type';
 import { FormControlInputType } from './dynamic-form-input-type';
@@ -21,6 +22,7 @@ export class DynamicFormControl<T> {
     public addOnBlur: boolean = true,
     public disabled: boolean = false,
     public options: DynamicFormControlOption[] = [],
+    public autocompleteOptions: DynamicFormControlAutocompleteOption[] = [],
     public validators: ValidatorFn[] = [],
   ) {}
 }

@@ -2,53 +2,41 @@ import { Injectable } from '@angular/core';
 import { PeriodicElement } from 'src/app/models/periodic-element';
 import { DynamicFormControlBuilder } from 'src/app/modules/dynamic-forms/builders/dynamic-form-control-builder';
 import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic-form-control';
+import { DynamicFormControlAutocompleteOption } from 'src/app/modules/dynamic-forms/models/dynamic-form-control-autocomplete-option';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  public getFormControls(): DynamicFormControl<any>[] {
+  public getFormControls(
+    countries: DynamicFormControlAutocompleteOption[]
+  ): DynamicFormControl<any>[] {
     const formControls: DynamicFormControl<any>[] = [
-      new DynamicFormControlBuilder<boolean>()
-        .setControlType('dropdown')
-        .setKey('bool')
-        .setLabel('Form')
-        .setOptions([
-          {
-            label: 'Basic',
-            value: false,
-          },
-          {
-            label: 'Extended',
-            value: true,
-          },
-        ])
+      new DynamicFormControlBuilder<string>()
+        .setControlType('text')
+        .setKey('country')
+        .setLabel('country')
+        .setAutocompleteOptions(countries)
         .build(),
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
         .setKey('name')
         .setLabel('name')
-        .setOptions([
+        .setAutocompleteOptions([
           {
             value: 'Hydrogen',
-            label: 'Hydrogen',
-            image: 'https://cdn.icon-icons.com/icons2/2699/PNG/512/youtube_logo_icon_168737.png'
           },
           {
             value: 'Helium',
-            label: 'Helium'
           },
           {
             value: 'Lithium',
-            label: 'Lithium'
           },
           {
             value: 'Beryllium',
-            label: 'Beryllium'
           },
           {
             value: 'Boron',
-            label: 'Boron'
           },
         ])
         .build(),
@@ -67,16 +55,6 @@ export class FormService {
         .setKey('position')
         .setLabel('position')
         .build(),
-    ];
-
-    return formControls.sort(
-      (a: DynamicFormControl<any>, b: DynamicFormControl<any>) =>
-        a.order - b.order
-    );
-  }
-
-  public getFormControlsExtra(): DynamicFormControl<any>[] {
-    const formControls: DynamicFormControl<any>[] = [
       new DynamicFormControlBuilder<string>()
         .setControlType('text')
         .setKey('nested.element')
