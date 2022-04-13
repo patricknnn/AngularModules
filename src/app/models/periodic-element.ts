@@ -4,6 +4,10 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
   bool: boolean;
+  dateRange: {
+    start: string,
+    end: string,
+  }
   nested?: {
     element: string;
     deep?: {

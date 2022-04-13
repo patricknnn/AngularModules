@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { PeriodicElement } from 'src/app/models/periodic-element';
 import { DynamicFormControlBuilder } from 'src/app/modules/dynamic-forms/builders/dynamic-form-control-builder';
+import { FormControlType } from 'src/app/modules/dynamic-forms/enums/form-control-type';
 import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic-form-control';
 import { DynamicFormControlAutocompleteOption } from 'src/app/modules/dynamic-forms/models/dynamic-form-control-autocomplete-option';
 
@@ -65,6 +67,12 @@ export class FormService {
         .setKey('nested.deep.element')
         .setLabel('Nested deep')
         .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.DATE_RANGE)
+        .setKey('dateRange')
+        .setLabel('Date range')
+        .setValidators([Validators.required])
+        .build(),
     ];
 
     return formControls.sort(
@@ -80,6 +88,10 @@ export class FormService {
       weight: 1.0079,
       symbol: 'H',
       bool: false,
+      dateRange: {
+        start: '',
+        end: '',
+      },
       nested: {
         element: 'Nested Element',
         deep: {

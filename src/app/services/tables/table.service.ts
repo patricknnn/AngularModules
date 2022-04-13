@@ -58,6 +58,10 @@ export class TableService {
         weight: 1.0079,
         symbol: 'H',
         bool: true,
+        dateRange: {
+          start: '',
+          end: '',
+        },
         nested: {
           element: 'Nested Element',
         },
@@ -68,6 +72,10 @@ export class TableService {
         weight: 4.0026,
         symbol: 'He',
         bool: true,
+        dateRange: {
+          start: '',
+          end: '',
+        },
         nested: {
           element: 'Nested Element',
         },
@@ -78,6 +86,10 @@ export class TableService {
         weight: 6.941,
         symbol: 'Li',
         bool: true,
+        dateRange: {
+          start: '',
+          end: '',
+        },
         nested: {
           element: 'Nested Element',
         },
@@ -88,6 +100,10 @@ export class TableService {
         weight: 9.0122,
         symbol: 'Be',
         bool: true,
+        dateRange: {
+          start: '',
+          end: '',
+        },
         nested: {
           element: 'Nested Element',
         },
@@ -98,6 +114,10 @@ export class TableService {
         weight: 10.811,
         symbol: 'B',
         bool: true,
+        dateRange: {
+          start: '',
+          end: '',
+        },
         nested: {
           element: 'Nested Element',
         },
@@ -112,6 +132,10 @@ export class TableService {
           weight: 10.811,
           symbol: 'B',
           bool: true,
+          dateRange: {
+            start: '',
+            end: '',
+          },
           nested: {
             element: 'Nested Element ' + index,
           },

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { FormControlService } from '../../services/form-control.service';
+import { DynamicFormControlComponent } from '../dynamic-form-control/dynamic-form-control.component';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -19,9 +20,23 @@ export class DynamicFormComponent implements OnChanges {
   @Output() public formValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public formModelChange: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChildren('dynamicFormControl') dynamicFormControls?: QueryList<DynamicFormControlComponent>;
+
   public form!: FormGroup;
 
   public constructor(private readonly formControlService: FormControlService) { }
+
+  public get isFormValid(): boolean {
+    let valid: boolean = true;
+
+    this.dynamicFormControls?.forEach((control: DynamicFormControlComponent) => {
+      if (!control.isValid) {
+        valid = control.isValid;
+      }
+    });
+
+    return valid;
+  }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.formControls) {

@@ -38,7 +38,6 @@ export class FormComponent {
   }
 
   logElement(): void {
-    console.log(this.dynamicForm?.form?.valid);
     console.log(this.element);
   }
 }

@@ -52,9 +52,11 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     if (this.control.controlType == 'date-range') {
       this.dateRange.setValue(this.control.value);
+      this.dateRange.setValidators(this.control.validators);
+      this.abstractControl = this.dateRange;
+    } else {
+      this.abstractControl = this.form.controls[this.control.key];
     }
-
-    this.abstractControl = this.form.controls[this.control.key];
 
     if (this.control.controlType == FormControlType.TEXT && this.control.autocompleteOptions.length) {
       this.filteredAutocompleteOptions = this.abstractControl.valueChanges.pipe(
@@ -150,7 +152,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
   }
 
   private hasError(error: string): boolean | undefined {
-    return this.abstractControl?.hasError(error);
+    return this.abstractControl?.hasError(error) || this.abstractControl?.get('start')?.hasError(error) || this.abstractControl?.get('end')?.hasError(error);
   }
 
   private filterAutocompleteOptions(value: string): DynamicFormControlAutocompleteOption[] {

@@ -89,11 +89,11 @@
         [formGroup]="dateRange"
         [rangePicker]="dateRangePicker"
         [disabled]="control.disabled"
-        [required]="isRequired"
         class="dynamic-form-control-input"
       >
         <input
           matStartDate
+          [required]="isRequired"
           placeholder="Start"
           formControlName="start"
           class="dynamic-form-control-input"
@@ -101,6 +101,7 @@
         />
         <input
           matEndDate
+          [required]="isRequired"
           placeholder="Eind"
           formControlName="end"
           class="dynamic-form-control-input"
@@ -113,6 +114,8 @@
         [for]="dateRangePicker"
       ></mat-datepicker-toggle>
       <mat-date-range-picker touchUi #dateRangePicker></mat-date-range-picker>
+
+      <span>Valid: {{isValid}}</span>
 
       <!-- Chips -->
       <mat-chip-list
