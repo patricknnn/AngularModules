@@ -12,6 +12,7 @@ import { FormService } from 'src/app/services/forms/form.service';
 })
 export class FormComponent {
   formControls?: DynamicFormControl<any>[];
+  formControlsDisabled: boolean = false;
   model: any;
 
   @ViewChild('dynamicForm') dynamicForm?: DynamicFormComponent;
@@ -19,6 +20,17 @@ export class FormComponent {
   constructor(private formService: FormService, private http: HttpClient) {
     this.model = formService.getModel();
     this.formControls = this.formService.create();
+  }
+
+  toggleDisabled(): void {
+    this.formControlsDisabled = !this.formControlsDisabled;
+    const controls: any = this.formService.create();
+
+    controls.forEach((control: any) => {
+      control.disabled = this.formControlsDisabled;
+    });
+
+    this.formControls = controls;
   }
 
   logElement(): void {

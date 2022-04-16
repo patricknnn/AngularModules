@@ -23,7 +23,7 @@ import { DynamicFormControlComponent } from '../dynamic-form-control/dynamic-for
   providers: [FormControlService],
 })
 export class DynamicFormComponent implements OnChanges {
-  @Input() public formAppearance: MatFormAppearance = MatFormAppearance.STANDARD;
+  @Input() public formAppearance: MatFormAppearance = MatFormAppearance.FILL;
   @Input() public formColor: MatColor = MatColor.PRIMARY;
   @Input() public formControls: DynamicFormControl<any>[] | null = null;
   @Input() public formModel: any = {};
@@ -31,8 +31,7 @@ export class DynamicFormComponent implements OnChanges {
   @Output() public formValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public formModelChange: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChildren('dynamicFormControl')
-  dynamicFormControls?: QueryList<DynamicFormControlComponent>;
+  @ViewChildren('dynamicFormControl') dynamicFormControls?: QueryList<DynamicFormControlComponent>;
 
   public form!: FormGroup;
 
@@ -54,6 +53,7 @@ export class DynamicFormComponent implements OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.formControls) {
+      console.log('DYNAMIC FORM: Rebuilding form');
       this.buildForm();
     }
   }

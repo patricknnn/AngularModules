@@ -11,9 +11,23 @@ export class FormService {
   public create(): DynamicFormControl<any>[] {
     return [
       new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.AUTOCOMPLETE)
+        .setKey('autocomplete')
+        .setLabel('Autocomplete')
+        .setAutocompleteOptions(this.getOptions())
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.DROPDOWN)
+        .setKey('dropdown')
+        .setLabel('Dropdown')
+        .setOptions(this.getOptions())
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
         .setControlType(FormControlType.TEXT)
-        .setKey('name')
-        .setLabel('Name')
+        .setKey('text')
+        .setLabel('Text')
         .setValidators([Validators.required])
         .build(),
       new DynamicFormControlBuilder<string>()
@@ -35,18 +49,70 @@ export class FormService {
         .setLabel('Date range')
         .setValidators([Validators.required])
         .build(),
+      new DynamicFormControlBuilder<string[]>()
+        .setControlType(FormControlType.CHIPS)
+        .setKey('chips')
+        .setLabel('Chips')
+        .setAutocompleteOptions(this.getOptions())
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.TEXT_AREA)
+        .setKey('textArea')
+        .setLabel('Text area')
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.CHECKBOX)
+        .setKey('checkbox')
+        .setLabel('Checkbox')
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.RADIO)
+        .setKey('radio')
+        .setLabel('Radio')
+        .setOptions(this.getOptions())
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.SLIDE)
+        .setKey('slide')
+        .setLabel('Slide')
+        .setValidators([Validators.required])
+        .build(),
+    ];
+  }
+
+  getOptions(): any {
+    return [
+      {
+        label: 'Option 1',
+        value: 'Option 1',
+      },
+      {
+        label: 'Option 2',
+        value: 'Option 2',
+      },
     ];
   }
 
   getModel(): any {
     return {
-      name: '',
+      autocomplete: '',
+      chips: [],
+      dropdown: '',
+      text: '',
       date: '',
       dateOfBirth: '',
       dateRange: {
         start: '',
         end: '',
       },
+      textArea: '',
+      checkbox: false,
+      radio: '',
+      slide: false,
     };
   }
 }
