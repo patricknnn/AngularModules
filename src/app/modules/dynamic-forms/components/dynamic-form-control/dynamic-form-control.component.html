@@ -21,21 +21,45 @@
         [id]="control.key"
         [type]="control.inputType"
         [required]="isRequired"
-        [matAutocomplete]="autoComp"
-        [matAutocompleteDisabled]="!control.autocompleteOptions.length"
         class="dynamic-form-control-input"
       />
+
       <!-- Autocomplete -->
-      <mat-autocomplete autoActiveFirstOption #autoComp="matAutocomplete">
+      <input
+        matInput
+        *ngSwitchCase="'autocomplete'"
+        [formControlName]="control.key"
+        [id]="control.key"
+        [type]="control.inputType"
+        [required]="isRequired"
+        [matAutocomplete]="autoComp"
+        class="dynamic-form-control-input"
+      />
+      <img
+        matSuffix
+        *ngIf="selectedAutocompleteOption?.image"
+        [alt]="selectedAutocompleteOption?.value"
+        [src]="selectedAutocompleteOption?.image"
+        width="32"
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #autoComp="matAutocomplete"
+        [displayWith]="getAutocompleteDisplayValue"
+        (optionSelected)="setSelectedAutocompleteOption($event.option.value)"
+      >
         <mat-option
           *ngFor="let option of filteredAutocompleteOptions | async"
-          [value]="option.value"
+          [value]="option"
         >
           <div class="dynamic-form-control-autocomplete-option">
-            <div *ngIf="option.image" class="dynamic-form-control-autocomplete-option-img">
-              <img [src]="option.image" />
+            <div
+              *ngIf="option.image"
+              class="dynamic-form-control-autocomplete-option-img"
+            >
+              <img [alt]="option.value" [src]="option.image" width="32" />
             </div>
-            {{ option.value }}
+            {{ option.label }}
           </div>
         </mat-option>
       </mat-autocomplete>
@@ -83,6 +107,28 @@
       ></mat-datepicker-toggle>
       <mat-datepicker touchUi #datePicker></mat-datepicker>
 
+      <!-- Date of birth -->
+      <input
+        matInput
+        *ngSwitchCase="'date-of-birth'"
+        [formControlName]="control.key"
+        [id]="control.key"
+        [matDatepicker]="dateOfBirthPicker"
+        [required]="isRequired"
+        [max]="getMinAgeDate()"
+        class="dynamic-form-control-input"
+      />
+      <mat-datepicker-toggle
+        *ngSwitchCase="'date-of-birth'"
+        matSuffix
+        [for]="dateOfBirthPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker
+        touchUi
+        #dateOfBirthPicker
+        startView="multi-year"
+      ></mat-datepicker>
+
       <!-- Date range -->
       <mat-date-range-input
         *ngSwitchCase="'date-range'"
@@ -93,18 +139,18 @@
       >
         <input
           matStartDate
-          [required]="isRequired"
           placeholder="Start"
           formControlName="start"
           class="dynamic-form-control-input"
+          [required]="isRequired"
           (dateChange)="setDateRange()"
         />
         <input
           matEndDate
-          [required]="isRequired"
           placeholder="Eind"
           formControlName="end"
           class="dynamic-form-control-input"
+          [required]="isRequired"
           (dateChange)="setDateRange()"
         />
       </mat-date-range-input>
@@ -114,8 +160,6 @@
         [for]="dateRangePicker"
       ></mat-datepicker-toggle>
       <mat-date-range-picker touchUi #dateRangePicker></mat-date-range-picker>
-
-      <span>Valid: {{isValid}}</span>
 
       <!-- Chips -->
       <mat-chip-list
@@ -134,8 +178,13 @@
           class="dynamic-form-control-chip"
         >
           {{ item }}
-          <button matChipRemove *ngIf="!control.disabled && control.removable">
-            <mat-icon>cancel</mat-icon>
+          <button
+            *ngIf="!control.disabled"
+            mat-icon-button
+            class="remove-chip-button"
+            (click)="removeFromValue(item)"
+          >
+            <mat-icon>x</mat-icon>
           </button>
         </mat-chip>
         <input

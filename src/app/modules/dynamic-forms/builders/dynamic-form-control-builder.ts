@@ -108,6 +108,12 @@ export class DynamicFormControlBuilder<T> {
     return this;
   }
 
+  public setMinAge(value: number): this {
+    this.dynamicFormControl.minAge = value;
+
+    return this;
+  }
+
   public setValidators(value: ValidatorFn[]): this {
     this.dynamicFormControl.validators = value;
 

@@ -1,71 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { PeriodicElement } from 'src/app/models/periodic-element';
 import { DynamicFormControlBuilder } from 'src/app/modules/dynamic-forms/builders/dynamic-form-control-builder';
 import { FormControlType } from 'src/app/modules/dynamic-forms/enums/form-control-type';
 import { DynamicFormControl } from 'src/app/modules/dynamic-forms/models/dynamic-form-control';
-import { DynamicFormControlAutocompleteOption } from 'src/app/modules/dynamic-forms/models/dynamic-form-control-autocomplete-option';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  public getFormControls(
-    countries: DynamicFormControlAutocompleteOption[]
-  ): DynamicFormControl<any>[] {
-    const formControls: DynamicFormControl<any>[] = [
+  public create(): DynamicFormControl<any>[] {
+    return [
       new DynamicFormControlBuilder<string>()
-        .setControlType('text')
-        .setKey('country')
-        .setLabel('country')
-        .setAutocompleteOptions(countries)
-        .build(),
-      new DynamicFormControlBuilder<string>()
-        .setControlType('text')
+        .setControlType(FormControlType.TEXT)
         .setKey('name')
-        .setLabel('name')
-        .setAutocompleteOptions([
-          {
-            value: 'Hydrogen',
-          },
-          {
-            value: 'Helium',
-          },
-          {
-            value: 'Lithium',
-          },
-          {
-            value: 'Beryllium',
-          },
-          {
-            value: 'Boron',
-          },
-        ])
+        .setLabel('Name')
+        .setValidators([Validators.required])
         .build(),
       new DynamicFormControlBuilder<string>()
-        .setControlType('text')
-        .setKey('symbol')
-        .setLabel('symbol')
-        .build(),
-      new DynamicFormControlBuilder<number>()
-        .setControlType('text')
-        .setKey('weight')
-        .setLabel('weight')
-        .build(),
-      new DynamicFormControlBuilder<number>()
-        .setControlType('text')
-        .setKey('position')
-        .setLabel('position')
+        .setControlType(FormControlType.DATE)
+        .setKey('date')
+        .setLabel('Date')
+        .setValidators([Validators.required])
         .build(),
       new DynamicFormControlBuilder<string>()
-        .setControlType('text')
-        .setKey('nested.element')
-        .setLabel('Nested')
-        .build(),
-      new DynamicFormControlBuilder<string>()
-        .setControlType('text')
-        .setKey('nested.deep.element')
-        .setLabel('Nested deep')
+        .setControlType(FormControlType.DATE_OF_BIRTH)
+        .setKey('dateOfBirth')
+        .setLabel('Date of birth')
+        .setMinAge(3)
+        .setValidators([Validators.required])
         .build(),
       new DynamicFormControlBuilder<string>()
         .setControlType(FormControlType.DATE_RANGE)
@@ -74,29 +36,16 @@ export class FormService {
         .setValidators([Validators.required])
         .build(),
     ];
-
-    return formControls.sort(
-      (a: DynamicFormControl<any>, b: DynamicFormControl<any>) =>
-        a.order - b.order
-    );
   }
 
-  getElement(): PeriodicElement {
+  getModel(): any {
     return {
-      position: 1,
-      name: 'Hydrogen',
-      weight: 1.0079,
-      symbol: 'H',
-      bool: false,
+      name: '',
+      date: '',
+      dateOfBirth: '',
       dateRange: {
         start: '',
         end: '',
-      },
-      nested: {
-        element: 'Nested Element',
-        deep: {
-          element: 'Nested deep',
-        },
       },
     };
   }

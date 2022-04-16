@@ -21,6 +21,7 @@ export class DynamicFormControl<T> {
     public removable: boolean = true,
     public addOnBlur: boolean = true,
     public disabled: boolean = false,
+    public minAge: number = 0,
     public options: DynamicFormControlOption[] = [],
     public autocompleteOptions: DynamicFormControlAutocompleteOption[] = [],
     public validators: ValidatorFn[] = [],

@@ -1,8 +1,18 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatColor } from 'src/app/enums/material/mat-color';
+import { DynamicTableColumnType } from './enums/dynamic-table-column-type';
 import { DynamicTableButton } from './models/dynamic-table-button';
 import { DynamicTableButtonClickEvent } from './models/dynamic-table-button-click-event';
 import { DynamicTableColumnConfig } from './models/dynamic-table-column-config';
@@ -18,10 +28,13 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Input() public columnConfig!: DynamicTableColumnConfig[];
   @Input() public data!: any[];
 
-  @Output() public selectionChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-  @Output() public buttonClick: EventEmitter<DynamicTableButtonClickEvent> = new EventEmitter<DynamicTableButtonClickEvent>();
+  @Output() public selectionChange: EventEmitter<any[]> = new EventEmitter<
+    any[]
+  >();
+  @Output() public buttonClick: EventEmitter<DynamicTableButtonClickEvent> =
+    new EventEmitter<DynamicTableButtonClickEvent>();
   @Output() public rowClick: EventEmitter<any> = new EventEmitter<any>();
-  
+
   @ViewChild(MatTable) public table?: MatTable<any>;
   @ViewChild(MatPaginator) public paginator?: MatPaginator;
   @ViewChild(MatSort) public sort?: MatSort;
@@ -34,6 +47,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   public areDropdownFiltersExpanded: boolean = false;
   public activeDropdownFilters: any = {};
   public activeTextFilter: string = '';
+  public columnTypes: typeof DynamicTableColumnType = DynamicTableColumnType;
+  public MatColors: typeof MatColor = MatColor;
 
   public ngOnInit(): void {
     this.filteredData = this.data;
@@ -70,7 +85,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     this.activeDropdownFilters[key] = option;
 
     this.filteredData = this.data.filter((row: any) => {
-      for (const [objectKey, objectValue] of Object.entries(this.activeDropdownFilters)) {
+      for (const [objectKey, objectValue] of Object.entries(
+        this.activeDropdownFilters
+      )) {
         if (this.getCellContent(row, objectKey) != objectValue) {
           return false;
         }
@@ -90,14 +107,16 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   }
 
   public areDropdownFiltersEmpty(): boolean {
-    return !this.columnConfig.some((column: DynamicTableColumnConfig) => column.filterable);
+    return !this.columnConfig.some(
+      (column: DynamicTableColumnConfig) => column.filterable
+    );
   }
 
   public toggleDropdownFilters(): void {
     this.areDropdownFiltersExpanded = !this.areDropdownFiltersExpanded;
   }
 
-  public getDropdownFilterOptions(key: string): string[] {
+  public getDropdownFilterOptions(key: string): any[] {
     return this.data
       .map((row: any) => {
         return this.getCellContent(row, key);
@@ -110,17 +129,23 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   public getCellContent(row: any, modelKey: string): any {
     return modelKey
       .split('.')
-      .reduce((previousValue: any, currentValue: string) => previousValue?.[currentValue], row);
+      .reduce(
+        (previousValue: any, currentValue: string) =>
+          previousValue?.[currentValue],
+        row
+      );
   }
 
   public isFooterEmpty(): boolean {
-    return !this.columnConfig.some((column: DynamicTableColumnConfig) => column.footer);
+    return !this.columnConfig.some(
+      (column: DynamicTableColumnConfig) => column.footer
+    );
   }
 
   public emitButtonClickEvent(
     button: DynamicTableButton,
     row: any,
-    column: DynamicTableColumnConfig,
+    column: DynamicTableColumnConfig
   ): void {
     this.buttonClick.emit({ button, row, column });
   }
@@ -149,7 +174,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   private createDataSource(): void {
     this.dataSource = new MatTableDataSource<any>(this.filteredData);
-    this.dataSource.paginator = this.tableConfig.paging && this.paginator ? this.paginator : null;
+    this.dataSource.paginator =
+      this.tableConfig.paging && this.paginator ? this.paginator : null;
     this.dataSource.sort = this.sort ? this.sort : null;
     this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
       return JSON.stringify(data).toLowerCase().includes(filter);

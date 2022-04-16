@@ -1,30 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NotificationComponent } from './components/notification/notification.component';
-import { MatCardModule } from '@angular/material/card';
-import { CoreModule } from '../core/core.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
-import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    NotificationComponent, 
-    SnackbarComponent, 
-    DialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    MatDialogModule,
-  ],
-  exports: [
-    NotificationComponent,
-  ],
+  declarations: [NotificationComponent, SnackbarComponent, DialogComponent],
+  imports: [SharedModule],
+  exports: [NotificationComponent],
 })
 export class DialogModule {}

@@ -23,7 +23,9 @@
   // dropdown
   & .dynamic-form-control-container.text,
   & .dynamic-form-control-container.date,
+  & .dynamic-form-control-container.date-of-birth,
   & .dynamic-form-control-container.date-range,
+  & .dynamic-form-control-container.autocomplete,
   & .dynamic-form-control-container.dropdown {
     max-width: 400px;
   }

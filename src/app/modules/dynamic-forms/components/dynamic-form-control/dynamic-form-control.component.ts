@@ -1,6 +1,18 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
@@ -8,6 +20,8 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { FormControlType } from '../../enums/form-control-type';
 import { DynamicFormControlAutocompleteOption } from '../../models/dynamic-form-control-autocomplete-option';
+import { MatColor } from 'src/app/enums/material/mat-color';
+import { MatFormAppearance } from 'src/app/enums/material/mat-form-appearance';
 
 @Component({
   selector: 'app-dynamic-form-control',
@@ -25,8 +39,8 @@ import { DynamicFormControlAutocompleteOption } from '../../models/dynamic-form-
 export class DynamicFormControlComponent implements OnInit, OnDestroy {
   @Input() public control!: DynamicFormControl<any>;
   @Input() public form!: FormGroup;
-  @Input() public appearance!: 'legacy' | 'standard' | 'fill' | 'outline';
-  @Input() public color!: 'primary' | 'accent' | 'warn';
+  @Input() public appearance!: MatFormAppearance;
+  @Input() public color!: MatColor;
 
   @Output()
   public formControlValueChange: EventEmitter<DynamicFormControlValueChange> = new EventEmitter<DynamicFormControlValueChange>();
@@ -36,18 +50,23 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     start: new FormControl(),
     end: new FormControl(),
   });
-  public filteredAutocompleteOptions?: Observable<DynamicFormControlAutocompleteOption[]>;
+  public filteredAutocompleteOptions?: Observable<
+    DynamicFormControlAutocompleteOption[]
+  >;
+  public selectedAutocompleteOption?: DynamicFormControlAutocompleteOption;
+  public abstractControl?: AbstractControl | null;
 
   private readonly formFieldControls: string[] = [
+    'autocomplete',
     'text',
     'textarea',
     'dropdown',
     'date',
+    'date-of-birth',
     'date-range',
     'chips',
   ];
   private controlSubscription?: Subscription;
-  private abstractControl?: AbstractControl | null;
 
   public ngOnInit(): void {
     if (this.control.controlType == 'date-range') {
@@ -58,25 +77,25 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
       this.abstractControl = this.form.controls[this.control.key];
     }
 
-    if (this.control.controlType == FormControlType.TEXT && this.control.autocompleteOptions.length) {
-      this.filteredAutocompleteOptions = this.abstractControl.valueChanges.pipe(
-        startWith(''),
-        map((value: string) => this.filterAutocompleteOptions(value)),
-      );
+    if (this.isAutocompleteControl) {
+      this.initAutocompleteControl();
     }
 
+    this.controlSubscription = this.abstractControl.valueChanges.subscribe(
+      () => {
+        this.selectedAutocompleteOption = undefined;
 
-    this.controlSubscription = this.abstractControl.valueChanges
-      .pipe(
-        tap(() => {
+        if (this.abstractControl?.valid) {
           const valueChange: DynamicFormControlValueChange = {
             key: this.control.key,
-            value: this.abstractControl?.value,
+            value: this.isAutocompleteControl
+              ? this.abstractControl?.value.value
+              : this.abstractControl?.value,
           };
           this.formControlValueChange.emit(valueChange);
-        }),
-      )
-      .subscribe();
+        }
+      }
+    );
   }
 
   public ngOnDestroy(): void {
@@ -85,6 +104,10 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
   public get isFormFieldControl(): boolean {
     return this.formFieldControls.includes(this.control.controlType);
+  }
+
+  public get isAutocompleteControl(): boolean {
+    return this.control.controlType === FormControlType.AUTOCOMPLETE;
   }
 
   public get isRequired(): boolean {
@@ -103,21 +126,23 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     const label: string = this.control.label;
 
     if (this.hasError('required') || this.hasError('requiredtrue')) {
-      return label + ' is required';
+      return label + 'form-control.errors.required';
     } else if (this.hasError('min')) {
-      return label + ' is too low';
+      return label + 'form-control.errors.min';
     } else if (this.hasError('max')) {
-      return label + ' is too high';
+      return label + 'form-control.errors.max';
     } else if (this.hasError('email')) {
-      return label + ' is not a valid email';
+      return label + 'form-control.errors.email';
     } else if (this.hasError('minlength')) {
-      return label + ' does not have enough characters';
+      return label + 'form-control.errors.min-length';
     } else if (this.hasError('maxlength')) {
-      return label + ' has to much characters';
+      return label + 'form-control.errors.max-length';
     } else if (this.hasError('pattern')) {
-      return label + ' does not match required pattern';
+      return label + 'form-control.errors.pattern';
     } else if (this.hasError('autocomplete')) {
-      return label + ' does not match any autocomplete option';
+      return label + 'form-control.errors.autocomplete';
+    } else if (this.hasError('minAge')) {
+      return label + 'form-control.errors.minAge';
     } else {
       return '';
     }
@@ -125,6 +150,13 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
   public markAsTouched(): void {
     this.abstractControl?.markAsTouched();
+  }
+
+  public getMinAgeDate(): Date {
+    const date: Date = new Date();
+    date.setFullYear(new Date().getFullYear() - this.control.minAge);
+
+    return date;
   }
 
   public setDateRange(): void {
@@ -151,13 +183,64 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     }
   }
 
-  private hasError(error: string): boolean | undefined {
-    return this.abstractControl?.hasError(error) || this.abstractControl?.get('start')?.hasError(error) || this.abstractControl?.get('end')?.hasError(error);
+  public getAutocompleteDisplayValue(
+    option: DynamicFormControlAutocompleteOption
+  ): string {
+    return option.label ? option.label : option.value;
   }
 
-  private filterAutocompleteOptions(value: string): DynamicFormControlAutocompleteOption[] {
-    return this.control.autocompleteOptions.filter((option: DynamicFormControlAutocompleteOption) => {
-      return option.value.toLowerCase().includes(value.toLowerCase());
-    });
+  public setSelectedAutocompleteOption(
+    option: DynamicFormControlAutocompleteOption
+  ): void {
+    this.selectedAutocompleteOption = option;
+  }
+
+  private getAutocompleteOptionByValue(
+    value: string
+  ): DynamicFormControlAutocompleteOption | undefined {
+    const filteredOptions: DynamicFormControlAutocompleteOption[] =
+      this.control.autocompleteOptions.filter(
+        (option: DynamicFormControlAutocompleteOption) => {
+          return option.value.toLowerCase() === value.toLowerCase();
+        }
+      );
+
+    return filteredOptions.length == 1 ? filteredOptions[0] : undefined;
+  }
+
+  private initAutocompleteControl(): void {
+    this.selectedAutocompleteOption = this.control.value
+      ? this.getAutocompleteOptionByValue(this.control.value)
+      : undefined;
+    this.abstractControl?.setValue(this.selectedAutocompleteOption || '');
+    this.filteredAutocompleteOptions = this.abstractControl?.valueChanges.pipe(
+      startWith(''),
+      map((value: string | DynamicFormControlAutocompleteOption) =>
+        typeof value === 'string' ? value : value.label
+      ),
+      map((label: string) =>
+        label
+          ? this.filterAutocompleteOptions(label)
+          : this.control.autocompleteOptions.slice()
+      )
+    );
+  }
+
+  private filterAutocompleteOptions(
+    label: string
+  ): DynamicFormControlAutocompleteOption[] {
+    return this.control.autocompleteOptions.filter(
+      (option: DynamicFormControlAutocompleteOption) => {
+        return option.label.toLowerCase().startsWith(label.toLowerCase());
+      }
+    );
+  }
+
+  private hasError(error: string): boolean | undefined {
+    return (
+      this.abstractControl?.hasError(error) ||
+      this.abstractControl?.get('start')?.hasError(error) ||
+      this.abstractControl?.get('end')?.hasError(error)
+    );
   }
 }

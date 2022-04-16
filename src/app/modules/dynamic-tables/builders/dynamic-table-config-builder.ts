@@ -1,3 +1,5 @@
+import { MatColor } from 'src/app/enums/material/mat-color';
+import { MatFormAppearance } from 'src/app/enums/material/mat-form-appearance';
 import { DynamicTableConfig } from '../models/dynamic-table-config';
 
 export class DynamicTableConfigBuilder {
@@ -26,14 +28,14 @@ export class DynamicTableConfigBuilder {
   }
 
   public setFilterAppearance(
-    value: 'legacy' | 'standard' | 'fill' | 'outline',
+    value: MatFormAppearance,
   ): this {
     this.dynamicTableConfig.filterAppearance = value;
 
     return this;
   }
 
-  public setFilterColor(value: 'primary' | 'accent' | 'warn'): this {
+  public setFilterColor(value: MatColor): this {
     this.dynamicTableConfig.filterColor = value;
 
     return this;

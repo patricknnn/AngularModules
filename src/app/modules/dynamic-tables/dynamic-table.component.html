@@ -23,27 +23,23 @@
                 (keyup)="applyTextFilter()"
                 [placeholder]="tableConfig.filterPlaceholder"
               />
-              <!-- Clear text -->
-              <button
-                *ngIf="activeTextFilter"
-                matSuffix
-                mat-icon-button
-                aria-label="Clear"
-                (click)="resetTextFilter()"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
             </mat-form-field>
           </div>
+          <!-- Clear text -->
+          <button
+            mat-icon-button
+            *ngIf="activeTextFilter"
+            (click)="resetTextFilter()"
+          >
+            <mat-icon>eraser</mat-icon>
+          </button>
           <!-- Toggle dropdown filters -->
           <button
-            *ngIf="!areDropdownFiltersEmpty()"
-            matSuffix
             mat-icon-button
-            aria-label="Clear"
+            *ngIf="!areDropdownFiltersEmpty()"
             (click)="toggleDropdownFilters()"
           >
-            <mat-icon>filter_alt</mat-icon>
+            <mat-icon>eraser</mat-icon>
           </button>
         </div>
       </mat-expansion-panel-header>
@@ -60,25 +56,44 @@
               [color]="tableConfig.filterColor"
             >
               <mat-label>{{ column.header }}</mat-label>
-              <mat-select [(value)]="activeDropdownFilters[column.key]">
+              <mat-select
+                [(value)]="activeDropdownFilters[column.key]"
+                #selectRef
+              >
+                <mat-select-trigger>
+                  <mat-icon
+                    *ngIf="
+                      selectRef.value === true || selectRef.value === false
+                    "
+                    >{{ selectRef.value ? "check" : "x" }}</mat-icon
+                  >
+                  <span
+                    *ngIf="
+                      selectRef.value !== true && selectRef.value !== false
+                    "
+                  >
+                    {{ selectRef.value }}
+                  </span>
+                </mat-select-trigger>
                 <mat-option
                   *ngFor="let option of getDropdownFilterOptions(column.key)"
                   (click)="applyDropdownFilter(column.key, option)"
                   [value]="option"
                 >
-                  {{ option }}
+                  <ng-container *ngIf="option === true || option === false">
+                    <mat-icon>{{ option ? "check" : "x" }}</mat-icon>
+                  </ng-container>
+                  <ng-container *ngIf="option !== true && option !== false">
+                    {{ option }}
+                  </ng-container>
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
         </div>
         <!-- Reset dropdown filters -->
-        <button
-          mat-icon-button
-          aria-label="Clear"
-          (click)="resetDropdownFilters()"
-        >
-          <mat-icon>clear</mat-icon>
+        <button mat-icon-button (click)="resetDropdownFilters()">
+          <mat-icon>x</mat-icon>
         </button>
       </div>
     </mat-expansion-panel>
@@ -154,16 +169,22 @@
           <!-- Cells -->
           <mat-cell *matCellDef="let row" [ngSwitch]="column.type">
             <!-- text -->
-            <div *ngSwitchCase="'text'" class="dynamic-table-cell">
+            <div *ngSwitchCase="columnTypes.TEXT" class="dynamic-table-cell">
               {{ getCellContent(row, column.key) }}
             </div>
             <!-- image -->
-            <div *ngSwitchCase="'image'" class="dynamic-table-cell">
+            <div *ngSwitchCase="columnTypes.IMAGE" class="dynamic-table-cell">
               <img [src]="getCellContent(row, column.key)" alt="table-image" />
             </div>
             <!-- date -->
-            <div *ngSwitchCase="'date'" class="dynamic-table-cell">
+            <div *ngSwitchCase="columnTypes.DATE" class="dynamic-table-cell">
               {{ getCellContent(row, column.key) | date }}
+            </div>
+            <!-- boolean -->
+            <div *ngSwitchCase="columnTypes.BOOLEAN" class="dynamic-table-cell">
+              <mat-icon>{{
+                getCellContent(row, column.key) === true ? "check" : "x"
+              }}</mat-icon>
             </div>
             <!-- buttons -->
             <div
@@ -223,7 +244,7 @@
 
         <!-- Row shown when there is no matching data. -->
         <div *matNoDataRow class="dynamic-table-row-no-data">
-          <div class="mat-cell">No data to display</div>
+          <div class="mat-cell">{{ "table.no-data" }}</div>
         </div>
       </mat-table>
     </div>

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  margin-bottom: 2rem;
 
   // filter
   & .dynamic-table-filter {
@@ -80,16 +81,12 @@
       }
     }
 
-    // header row
-    & .dynamic-table-header-row {
-      border-radius: 4px 4px 0 0;
-
-      & mat-header-cell:first-child {
-        border-top-left-radius: 4px;
-      }
-
-      & mat-header-cell:last-child {
-        border-top-right-radius: 4px;
+    & .dynamic-table-select-header {
+      & .mat-checkbox-checked,
+      & .mat-checkbox-indeterminate {
+        & ::ng-deep .mat-checkbox-background {
+          background-color: #ebf6ff;
+        }
       }
     }
 
@@ -114,26 +111,14 @@
 
     & .dynamic-table-row:hover {
       cursor: pointer;
+      background: rgba(0, 0, 0, 0.04);
     }
 
     & .dynamic-table-row-even {
-      background-color: inherit;
+      background-color: #fff;
     }
     & .dynamic-table-row-odd {
-      background-color: inherit;
-    }
-
-    // footer row
-    & .dynamic-table-footer-row {
-      border-radius: 0 0 4px 4px;
-
-      & mat-footer-cell:first-child {
-        border-bottom-left-radius: 4px;
-      }
-
-      & mat-footer-cell:last-child {
-        border-bottom-right-radius: 4px;
-      }
+      background-color: #ebf6ff;
     }
 
     // empty row
@@ -165,10 +150,5 @@
         padding-left: 24px;
       }
     }
-  }
-
-  // paginator
-  & .dynamic-table-paginator.material-dark {
-    border-radius: 0 0 4px 4px;
   }
 }

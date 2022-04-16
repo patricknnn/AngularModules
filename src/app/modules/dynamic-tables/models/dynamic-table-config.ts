@@ -1,10 +1,13 @@
+import { MatColor } from "src/app/enums/material/mat-color";
+import { MatFormAppearance } from "src/app/enums/material/mat-form-appearance";
+
 export class DynamicTableConfig {
   public constructor(
     public filter: boolean = true,
     public filterLabel: string = 'Search',
     public filterPlaceholder: string = '',
-    public filterAppearance: 'legacy' | 'standard' | 'fill' | 'outline' = 'standard',
-    public filterColor: 'primary' | 'accent' | 'warn' = 'accent',
+    public filterAppearance: MatFormAppearance = MatFormAppearance.STANDARD,
+    public filterColor: MatColor = MatColor.ACCENT,
     public paging: boolean = false,
     public pagingSizeOptions: number[] = [5, 10, 25],
     public pagingSizeDefault: number = 10,

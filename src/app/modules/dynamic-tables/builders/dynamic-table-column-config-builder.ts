@@ -1,3 +1,4 @@
+import { DynamicTableColumnType } from '../enums/dynamic-table-column-type';
 import { DynamicTableButton } from '../models/dynamic-table-button';
 import { DynamicTableColumnConfig } from '../models/dynamic-table-column-config';
 
@@ -20,7 +21,7 @@ export class DynamicTableColumnConfigBuilder {
     return this;
   }
 
-  public setType(value: string): this {
+  public setType(value: DynamicTableColumnType): this {
     this.dynamicTableColumnConfig.type = value;
 
     return this;

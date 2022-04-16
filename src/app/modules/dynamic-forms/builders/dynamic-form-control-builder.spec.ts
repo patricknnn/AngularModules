@@ -2,6 +2,7 @@ import { ValidatorFn, Validators } from '@angular/forms';
 import { FormControlInputType } from '../enums/form-control-input-type';
 import { FormControlType } from '../enums/form-control-type';
 import { DynamicFormControl } from '../models/dynamic-form-control';
+import { DynamicFormControlAutocompleteOption } from '../models/dynamic-form-control-autocomplete-option';
 import { DynamicFormControlOption } from '../models/dynamic-form-control-option';
 import { DynamicFormControlBuilder } from './dynamic-form-control-builder';
 
@@ -11,7 +12,7 @@ describe('DynamicFormControlBuilder', () => {
   const fakeValue: string = 'fakeValue';
   const fakeKey: string = 'fakeKey';
   const fakeInputType: FormControlInputType = FormControlInputType.TEXT;
-  const fakeControlType: FormControlType = FormControlType.TEXT;
+  const fakeControlType: FormControlType = FormControlType.AUTOCOMPLETE;
   const fakeOrder: number = 1;
   const fakePlaceholder: string = 'fakePlaceholder';
   const fakeLabel: string = 'fakeLabel';
@@ -24,6 +25,12 @@ describe('DynamicFormControlBuilder', () => {
     label: 'fakeOptions',
     value: 'fakeOptions',
   };
+  const fakeAutocompleteOption: DynamicFormControlAutocompleteOption = {
+    label: 'fakeOptions',
+    value: 'fakeOptions',
+    image: 'fakeOptions',
+  };
+  const fakeAge: number = 16;
   const fakeValidators: ValidatorFn[] = [Validators.required];
 
   let formControl: DynamicFormControl<string>;
@@ -43,6 +50,8 @@ describe('DynamicFormControlBuilder', () => {
       .setRemovable(fakeRemovable)
       .setAddOnBlur(fakeAddOnBlur)
       .setOptions([fakeOption])
+      .setAutocompleteOptions([fakeAutocompleteOption])
+      .setMinAge(fakeAge)
       .setValidators(fakeValidators)
       .build();
   });
@@ -117,7 +126,15 @@ describe('DynamicFormControlBuilder', () => {
     expect(formControl.options).toContain(fakeOption);
   });
 
+  it('should build DynamicFormControl with correct autocompleteOption', () => {
+    expect(formControl.autocompleteOptions).toContain(fakeAutocompleteOption);
+  });
+
   it('should build DynamicFormControl with correct validator', () => {
     expect(formControl.validators).toContain(Validators.required);
+  });
+
+  it('should build DynamicFormControl with correct minAge', () => {
+    expect(formControl.minAge).toEqual(fakeAge);
   });
 });

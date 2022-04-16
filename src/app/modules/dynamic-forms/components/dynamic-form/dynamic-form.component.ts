@@ -1,5 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatColor } from 'src/app/enums/material/mat-color';
+import { MatFormAppearance } from 'src/app/enums/material/mat-form-appearance';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { FormControlService } from '../../services/form-control.service';
@@ -12,28 +23,31 @@ import { DynamicFormControlComponent } from '../dynamic-form-control/dynamic-for
   providers: [FormControlService],
 })
 export class DynamicFormComponent implements OnChanges {
-  @Input() public formAppearance: 'legacy' | 'standard' | 'fill' | 'outline' = 'fill';
-  @Input() public formColor: 'primary' | 'accent' | 'warn' = 'primary';
+  @Input() public formAppearance: MatFormAppearance = MatFormAppearance.STANDARD;
+  @Input() public formColor: MatColor = MatColor.PRIMARY;
   @Input() public formControls: DynamicFormControl<any>[] | null = null;
   @Input() public formModel: any = {};
 
   @Output() public formValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public formModelChange: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChildren('dynamicFormControl') dynamicFormControls?: QueryList<DynamicFormControlComponent>;
+  @ViewChildren('dynamicFormControl')
+  dynamicFormControls?: QueryList<DynamicFormControlComponent>;
 
   public form!: FormGroup;
 
-  public constructor(private readonly formControlService: FormControlService) { }
+  public constructor(private readonly formControlService: FormControlService) {}
 
   public get isFormValid(): boolean {
     let valid: boolean = true;
 
-    this.dynamicFormControls?.forEach((control: DynamicFormControlComponent) => {
-      if (!control.isValid) {
-        valid = control.isValid;
+    this.dynamicFormControls?.forEach(
+      (control: DynamicFormControlComponent) => {
+        if (!control.isValid) {
+          valid = control.isValid;
+        }
       }
-    });
+    );
 
     return valid;
   }
@@ -58,15 +72,21 @@ export class DynamicFormComponent implements OnChanges {
     this.form.markAllAsTouched();
   }
 
-  public handleControlValueChange(valueChange: DynamicFormControlValueChange): void {
+  public handleControlValueChange(
+    valueChange: DynamicFormControlValueChange
+  ): void {
     this.setModelValue(this.formModel, valueChange.key, valueChange.value);
     this.formModelChange.emit(this.formModel);
   }
-  
+
   private getModelValue(modelKey: string): any {
     return modelKey
       .split('.')
-      .reduce((previousValue: any, currentValue: string) => previousValue?.[currentValue], this.formModel);
+      .reduce(
+        (previousValue: any, currentValue: string) =>
+          previousValue?.[currentValue],
+        this.formModel
+      );
   }
 
   private setModelValue(model: any, key: string, value: any): void {

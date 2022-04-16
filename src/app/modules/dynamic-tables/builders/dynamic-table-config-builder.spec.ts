@@ -1,3 +1,5 @@
+
+import { MatColor, MatFormAppearance } from '@aic/core-ui/src/lib/enums';
 import { DynamicTableConfig } from '../models/dynamic-table-config';
 import { DynamicTableConfigBuilder } from './dynamic-table-config-builder';
 
@@ -6,8 +8,8 @@ describe('DynamicTableConfigBuilder', () => {
   const fakeString: string = 'fakeValue';
   const fakeBoolean: boolean = true;
   const fakeNumber: number = 10;
-  const fakeAppearance: 'legacy' | 'standard' | 'fill' | 'outline' = 'standard';
-  const fakeColor: 'primary' | 'accent' | 'warn' = 'warn';
+  const fakeAppearance: MatFormAppearance = MatFormAppearance.STANDARD;
+  const fakeColor: MatColor = MatColor.WARN;
   const fakeSticky: 'start' | 'end' | 'false' = 'start';
   const fakeDirection: 'asc' | 'desc' = 'desc';
 

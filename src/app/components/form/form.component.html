@@ -9,14 +9,12 @@
     <app-dynamic-form
       #dynamicForm
       *ngIf="formControls"
-      [formAppearance]="'fill'"
-      [formColor]="'primary'"
       [formControls]="formControls"
-      [(formModel)]="element"
+      [(formModel)]="model"
     >
     </app-dynamic-form>
 
-    <span>Form validity: {{dynamicForm?.isFormValid}}</span>
+    <span>Form validity: {{ dynamicForm?.isFormValid }}</span>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="logElement()">LOG</button>

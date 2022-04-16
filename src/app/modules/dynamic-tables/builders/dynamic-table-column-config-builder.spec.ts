@@ -1,3 +1,4 @@
+import { DynamicTableColumnType } from '../enums/dynamic-table-column-type';
 import { DynamicTableButton } from '../models/dynamic-table-button';
 import { DynamicTableColumnConfig } from '../models/dynamic-table-column-config';
 import { DynamicTableColumnConfigBuilder } from './dynamic-table-column-config-builder';
@@ -5,6 +6,7 @@ import { DynamicTableColumnConfigBuilder } from './dynamic-table-column-config-b
 describe('DynamicTableColumnConfigBuilder', () => {
   const builder: DynamicTableColumnConfigBuilder = new DynamicTableColumnConfigBuilder();
   const fakeString: string = 'fakeValue';
+  const fakeType: DynamicTableColumnType = DynamicTableColumnType.TEXT;
   const fakeBoolean: boolean = true;
   const fakeSticky: 'start' | 'end' | 'false' = 'start';
   const fakeButton: DynamicTableButton = {
@@ -23,7 +25,7 @@ describe('DynamicTableColumnConfigBuilder', () => {
       .setKey(fakeString)
       .setSortable(fakeBoolean)
       .setSticky(fakeSticky)
-      .setType(fakeString)
+      .setType(fakeType)
       .build();
   });
 
@@ -70,6 +72,6 @@ describe('DynamicTableColumnConfigBuilder', () => {
   });
 
   it('should setType', () => {
-    expect(columnConfig.type).toEqual(fakeString);
+    expect(columnConfig.type).toEqual(fakeType);
   });
 });

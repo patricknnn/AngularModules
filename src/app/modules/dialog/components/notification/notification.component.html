@@ -1,12 +1,12 @@
 <mat-card class="notification-container {{ type }}">
   <div class="icon-container" *ngIf="icon">
-    <app-icon [icon]="icon" size="medium"></app-icon>
+    <mat-icon>x</mat-icon>
   </div>
   <span class="text-container">{{ text }}</span>
   <span class="button-container" *ngIf="dismissable">
     <button mat-icon-button class="icon-button" (click)="dismiss()">
       <div class="icon">
-        <app-icon icon="x" size="medium"></app-icon>
+        <mat-icon>x</mat-icon>
       </div>
     </button>
   </span>

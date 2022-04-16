@@ -6,11 +6,17 @@
   }
 
   & .dynamic-form-control-label {
-    color: rgba(0, 0, 0, 0.87);
+    color: rgba(0, 0, 0, 0.54) !important;
   }
 
   & .dynamic-form-control-label-small {
     font-size: 12px;
+  }
+
+  & .dynamic-form-control-input,
+  & ::ng-deep .mat-radio-label-content,
+  & ::ng-deep .mat-select-disabled .mat-select-value {
+    color: rgba(0, 0, 0, 0.87) !important;
   }
 
   & .dynamic-form-control-chip {
@@ -18,7 +24,7 @@
   }
 
   & .dynamic-form-label.show-error {
-    color: warn;
+    color: #f44336;
   }
 
   & .remove-chip-button {
@@ -69,9 +75,5 @@
     align-items: center;
     justify-content: center;
     margin-right: 16px;
-    height: 32px;
-    width: 32px;
-    overflow: hidden;
-    border-radius: 8px;
   }
 }
