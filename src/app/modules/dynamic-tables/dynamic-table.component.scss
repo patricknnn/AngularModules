@@ -30,7 +30,6 @@
         align-items: center;
         flex-grow: 1;
         padding: 0;
-        color: rgba(0, 0, 0, 0.87) !important;
 
         & .filter-panel-search {
           display: flex;
@@ -115,10 +114,10 @@
     }
 
     & .dynamic-table-row-even {
-      background-color: #fff;
+      //background-color: #fff;
     }
     & .dynamic-table-row-odd {
-      background-color: #ebf6ff;
+      //background-color: #fff;
     }
 
     // empty row
