@@ -9,6 +9,11 @@
     opacity: 1 !important;
   }
 
+  & .chip-image {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
   & .dynamic-form-label.show-error {
     color: #f44336;
   }

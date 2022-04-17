@@ -15,8 +15,8 @@
 
       <!-- Text -->
       <input
-        matInput
         *ngSwitchCase="'text'"
+        matInput
         [formControlName]="control.key"
         [id]="control.key"
         [type]="control.inputType"
@@ -26,8 +26,8 @@
 
       <!-- Autocomplete -->
       <input
-        matInput
         *ngSwitchCase="'autocomplete'"
+        matInput
         [formControlName]="control.key"
         [id]="control.key"
         [type]="control.inputType"
@@ -66,8 +66,8 @@
 
       <!-- Text area -->
       <textarea
-        matInput
         *ngSwitchCase="'textarea'"
+        matInput
         [formControlName]="control.key"
         [id]="control.key"
         [required]="isRequired"
@@ -92,8 +92,8 @@
 
       <!-- Date -->
       <input
-        matInput
         *ngSwitchCase="'date'"
+        matInput
         [formControlName]="control.key"
         [id]="control.key"
         [matDatepicker]="datePicker"
@@ -109,8 +109,8 @@
 
       <!-- Date of birth -->
       <input
-        matInput
         *ngSwitchCase="'date-of-birth'"
+        matInput
         [formControlName]="control.key"
         [id]="control.key"
         [matDatepicker]="dateOfBirthPicker"
@@ -171,34 +171,58 @@
         #chipList
       >
         <mat-chip
-          *ngFor="let item of control.value"
+          *ngFor="let selectedAutocompleteOption of selectedAutocompleteOptions"
           [selectable]="control.selectable"
           [removable]="control.removable"
-          (removed)="removeFromValue(item)"
+          (removed)="removeSelectedAutocompleteOption(selectedAutocompleteOption)"
           class="dynamic-form-control-chip"
         >
-          {{ item }}
+          <mat-chip-avatar>
+            <img
+            class="chip-image"
+              [alt]="selectedAutocompleteOption.value"
+              [src]="selectedAutocompleteOption.image"
+            />
+          </mat-chip-avatar>
+          {{ selectedAutocompleteOption.label }}
           <button
             *ngIf="!control.disabled"
-            mat-icon-button
-            class="remove-chip-button"
-            (click)="removeFromValue(item)"
+            matChipRemove
+            (click)="removeSelectedAutocompleteOption(selectedAutocompleteOption)"
           >
             <mat-icon>close</mat-icon>
           </button>
         </mat-chip>
         <input
           #chipInput
+          [formControl]="chipControl"
           [placeholder]="control.placeholder"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="control.addOnBlur"
-          (matChipInputTokenEnd)="
-            addToValue($event.value); chipInput.value = ''
-          "
+          [matAutocomplete]="autoCompChips"
           class="dynamic-form-control-input"
         />
       </mat-chip-list>
+      <mat-autocomplete
+        #autoCompChips="matAutocomplete"
+        (optionSelected)="addSelectedAutocompleteOption($event.option.value)"
+      >
+        <mat-option
+          *ngFor="let option of filteredAutocompleteOptions | async"
+          [value]="option"
+        >
+          <div class="dynamic-form-control-autocomplete-option">
+            <div
+              *ngIf="option.image"
+              class="dynamic-form-control-autocomplete-option-img"
+            >
+              <img [alt]="option.value" [src]="option.image" width="32" />
+            </div>
+            {{ option.label }}
+          </div>
+        </mat-option>
+      </mat-autocomplete>
 
       <!-- Error -->
       <mat-error *ngIf="!isValid">

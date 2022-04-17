@@ -89,10 +89,13 @@ export class FormService {
       {
         label: 'Option 1',
         value: 'Option 1',
+        image: 'https://material.angular.io/assets/img/examples/shiba1.jpg'
+
       },
       {
         label: 'Option 2',
         value: 'Option 2',
+        image: 'https://material.angular.io/assets/img/examples/shiba1.jpg'
       },
     ];
   }
@@ -100,7 +103,7 @@ export class FormService {
   getModel(): any {
     return {
       autocomplete: '',
-      chips: [],
+      chips: ["Option 1"],
       dropdown: '',
       text: '',
       date: '',
