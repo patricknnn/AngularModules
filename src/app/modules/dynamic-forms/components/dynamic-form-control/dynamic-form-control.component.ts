@@ -239,6 +239,9 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
       controlValue.splice(index, 1);
       this.abstractControl?.setValue(controlValue);
     }
+
+    this.abstractControlToSubscribe?.setValue('');
+    this.chipInput!.nativeElement.value = '';
   }
 
   private getAutocompleteOptionByValue(value: string): DynamicFormControlAutocompleteOption | undefined {
@@ -277,14 +280,20 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
     this.filteredAutocompleteOptions = this.abstractControlToSubscribe ?.valueChanges.pipe(
       startWith(''),
       map((value: string | DynamicFormControlAutocompleteOption) => typeof value === 'string' ? value : value.label),
-      map((label: string) => label ? this.filterAutocompleteOptions(label) : this.control.autocompleteOptions.slice())
+      map((label: string) => label 
+      ? this.filterSelectedAutocompleteOptions(this.filterAutocompleteOptions(label)) 
+      : this.filterSelectedAutocompleteOptions(this.control.autocompleteOptions.slice()))
     );
   }
 
   private filterAutocompleteOptions(label: string): DynamicFormControlAutocompleteOption[] {
     return this.control.autocompleteOptions.filter((option: DynamicFormControlAutocompleteOption) => {
       return option.label.toLowerCase().startsWith(label.toLowerCase());
-    });
+    }).filter((option: DynamicFormControlAutocompleteOption) => !this.selectedAutocompleteOptions.includes(option));
+  }
+
+  private filterSelectedAutocompleteOptions(options: DynamicFormControlAutocompleteOption[]): DynamicFormControlAutocompleteOption[] {
+    return options.filter((option: DynamicFormControlAutocompleteOption) => !this.selectedAutocompleteOptions.includes(option));
   }
 
   private hasError(error: string): boolean | undefined {
