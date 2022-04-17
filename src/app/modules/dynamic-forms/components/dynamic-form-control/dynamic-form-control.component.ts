@@ -274,15 +274,15 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
       });
       this.abstractControl?.setValue(this.selectedAutocompleteOptions);
 
-      this.abstractControlToSubscribe  = this.chipControl;
+      this.abstractControlToSubscribe = this.chipControl;
     }
 
-    this.filteredAutocompleteOptions = this.abstractControlToSubscribe ?.valueChanges.pipe(
+    this.filteredAutocompleteOptions = this.abstractControlToSubscribe?.valueChanges.pipe(
       startWith(''),
       map((value: string | DynamicFormControlAutocompleteOption) => typeof value === 'string' ? value : value.label),
-      map((label: string) => label 
-      ? this.filterSelectedAutocompleteOptions(this.filterAutocompleteOptions(label)) 
-      : this.filterSelectedAutocompleteOptions(this.control.autocompleteOptions.slice()))
+      map((label: string) => label
+        ? this.filterSelectedAutocompleteOptions(this.filterAutocompleteOptions(label))
+        : this.filterSelectedAutocompleteOptions(this.control.autocompleteOptions.slice()))
     );
   }
 
