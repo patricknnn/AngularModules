@@ -40,7 +40,9 @@
         *ngIf="selectedAutocompleteOption?.image"
         [alt]="selectedAutocompleteOption?.value"
         [src]="selectedAutocompleteOption?.image"
-        width="32"
+        width="27"
+        height="27"
+        style="border-radius: 27px"
       />
       <mat-autocomplete
         autoActiveFirstOption
@@ -57,7 +59,13 @@
               *ngIf="option.image"
               class="dynamic-form-control-autocomplete-option-img"
             >
-              <img [alt]="option.value" [src]="option.image" width="32" />
+              <img
+                [alt]="option.value"
+                [src]="option.image"
+                width="27"
+                height="27"
+                style="border-radius: 27px"
+              />
             </div>
             {{ option.label }}
           </div>
@@ -122,7 +130,8 @@
         *ngSwitchCase="'date-of-birth'"
         matSuffix
         [for]="dateOfBirthPicker"
-      ></mat-datepicker-toggle>
+      >
+      </mat-datepicker-toggle>
       <mat-datepicker
         touchUi
         #dateOfBirthPicker
@@ -174,12 +183,14 @@
           *ngFor="let selectedAutocompleteOption of selectedAutocompleteOptions"
           [selectable]="control.selectable"
           [removable]="control.removable"
-          (removed)="removeSelectedAutocompleteOption(selectedAutocompleteOption)"
+          (removed)="
+            removeSelectedAutocompleteOption(selectedAutocompleteOption)
+          "
           class="dynamic-form-control-chip"
         >
-          <mat-chip-avatar>
+          <mat-chip-avatar *ngIf="selectedAutocompleteOption.image">
             <img
-            class="chip-image"
+              class="chip-image"
               [alt]="selectedAutocompleteOption.value"
               [src]="selectedAutocompleteOption.image"
             />
@@ -188,7 +199,9 @@
           <button
             *ngIf="!control.disabled"
             matChipRemove
-            (click)="removeSelectedAutocompleteOption(selectedAutocompleteOption)"
+            (click)="
+              removeSelectedAutocompleteOption(selectedAutocompleteOption)
+            "
           >
             <mat-icon>close</mat-icon>
           </button>
@@ -201,6 +214,7 @@
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="control.addOnBlur"
           [matAutocomplete]="autoCompChips"
+          (matChipInputTokenEnd)="chipInput.value = ''"
           class="dynamic-form-control-input"
         />
       </mat-chip-list>
@@ -217,7 +231,13 @@
               *ngIf="option.image"
               class="dynamic-form-control-autocomplete-option-img"
             >
-              <img [alt]="option.value" [src]="option.image" width="32" />
+              <img
+                [alt]="option.value"
+                [src]="option.image"
+                width="27"
+                height="27"
+                style="border-radius: 27px"
+              />
             </div>
             {{ option.label }}
           </div>

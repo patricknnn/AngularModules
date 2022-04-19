@@ -85,25 +85,22 @@ export class FormService {
   }
 
   getOptions(): any {
-    return [
-      {
-        label: 'Option 1',
-        value: 'Option 1',
+    const amount: number = 5;
+    const list: any[] = [];
+    for (let i = 1; i < amount + 1; i++) {
+      list.push({
+        label: `Option ${i}`,
+        value: `Option ${i}`,
         image: 'https://material.angular.io/assets/img/examples/shiba1.jpg'
-
-      },
-      {
-        label: 'Option 2',
-        value: 'Option 2',
-        image: 'https://material.angular.io/assets/img/examples/shiba1.jpg'
-      },
-    ];
+      });
+    };
+    return list;
   }
 
   getModel(): any {
     return {
       autocomplete: '',
-      chips: ["Option 1"],
+      chips: ["Option 1", "Option 5"],
       dropdown: '',
       text: '',
       date: '',
