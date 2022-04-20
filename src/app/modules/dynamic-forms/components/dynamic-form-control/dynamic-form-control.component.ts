@@ -281,18 +281,18 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
       startWith(''),
       map((value: string | DynamicFormControlAutocompleteOption) => typeof value === 'string' ? value : value.label),
       map((label: string) => label
-        ? this.filterSelectedAutocompleteOptions(this.filterAutocompleteOptions(label))
-        : this.filterSelectedAutocompleteOptions(this.control.autocompleteOptions.slice()))
+        ? this.filterAutocompleteOptionsBySelected(this.filterAutocompleteOptionsByLabel(label))
+        : this.filterAutocompleteOptionsBySelected(this.control.autocompleteOptions.slice()))
     );
   }
 
-  private filterAutocompleteOptions(label: string): DynamicFormControlAutocompleteOption[] {
+  private filterAutocompleteOptionsByLabel(label: string): DynamicFormControlAutocompleteOption[] {
     return this.control.autocompleteOptions.filter((option: DynamicFormControlAutocompleteOption) => {
       return option.label.toLowerCase().startsWith(label.toLowerCase());
-    }).filter((option: DynamicFormControlAutocompleteOption) => !this.selectedAutocompleteOptions.includes(option));
+    });
   }
 
-  private filterSelectedAutocompleteOptions(options: DynamicFormControlAutocompleteOption[]): DynamicFormControlAutocompleteOption[] {
+  private filterAutocompleteOptionsBySelected(options: DynamicFormControlAutocompleteOption[]): DynamicFormControlAutocompleteOption[] {
     return options.filter((option: DynamicFormControlAutocompleteOption) => !this.selectedAutocompleteOptions.includes(option));
   }
 

@@ -245,7 +245,7 @@
       </mat-autocomplete>
 
       <!-- Error -->
-      <mat-error *ngIf="!isValid">
+      <mat-error *ngIf="!isValid && isTouched">
         {{ errorMessage }}
       </mat-error>
     </mat-form-field>
