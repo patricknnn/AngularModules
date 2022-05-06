@@ -15,7 +15,20 @@
     </app-dynamic-form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="toggleDisabled()">Toggle disabled</button>
-    <button mat-button (click)="logElement()">Log model</button>
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="toggleDisabled()"
+      [disabled]="formControlsDisabled"
+      style="margin-right: 16px"
+    >
+      <mat-icon [class.spinning]="formControlsDisabled">
+        {{ formControlsDisabled ? "refresh" : "done" }}
+      </mat-icon>
+      Toggle disabled
+    </button>
+    <button mat-flat-button color="primary" (click)="logElement()">
+      Log model
+    </button>
   </mat-card-actions>
 </mat-card>

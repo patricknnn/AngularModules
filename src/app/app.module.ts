@@ -8,6 +8,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { TableComponent } from './components/table/table.component';
 import { DynamicFormsModule } from './modules/dynamic-forms/dynamic-forms.module';
 import { DynamicTablesModule } from './modules/dynamic-tables/dynamic-tables.module';
+import { FileUploadModule } from './modules/file-upload/file-upload.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DynamicTablesModule } from './modules/dynamic-tables/dynamic-tables.mod
     CoreModule,
     SharedModule,
     DynamicFormsModule,
-    DynamicTablesModule
+    DynamicTablesModule,
+    FileUploadModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

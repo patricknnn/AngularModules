@@ -52,7 +52,7 @@ export class DynamicFormComponent implements OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.formControls) {
+    if (changes['formControls']) {
       this.buildForm();
     }
   }

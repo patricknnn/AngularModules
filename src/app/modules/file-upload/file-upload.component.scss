@@ -1,0 +1,83 @@
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  & label {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  & .dropzone-container {
+    padding: 0.75rem;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.04);
+
+    & .label-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & aic-icon {
+        margin-bottom: 8px;
+      }
+    }
+
+    & ngx-dropzone {
+      background: transparent;
+
+      & ngx-dropzone-preview {
+        background-repeat: no-repeat;
+        background-size: 80px;
+        background-origin: top;
+        background-position-y: 24px;
+        background-position-x: center;
+      }
+
+      & ngx-dropzone-preview,
+      & ngx-dropzone-image-preview,
+      & ngx-dropzone-video-preview {
+        min-width: 120px !important;
+
+        & ngx-dropzone-label {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & span {
+            max-width: 120px;
+            padding: 0 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background-color: #fff;
+            border-radius: 5px;
+            margin-bottom: 5px;
+          }
+
+          & .buttons {
+            margin-top: 90px;
+
+            & button {
+              margin: 0 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .error-container {
+    display: flex;
+    flex-direction: column;
+
+    & span {
+      padding: 0 0.75rem;
+      font-size: 75%;
+      color: #f44336;
+    }
+  }
+}

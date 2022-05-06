@@ -1,0 +1,131 @@
+<div class="file-upload-container">
+  <label *ngIf="label">
+    {{ label }}
+    <span *ngIf="required">*</span>
+  </label>
+
+  <div class="dropzone-container">
+    <ngx-dropzone
+      [multiple]="multiple"
+      [maxFileSize]="maxFileSize"
+      [accept]="accept"
+      [disabled]="disabled"
+      [expandable]="expandable"
+      (change)="onFileSelect($event)"
+    >
+      <ngx-dropzone-label>
+        <div class="label-container">
+          <mat-icon>file_upload</mat-icon>
+          <span *ngIf="dragDropLabel">{{ dragDropLabel }}</span>
+        </div>
+      </ngx-dropzone-label>
+
+      <ng-container
+        *ngFor="let file of files"
+        [ngSwitch]="getFileUploadType(file)"
+      >
+        <!-- Image preview -->
+        <ngx-dropzone-image-preview
+          *ngSwitchCase="_fileUploadType.IMAGE"
+          ngProjectAs="ngx-dropzone-preview"
+          [file]="file"
+          [removable]="false"
+          (removed)="onFileRemove(file)"
+        >
+          <ngx-dropzone-label>
+            <span [matTooltip]="file.name" matTooltipPosition="above">
+              {{ file.name }}
+            </span>
+            <div class="buttons">
+              <button
+                mat-mini-fab
+                color="accent"
+                (click)="$event.stopPropagation(); onFileDownload(file)"
+              >
+                <mat-icon>file_download</mat-icon>
+              </button>
+              <button
+                *ngIf="removable"
+                mat-mini-fab
+                color="warn"
+                (click)="$event.stopPropagation(); onFileRemove(file)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ngx-dropzone-label>
+        </ngx-dropzone-image-preview>
+
+        <!-- Video preview -->
+        <ngx-dropzone-video-preview
+          *ngSwitchCase="_fileUploadType.VIDEO"
+          ngProjectAs="ngx-dropzone-preview"
+          [file]="file"
+          [removable]="false"
+          (removed)="onFileRemove(file)"
+        >
+          <ngx-dropzone-label>
+            <span [matTooltip]="file.name" matTooltipPosition="above">
+              {{ file.name }}
+            </span>
+            <div class="buttons">
+              <button
+                mat-mini-fab
+                color="accent"
+                (click)="$event.stopPropagation(); onFileDownload(file)"
+              >
+                <mat-icon>file_download</mat-icon>
+              </button>
+              <button
+                *ngIf="removable"
+                mat-mini-fab
+                color="warn"
+                (click)="$event.stopPropagation(); onFileRemove(file)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ngx-dropzone-label>
+        </ngx-dropzone-video-preview>
+
+        <!-- General preview -->
+        <ngx-dropzone-preview
+          *ngSwitchCase="_fileUploadType.GENERAL"
+          [removable]="false"
+          (removed)="onFileRemove(file)"
+        >
+          <ngx-dropzone-label>
+            <span [matTooltip]="file.name" matTooltipPosition="above">
+              {{ file.name }}
+            </span>
+            <div class="buttons">
+              <button
+                mat-mini-fab
+                color="accent"
+                (click)="$event.stopPropagation(); onFileDownload(file)"
+              >
+                <mat-icon>file_download</mat-icon>
+              </button>
+              <button
+                *ngIf="removable"
+                mat-mini-fab
+                color="warn"
+                (click)="$event.stopPropagation(); onFileRemove(file)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ng-container>
+    </ngx-dropzone>
+  </div>
+
+  <div class="error-container">
+    <span [@errorAnimation] *ngFor="let file of rejectedFiles">
+      <span *ngIf="rejectedMessage">
+        {{ rejectedMessage }} ({{ file.name }})
+      </span>
+    </span>
+  </div>
+</div>
