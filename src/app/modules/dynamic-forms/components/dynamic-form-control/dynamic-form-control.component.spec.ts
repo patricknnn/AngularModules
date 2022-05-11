@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, Validators } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicFormControlBuilder } from '../../builders/dynamic-form-control-builder';
-import { FormControlType } from '../../enums/form-control-type';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { FormControlService } from '../../services/form-control.service';
 import { DynamicFormControlComponent } from './dynamic-form-control.component';
@@ -37,19 +36,6 @@ describe('DynamicFormControlComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('using isFormFieldControl()', () => {
-    it('Should return "true" if control is a form field control', () => {
-      component.control.controlType = FormControlType.TEXT;
-
-      expect(component.isFormFieldControl).toEqual(true);
-    });
-    it('Should return "false" if control is not a form field control', () => {
-      component.control.controlType = FormControlType.CHECKBOX;
-
-      expect(component.isFormFieldControl).toEqual(false);
-    });
   });
 
   describe('using isRequired()', () => {
@@ -157,28 +143,6 @@ describe('DynamicFormControlComponent', () => {
       expect(component.errorMessage).toContain(
         'does not match required pattern',
       );
-    });
-  });
-
-  describe('using addToValue()', () => {
-    it('should have "test" added to value', () => {
-      component.form.controls[dynamicFormControl.key].setValue([]);
-
-      component.addToValue('test');
-
-      expect(component.form.controls[dynamicFormControl.key].value).toEqual([
-        'test',
-      ]);
-    });
-  });
-
-  describe('using removeFromValue()', () => {
-    it('should have "test" removed from value', () => {
-      component.form.controls[dynamicFormControl.key].setValue(['test']);
-
-      component.removeFromValue('test');
-
-      expect(component.form.controls[dynamicFormControl.key].value).toEqual([]);
     });
   });
 });
