@@ -1,0 +1,47 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control dynamic-form-control-non-form-field">
+    <!-- Label -->
+    <label
+      class="dynamic-form-control-label"
+      [class.show-error]="!isValid && isTouched"
+      [attr.for]="control.key"
+    >
+      {{ control.label }}
+      <span
+        style="display: inline"
+        *ngIf="isRequired"
+        [class.mat-error]="!isValid && isTouched"
+        >*
+      </span>
+    </label>
+
+    <div class="no-form-field">
+      <!-- Radio -->
+      <mat-radio-group
+        [id]="control.key"
+        [color]="color"
+        [formControlName]="control.key"
+        [required]="isRequired"
+        (change)="markAsTouched()"
+      >
+        <mat-radio-button
+          *ngFor="let option of control.options"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <!-- Error -->
+      <mat-error class="form-control-error">
+        <span
+          [@errorAnimation]
+          *ngIf="!isValid && isTouched"
+          class="error-message"
+        >
+          {{ errorMessage }}
+        </span>
+      </mat-error>
+    </div>
+  </div>
+</div>

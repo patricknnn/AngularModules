@@ -11,6 +11,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { MatColor } from 'src/app/enums/material/mat-color';
 import { MatFormAppearance } from 'src/app/enums/material/mat-form-appearance';
+import { FormControlType } from '../../enums/form-control-type';
 import { DynamicFormControl } from '../../models/dynamic-form-control';
 import { DynamicFormControlValueChange } from '../../models/dynamic-form-control-value-change';
 import { FormControlService } from '../../services/form-control.service';
@@ -33,6 +34,7 @@ export class DynamicFormComponent implements OnChanges {
 
   @ViewChildren('dynamicFormControl') dynamicFormControls?: QueryList<DynamicFormControlComponent>;
 
+  public formControlTypes: typeof FormControlType = FormControlType;
   public form!: FormGroup;
 
   public constructor(private readonly formControlService: FormControlService) {}

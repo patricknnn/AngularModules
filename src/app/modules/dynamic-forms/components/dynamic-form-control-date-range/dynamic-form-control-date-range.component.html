@@ -1,0 +1,50 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control">
+    <mat-form-field
+      [id]="'form-field-' + control.key"
+      [appearance]="appearance"
+      [color]="color"
+      [floatLabel]="control.floatLabel"
+    >
+      <!-- Label -->
+      <mat-label [attr.for]="control.key" class="dynamic-form-control-label">
+        {{ control.label }}
+      </mat-label>
+
+      <!-- Date range -->
+      <mat-date-range-input
+        [formGroup]="dateRange"
+        [rangePicker]="dateRangePicker"
+        [disabled]="control.disabled"
+        class="dynamic-form-control-input"
+      >
+        <input
+          matStartDate
+          placeholder="Start"
+          formControlName="start"
+          class="dynamic-form-control-input"
+          [required]="isRequired"
+          (dateChange)="setDateRange()"
+        />
+        <input
+          matEndDate
+          placeholder="Eind"
+          formControlName="end"
+          class="dynamic-form-control-input"
+          [required]="isRequired"
+          (dateChange)="setDateRange()"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="dateRangePicker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker touchUi #dateRangePicker></mat-date-range-picker>
+
+      <!-- Error -->
+      <mat-error *ngIf="!isValid && isTouched">
+        {{ errorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

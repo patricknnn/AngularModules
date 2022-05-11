@@ -34,8 +34,7 @@
     & .form-control-error {
       font-weight: 400;
       font-size: 75%;
-      min-height: 2em;
-      padding-top: 0.25em;
+      min-height: 2.25em;
 
       & span {
         display: flex;
@@ -48,9 +47,7 @@
 
 .dynamic-form-control-non-form-field {
   & label,
-  & mat-radio-group,
-  & mat-checkbox,
-  & mat-slide-toggle {
+  & .no-form-field {
     padding: 0.75em;
   }
 }

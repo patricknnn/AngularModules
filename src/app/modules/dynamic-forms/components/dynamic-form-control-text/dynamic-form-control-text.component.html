@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control">
+    <mat-form-field
+      [id]="'form-field-' + control.key"
+      [appearance]="appearance"
+      [color]="color"
+      [floatLabel]="control.floatLabel"
+    >
+      <!-- Label -->
+      <mat-label [attr.for]="control.key" class="dynamic-form-control-label">
+        {{ control.label }}
+      </mat-label>
+
+      <!-- Text -->
+      <input
+        matInput
+        [formControlName]="control.key"
+        [id]="control.key"
+        [type]="control.inputType"
+        [required]="isRequired"
+        class="dynamic-form-control-input"
+      />
+
+      <!-- Error -->
+      <mat-error *ngIf="!isValid && isTouched">
+        {{ errorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

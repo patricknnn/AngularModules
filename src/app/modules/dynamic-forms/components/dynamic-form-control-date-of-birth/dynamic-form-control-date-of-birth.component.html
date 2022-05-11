@@ -1,0 +1,41 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control">
+    <mat-form-field
+      [id]="'form-field-' + control.key"
+      [appearance]="appearance"
+      [color]="color"
+      [floatLabel]="control.floatLabel"
+    >
+      <!-- Label -->
+      <mat-label [attr.for]="control.key" class="dynamic-form-control-label">
+        {{ control.label }}
+      </mat-label>
+
+      <!-- Date of birth -->
+      <input
+        matInput
+        [formControlName]="control.key"
+        [id]="control.key"
+        [matDatepicker]="dateOfBirthPicker"
+        [required]="isRequired"
+        [max]="getMinAgeDate()"
+        class="dynamic-form-control-input"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="dateOfBirthPicker"
+      >
+      </mat-datepicker-toggle>
+      <mat-datepicker
+        touchUi
+        #dateOfBirthPicker
+        startView="multi-year"
+      ></mat-datepicker>
+
+      <!-- Error -->
+      <mat-error *ngIf="!isValid && isTouched">
+        {{ errorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

@@ -4,15 +4,125 @@
     *ngFor="let formControl of formControls"
     [ngClass]="formControl.controlType"
   >
-    <app-dynamic-form-control
+    <app-dynamic-form-control-autocomplete
       #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.AUTOCOMPLETE"
       [ngClass]="formControl.cssClass"
       [appearance]="formAppearance"
       [color]="formColor"
       [control]="formControl"
       [form]="form"
       (formControlValueChange)="handleControlValueChange($event)"
-    >
-    </app-dynamic-form-control>
+    ></app-dynamic-form-control-autocomplete>
+
+    <app-dynamic-form-control-checkbox
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.CHECKBOX"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-checkbox>
+
+    <app-dynamic-form-control-chips
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.CHIPS"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-chips>
+
+    <app-dynamic-form-control-date
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.DATE"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-date>
+
+    <app-dynamic-form-control-date-of-birth
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.DATE_OF_BIRTH"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-date-of-birth>
+
+    <app-dynamic-form-control-date-range
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.DATE_RANGE"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-date-range>
+
+    <app-dynamic-form-control-radio
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.RADIO"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-radio>
+
+    <app-dynamic-form-control-select
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.DROPDOWN"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-select>
+
+    <app-dynamic-form-control-slide
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.SLIDE"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-slide>
+
+    <app-dynamic-form-control-text
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.TEXT"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-text>
+
+    <app-dynamic-form-control-textarea
+      #dynamicFormControl
+      *ngIf="formControl.controlType === formControlTypes.TEXT_AREA"
+      [ngClass]="formControl.cssClass"
+      [appearance]="formAppearance"
+      [color]="formColor"
+      [control]="formControl"
+      [form]="form"
+      (formControlValueChange)="handleControlValueChange($event)"
+    ></app-dynamic-form-control-textarea>
   </div>
 </form>

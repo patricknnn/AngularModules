@@ -63,12 +63,6 @@ export class FormService {
         .setValidators([Validators.required])
         .build(),
       new DynamicFormControlBuilder<string>()
-        .setControlType(FormControlType.CHECKBOX)
-        .setKey('checkbox')
-        .setLabel('Checkbox')
-        .setValidators([Validators.required])
-        .build(),
-      new DynamicFormControlBuilder<string>()
         .setControlType(FormControlType.RADIO)
         .setKey('radio')
         .setLabel('Radio')
@@ -79,6 +73,12 @@ export class FormService {
         .setControlType(FormControlType.SLIDE)
         .setKey('slide')
         .setLabel('Slide')
+        .setValidators([Validators.required])
+        .build(),
+      new DynamicFormControlBuilder<string>()
+        .setControlType(FormControlType.CHECKBOX)
+        .setKey('checkbox')
+        .setLabel('Checkbox')
         .setValidators([Validators.required])
         .build(),
     ];

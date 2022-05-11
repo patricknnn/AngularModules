@@ -1,0 +1,44 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control dynamic-form-control-non-form-field">
+    <!-- Label -->
+    <label
+      class="dynamic-form-control-label"
+      [class.show-error]="!isValid && isTouched"
+      [attr.for]="control.key"
+    >
+      {{ control.label }}
+      <span
+        style="display: inline"
+        *ngIf="isRequired"
+        [class.mat-error]="!isValid && isTouched"
+        >*
+      </span>
+    </label>
+
+    <div class="no-form-field">
+      <!-- Slide -->
+      <mat-slide-toggle
+        [id]="control.key"
+        [color]="color"
+        [formControlName]="control.key"
+        [labelPosition]="control.labelPosition"
+        [checked]="control.value"
+        [required]="isRequired"
+        (change)="markAsTouched()"
+      >
+        {{ control.placeholder }}
+      </mat-slide-toggle>
+
+      <!-- Error -->
+      <mat-error class="form-control-error">
+        <span
+          [@errorAnimation]
+          *ngIf="!isValid && isTouched"
+          class="error-message"
+        >
+          {{ errorMessage }}
+        </span>
+      </mat-error>
+    </div>
+  </div>
+</div>

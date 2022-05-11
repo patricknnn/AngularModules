@@ -1,0 +1,67 @@
+<div [formGroup]="form">
+  <div class="dynamic-form-control">
+    <mat-form-field
+      [id]="'form-field-' + control.key"
+      [appearance]="appearance"
+      [color]="color"
+      [floatLabel]="control.floatLabel"
+    >
+      <!-- Label -->
+      <mat-label [attr.for]="control.key" class="dynamic-form-control-label">
+        {{ control.label }}
+      </mat-label>
+
+      <!-- Autocomplete -->
+      <input
+        matInput
+        [formControlName]="control.key"
+        [id]="control.key"
+        [type]="control.inputType"
+        [required]="isRequired"
+        [matAutocomplete]="autoComp"
+        class="dynamic-form-control-input"
+      />
+      <img
+        matSuffix
+        *ngIf="selectedAutocompleteOption?.image"
+        [alt]="selectedAutocompleteOption?.value"
+        [src]="selectedAutocompleteOption?.image"
+        width="27"
+        height="27"
+        style="border-radius: 27px"
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #autoComp="matAutocomplete"
+        [displayWith]="getAutocompleteDisplayValue"
+        (optionSelected)="setSelectedAutocompleteOption($event.option.value)"
+      >
+        <mat-option
+          *ngFor="let option of filteredAutocompleteOptions | async"
+          [value]="option"
+        >
+          <div class="dynamic-form-control-autocomplete-option">
+            <div
+              *ngIf="option.image"
+              class="dynamic-form-control-autocomplete-option-img"
+            >
+              <img
+                [alt]="option.value"
+                [src]="option.image"
+                width="27"
+                height="27"
+                style="border-radius: 27px"
+              />
+            </div>
+            {{ option.label }}
+          </div>
+        </mat-option>
+      </mat-autocomplete>
+
+      <!-- Error -->
+      <mat-error *ngIf="!isValid && isTouched">
+        {{ errorMessage }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
