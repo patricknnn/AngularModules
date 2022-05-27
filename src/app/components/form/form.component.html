@@ -6,13 +6,15 @@
     <mat-card-subtitle>Module</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <app-dynamic-form
-      #dynamicForm
-      *ngIf="formControls"
-      [formControls]="formControls"
-      [(formModel)]="model"
-    >
-    </app-dynamic-form>
+    <div *ngIf="formControls">
+      <app-dynamic-form
+        #dynamicForm
+        [formControls]="formControls"
+        [(formModel)]="model"
+      >
+      </app-dynamic-form>
+      <span>Valid: {{ dynamicForm.isFormValid }}</span>
+    </div>
   </mat-card-content>
   <mat-card-actions>
     <button

@@ -24,9 +24,7 @@ export class DynamicFormControlAutocompleteComponent extends DynamicFormControlC
     this.initAutocompleteControl();
 
     this.controlSubscription = this.abstractControl.valueChanges.subscribe(() => {
-      this.selectedAutocompleteOption = undefined;
-
-      if (this.abstractControl?.valid) {
+       if (this.abstractControl?.valid) {
         let valueToEmit: any = this.abstractControl?.value.value;
 
         const valueChange: DynamicFormControlValueChange = {
@@ -47,10 +45,7 @@ export class DynamicFormControlAutocompleteComponent extends DynamicFormControlC
   }
 
   private initAutocompleteControl(): void {
-    this.selectedAutocompleteOption = this.control.value
-      ? this.getAutocompleteOptionByValue(this.control.value)
-      : undefined;
-
+    this.selectedAutocompleteOption = this.getAutocompleteOptionByValue(this.control.value);
     this.abstractControl?.setValue(this.selectedAutocompleteOption || '');
     this.abstractControlToSubscribe = this.abstractControl;
 

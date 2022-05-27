@@ -113,7 +113,7 @@ export class DynamicFormControlComponent implements OnInit, OnDestroy {
 
   public filterAutocompleteOptionsByLabel(label: string): DynamicFormControlAutocompleteOption[] {
     return this.control.autocompleteOptions.filter((option: DynamicFormControlAutocompleteOption) => {
-      return option.label.toLowerCase().startsWith(label.toLowerCase());
+      return option.label.toLowerCase().includes(label.toLowerCase());
     });
   }
 }

@@ -37,20 +37,10 @@ export class DynamicFormComponent implements OnChanges {
   public formControlTypes: typeof FormControlType = FormControlType;
   public form!: FormGroup;
 
-  public constructor(private readonly formControlService: FormControlService) {}
+  public constructor(private readonly formControlService: FormControlService) { }
 
   public get isFormValid(): boolean {
-    let valid: boolean = true;
-
-    this.dynamicFormControls?.forEach(
-      (control: DynamicFormControlComponent) => {
-        if (!control.isValid) {
-          valid = control.isValid;
-        }
-      }
-    );
-
-    return valid;
+    return this.dynamicFormControls?.toArray().every((control: DynamicFormControlComponent) => control.isValid) || false;
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -73,9 +63,7 @@ export class DynamicFormComponent implements OnChanges {
     this.form.markAllAsTouched();
   }
 
-  public handleControlValueChange(
-    valueChange: DynamicFormControlValueChange
-  ): void {
+  public handleControlValueChange(valueChange: DynamicFormControlValueChange): void {
     this.setModelValue(this.formModel, valueChange.key, valueChange.value);
     this.formModelChange.emit(this.formModel);
   }
