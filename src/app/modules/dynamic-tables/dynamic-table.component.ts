@@ -28,11 +28,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Input() public columnConfig!: DynamicTableColumnConfig[];
   @Input() public data!: any[];
 
-  @Output() public selectionChange: EventEmitter<any[]> = new EventEmitter<
-    any[]
-  >();
-  @Output() public buttonClick: EventEmitter<DynamicTableButtonClickEvent> =
-    new EventEmitter<DynamicTableButtonClickEvent>();
+  @Output() public selectionChange: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() public buttonClick: EventEmitter<DynamicTableButtonClickEvent> = new EventEmitter<DynamicTableButtonClickEvent>();
   @Output() public rowClick: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(MatTable) public table?: MatTable<any>;
@@ -174,11 +171,30 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   private createDataSource(): void {
     this.dataSource = new MatTableDataSource<any>(this.filteredData);
-    this.dataSource.paginator =
-      this.tableConfig.paging && this.paginator ? this.paginator : null;
+    this.dataSource.paginator = this.tableConfig.paging && this.paginator ? this.paginator : null;
     this.dataSource.sort = this.sort ? this.sort : null;
     this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
       return JSON.stringify(data).toLowerCase().includes(filter);
     };
+    this.initSortingDataAccessor();
+  }
+
+  private initSortingDataAccessor(): void {
+    const dateColumns: string[] = this.columnConfig
+      .filter((column: DynamicTableColumnConfig) => {
+        return column.type === DynamicTableColumnType.DATE;
+      }).map((column: DynamicTableColumnConfig) => {
+        return column.key;
+      });
+
+    this.dataSource.sortingDataAccessor = (item: any, property: string) => {
+      const content: any = this.getCellContent(item, property);
+      
+      if (dateColumns.includes(property)) {
+        return new Date(content).getTime();
+      } else {
+        return content;
+      }
+    }
   }
 }

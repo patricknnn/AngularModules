@@ -6,14 +6,18 @@
     <mat-card-subtitle>Module</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container #outlet>
-    </ng-container>
+    <ng-container #outlet> </ng-container>
   </mat-card-content>
 </mat-card>
 
 <!-- Dynamic table template -->
 <ng-template #content>
-  <app-dynamic-table [tableConfig]="tableConfig" [columnConfig]="columnConfig" [data]="(data$ | async)!"
-    (selectionChange)="handleSelectionChangeEvent($event)" (buttonClick)="handleButtonClickEvent($event)">
+  <app-dynamic-table
+    [tableConfig]="tableConfig"
+    [columnConfig]="columnConfig"
+    [data]="(data$ | async)!"
+    (selectionChange)="handleSelectionChangeEvent($event)"
+    (buttonClick)="handleButtonClickEvent($event)"
+  >
   </app-dynamic-table>
 </ng-template>

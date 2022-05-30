@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { PeriodicElement } from 'src/app/models/periodic-element';
 import { DynamicTableColumnConfigBuilder } from 'src/app/modules/dynamic-tables/builders/dynamic-table-column-config-builder';
 import { DynamicTableConfigBuilder } from 'src/app/modules/dynamic-tables/builders/dynamic-table-config-builder';
+import { DynamicTableColumnType } from 'src/app/modules/dynamic-tables/enums/dynamic-table-column-type';
 import { DynamicTableColumnConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-column-config';
 import { DynamicTableConfig } from 'src/app/modules/dynamic-tables/models/dynamic-table-config';
 
@@ -10,8 +11,10 @@ import { DynamicTableConfig } from 'src/app/modules/dynamic-tables/models/dynami
   providedIn: 'root',
 })
 export class TableService {
-  private readonly _columnConfigBuilder: DynamicTableColumnConfigBuilder =
-    new DynamicTableColumnConfigBuilder();
+  private readonly _columnConfigBuilder: DynamicTableColumnConfigBuilder = new DynamicTableColumnConfigBuilder();
+  private date: string = '2022-05-27T07:13:31.631Z';
+  private dateTwo: string = '2021-05-27T07:13:31.631Z';
+  private dateThree: string = '2020-05-27T07:13:31.631Z';
 
   getTableConfig(): DynamicTableConfig {
     return new DynamicTableConfigBuilder()
@@ -46,6 +49,7 @@ export class TableService {
       this._columnConfigBuilder
         .setKey('nested.element')
         .setHeader('nested')
+        .setType(DynamicTableColumnType.DATE)
         .build(),
     ];
   }
@@ -63,7 +67,7 @@ export class TableService {
           end: '',
         },
         nested: {
-          element: 'Nested Element',
+          element: this.date,
         },
       },
       {
@@ -77,7 +81,7 @@ export class TableService {
           end: '',
         },
         nested: {
-          element: 'Nested Element',
+          element: this.dateTwo,
         },
       },
       {
@@ -91,7 +95,7 @@ export class TableService {
           end: '',
         },
         nested: {
-          element: 'Nested Element',
+          element: this.dateThree,
         },
       },
       {
@@ -105,7 +109,7 @@ export class TableService {
           end: '',
         },
         nested: {
-          element: 'Nested Element',
+          element: this.date,
         },
       },
       {
@@ -119,29 +123,11 @@ export class TableService {
           end: '',
         },
         nested: {
-          element: 'Nested Element',
+          element: this.date,
         },
       },
     ];
 
-    for (let index = 0; index < 500; index++) {
-      ELEMENT_DATA.push(
-        {
-          position: index,
-          name: 'Boron',
-          weight: 10.811,
-          symbol: 'B',
-          bool: true,
-          dateRange: {
-            start: '',
-            end: '',
-          },
-          nested: {
-            element: 'Nested Element ' + index,
-          },
-        },
-      );
-    }
     return of(ELEMENT_DATA);
   }
 }
